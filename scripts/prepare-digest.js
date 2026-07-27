@@ -57,8 +57,6 @@ async function fetchText(url) {
 
 async function main() {
   const errors = [];
-  const scriptDir = decodeURIComponent(new URL('.', import.meta.url).pathname);
-  const skillDir = join(scriptDir, '..');
 
   // 1. Read user config
   let config = {
@@ -74,33 +72,12 @@ async function main() {
     }
   }
 
-  // 2. Fetch all three feeds (with local fallback)
-  const feedXPath = join(skillDir, 'feed-x.json');
-  const feedPodcastsPath = join(skillDir, 'feed-podcasts.json');
-  const feedBlogsPath = join(skillDir, 'feed-blogs.json');
-
-  const [feedXRemote, feedPodcastsRemote, feedBlogsRemote] = await Promise.all([
+  // 2. Fetch all three feeds
+  const [feedX, feedPodcasts, feedBlogs] = await Promise.all([
     fetchJSON(FEED_X_URL),
     fetchJSON(FEED_PODCASTS_URL),
     fetchJSON(FEED_BLOGS_URL)
   ]);
-
-  let feedX = feedXRemote;
-  let feedPodcasts = feedPodcastsRemote;
-  let feedBlogs = feedBlogsRemote;
-
-  if (!feedX && existsSync(feedXPath)) {
-    feedX = JSON.parse(await readFile(feedXPath, 'utf-8'));
-    errors.push('Using local tweet feed (network unavailable)');
-  }
-  if (!feedPodcasts && existsSync(feedPodcastsPath)) {
-    feedPodcasts = JSON.parse(await readFile(feedPodcastsPath, 'utf-8'));
-    errors.push('Using local podcast feed (network unavailable)');
-  }
-  if (!feedBlogs && existsSync(feedBlogsPath)) {
-    feedBlogs = JSON.parse(await readFile(feedBlogsPath, 'utf-8'));
-    errors.push('Using local blog feed (network unavailable)');
-  }
 
   if (!feedX) errors.push('Could not fetch tweet feed');
   if (!feedPodcasts) errors.push('Could not fetch podcast feed');
@@ -128,7 +105,8 @@ async function main() {
   // Otherwise, fetch the latest from GitHub so they get central improvements.
   // If GitHub is unreachable, fall back to the local copy shipped with the skill.
   const prompts = {};
-  const localPromptsDir = join(skillDir, 'prompts');
+  const scriptDir = decodeURIComponent(new URL('.', import.meta.url).pathname);
+  const localPromptsDir = join(scriptDir, '..', 'prompts');
   const userPromptsDir = join(USER_DIR, 'prompts');
 
   for (const filename of PROMPT_FILES) {
