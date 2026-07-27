@@ -1,0 +1,129 @@
+# AI Builders Digest — Sunday, July 27, 2026
+
+## 🎙️ Podcast: OpenAI's Compute Chief — We Can't Build Fast Enough
+
+**Source:** The MAD Podcast with Matt Turck
+**Guest:** Sachin Katti (Head of Industrial Compute at OpenAI)
+**URL:** https://www.youtube.com/watch?v=wEZBlmvxx4o
+
+### 📌 核心要点
+
+**1. 算力供需严重失衡**
+OpenAI 的算力需求远超供应能力。Sachin 透露，公司今年计划投入约 500 亿美元用于算力建设，而整个行业的算力支出预计达 7000 亿美元。任何上线的算力资源都会立即被消耗，不存在闲置情况。
+
+**2. AI 正在设计自己的芯片**
+Jalapeno 芯片仅用 9 个月就完成了从设计到流片的全过程，其中 AI 在设计优化中发挥了关键作用。OpenAI 相信，AI 设计 AI 所需系统的"递归"时代已经不远。
+
+**3. 物理世界的限制**
+供应链、工厂建设速度跟不上 AI 需求的增长。变压器、燃气轮机等基础设施产能严重不足，电工、管道工等技术工人短缺，这些都是制约算力扩张的瓶颈。
+
+**4. Stargate 战略全面展开**
+OpenAI 采用"组合策略"：与 Microsoft、AWS、Google、Oracle 等云厂商合作，同时自建数据中心和定制芯片，确保算力来源多样化。
+
+**5. MRC 网络协议**
+针对 10 万+ GPU 规模的集群，OpenAI 开发了新的 MRC 协议，通过多路径流量分散技术，优雅处理大规模集群中的链路故障。
+
+**6. 数据中心的社会价值**
+数据中心建设为农村地区带来了新的房产税收入、基础设施升级和就业机会，对当地社区是净利好。
+
+---
+
+### Key Insights
+
+**1. Compute Supply vs Demand Imbalance**
+OpenAI's compute demands far outstrip supply. Sachin reveals the company plans to spend ~$5B on compute this year, with the entire industry expected to spend $70B. Any compute brought online is consumed immediately - no idle capacity.
+
+**2. AI Designing Its Own Chips**
+The Jalapeno chip went from design to tape-out in just 9 months, with AI playing a key role in design optimization. OpenAI believes the era of "recursion" - where AI designs the systems it needs - is near.
+
+**3. Physical World Constraints**
+Supply chains and factory construction can't keep up with AI demand growth. Transformer and gas turbine production capacity is severely limited, and there's a shortage of electricians, plumbers, and skilled workers.
+
+**4. Stargate Strategy in Full Swing**
+OpenAI uses a "portfolio approach": partnerships with Microsoft, AWS, Google, Oracle, plus custom-built data centers and chips to diversify compute sources.
+
+**5. MRC Networking Protocol**
+For clusters of 100,000+ GPUs, OpenAI developed the MRC protocol that gracefully handles failures through multipath traffic dispersion.
+
+**6. Data Centers' Social Value**
+Data center construction brings new property taxes, infrastructure upgrades, and jobs to rural areas - a net positive for local communities.
+
+---
+
+## 💬 X/Twitter Builders
+
+### Thibault Sottiaux (Codex & ChatGPT @OpenAI)
+
+**🔹 OpenAI 状态极佳**
+"Vibes are strong. Never seen OpenAI more focused and humming."
+
+**解读：** 作为 OpenAI 的核心工程师，Thibault 的这番话表明公司目前士气高涨，团队非常专注高效。这可能暗示着重大产品更新或技术突破即将到来。
+
+https://x.com/thsottiaux/status/2081534792903147881
+
+---
+
+**🔹 ChatGPT 日常实用价值**
+"Let ChatGPT work for you. How many times have you wanted to negotiate your internet bill, get rid of spam emails, or find the perfect deal... It does at least 20 things for me every single day."
+
+**解读：** Thibault 强调了 ChatGPT 的日常实用价值，包括谈判账单、清理垃圾邮件、寻找优惠等，说明 AI 已成为他个人效率提升的核心工具。
+
+https://x.com/thsottiaux/status/2081444811647963244
+
+---
+
+### Peter Yang (Practical AI tutorials)
+
+**🔹 普通人对 AI 的信任担忧**
+"Now that I'm in Canada and talk to folks who don't have AI psychosis the number one concern is not running out of tokens it's 'do I trust ChatGPT enough to share my Gmail, Calendar, Google Workspace, Microsoft Office, etc.'"
+
+**解读：** 与技术圈不同，普通用户最担心的不是 token 消耗，而是隐私安全——是否愿意让 AI 访问自己的邮箱、日历等个人数据。这反映了 AI 普及过程中的信任障碍。
+
+https://x.com/petergyang/status/2081555286817648738
+
+---
+
+### Madhu Guru (Sr Director, AI at Meta)
+
+**🔹 AI 产品影响的两阶段论**
+"When people say AI hasn't led to shipped impact in products... This is phase 1. Companies with distribution are rapidly expanding to adjacent problem areas - AI helps them execute fast and build functionality that previously required custom software. Phase 2 will be a lot more net new features and innovation."
+
+**解读：** Meta AI 负责人认为，AI 对产品的影响分为两个阶段：第一阶段是现有公司利用 AI 快速扩展到相邻领域；第二阶段才会出现大量全新功能和创新。目前我们仍处于第一阶段，显著影响尚未显现。
+
+https://x.com/realmadhuguru/status/2081437850466451736
+
+---
+
+### Amjad Masad (CEO @Replit)
+
+**🔹 黑客偏爱补贴 AI 服务进行攻击**
+"Hackers prefer to use massively subsidized labs AI subscriptions for attacks as opposed to open models."
+
+**解读：** Replit CEO 分享了一个重要安全洞见：黑客倾向于使用大规模补贴的实验室 AI 订阅服务（如各大厂商的免费额度）进行攻击，而非使用开源模型。这揭示了 AI 安全的一个新维度。
+
+https://x.com/amasad/status/2081576172656456076
+
+---
+
+### Guillermo Rauch (Vercel CEO)
+
+**🔹 签署开放权重公开信**
+"Vercel proudly co-signs the Open Weights and American AI Leadership letter... Open weights are the logical next frontier."
+
+**解读：** Vercel 加入了支持开放权重的行列。开放权重（Open Weights）被认为是 AI 发展的下一个前沿领域，这可能影响 AI 模型的分发和使用方式。
+
+https://x.com/rauchg/status/2081546513885622760
+
+---
+
+## 📊 今日摘要
+
+- **播客内容：** 1 集深度访谈，涵盖 OpenAI 算力战略、Jalapeno 芯片、MRC 协议等核心议题
+- **X 动态：** 6 位 Builder 的 10+ 条重要推文，涉及 AI 信任、产品影响阶段、安全威胁、开放权重等话题
+- **信息密度：** 涵盖基础设施、产品应用、行业趋势、安全等多个维度
+
+---
+
+**你的下一份摘要将于明天早上 9:00（北京时间）发送。**
+
+如需调整频率、语言或摘要风格，请回复邮件或使用 `/ai` 命令。

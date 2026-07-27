@@ -1,5 +1,3 @@
-**English** | [中文](README.zh-CN.md)
-
 # Follow Builders, Not Influencers
 
 An AI-powered digest that tracks the top builders in AI — researchers, founders, PMs,
@@ -9,63 +7,110 @@ what they're saying.
 **Philosophy:** Follow people who build products and have original opinions, not
 influencers who regurgitate information.
 
-## What You Get
+## ✨ Key Features
 
-A daily or weekly digest delivered to your preferred messaging app (Telegram, Discord,
-WhatsApp, etc.) with:
+### 📧 Beautiful HTML Email Delivery
+Receive well-formatted digests with:
+- Clean, modern design with smooth gradients
+- Responsive layout for mobile and desktop
+- Clear visual hierarchy with proper spacing
+- Professional typography optimized for reading
 
+### 🤖 High-Quality Summaries
+- **Podcast Summaries:** Key points extracted directly from transcripts
+- **X/Twitter Insights:** Curated posts from 26 AI builders with topic analysis
+- **Blog Articles:** Full articles from official AI company blogs
+- Available in English, Chinese, or bilingual
+
+### ☁️ Zero-Downtime Automation
+Run the digest entirely through GitHub Actions — **no local server required**:
+- GitHub's servers execute the task daily
+- Automatic feed generation and email delivery
+- Works even when your computer is off
+- Fully configurable schedule
+
+### 🛡️ Privacy-First Design
+- All configuration stored securely in GitHub Secrets
+- No personal data exposed in public code
+- SMTP credentials encrypted at rest
+- Only public content is fetched and processed
+
+## 🚀 Quick Start
+
+### Option 1: GitHub Actions (Recommended)
+1. **Fork this repository** to your GitHub account
+2. **Set up GitHub Secrets** in your repository settings:
+   - `SMTP_SERVER` — Your SMTP server (e.g., `smtp.qq.com`)
+   - `SMTP_PORT` — SMTP port (e.g., `587`)
+   - `SMTP_USERNAME` — Your email address
+   - `SMTP_PASSWORD` — Your email password/app password
+   - `SMTP_SENDER` — Sender email address
+   - `SMTP_RECIPIENTS` — Recipient email address
+3. **Enable GitHub Actions** in your fork
+4. The digest will be delivered automatically every day
+
+### Option 2: Local Installation
+```bash
+git clone https://github.com/your-username/follow-builders.git
+cd follow-builders/scripts && npm install
+```
+
+Create a config file at `~/.follow-builders/config.json`:
+```json
+{
+  "language": "bilingual",
+  "frequency": "daily",
+  "deliveryTime": "09:00",
+  "timezone": "Asia/Shanghai",
+  "delivery": {
+    "method": "email",
+    "email": "your@email.com"
+  }
+}
+```
+
+Create `~/.follow-builders/.env` with your SMTP credentials:
+```env
+SMTP_SERVER=smtp.example.com
+SMTP_PORT=587
+SMTP_USERNAME=your@email.com
+SMTP_PASSWORD=your-password
+SMTP_SENDER=your@email.com
+SMTP_RECIPIENTS=your@email.com
+```
+
+Run manually:
+```bash
+node scripts/auto-digest.js
+```
+
+## 📋 What You Get
+
+A daily digest with:
 - Summaries of new podcast episodes from top AI podcasts
 - Key posts and insights from 26 curated AI builders on X/Twitter
 - Full articles from official AI company blogs (Anthropic Engineering, Claude Blog)
 - Links to all original content
 - Available in English, Chinese, or bilingual
 
-## Quick Start
+## ⏰ Schedule Configuration
 
-1. Install the skill in your agent (OpenClaw or Claude Code)
-2. Say "set up follow builders" or invoke `/follow-builders`
-3. The agent walks you through setup conversationally — no config files to edit
+The GitHub Actions workflow runs daily at **06:17 UTC** (14:17 Beijing time by default).
 
-The agent will ask you:
-- How often you want your digest (daily or weekly) and what time
-- What language you prefer
-- How you want it delivered (Telegram, email, or in-chat)
+To change the schedule, edit `.github/workflows/generate-feed.yml`:
+```yaml
+cron: '17 6 * * *'  # minute hour day month weekday
+```
 
-No API keys needed — all content is fetched centrally.
-Your first digest arrives immediately after setup.
+## 🎨 Customizing the Email Template
 
-## Changing Settings
+The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml` function. You can customize:
+- Colors and gradients
+- Font sizes and spacing
+- Layout and styling
+- Responsive behavior
 
-Your delivery preferences are configurable through conversation. Just tell your agent:
-
-- "Switch to weekly digests on Monday mornings"
-- "Change language to Chinese"
-- "Make the summaries shorter"
-- "Show me my current settings"
-
-The source list (builders and podcasts) is curated centrally and updates
-automatically — you always get the latest sources without doing anything.
-
-## Customizing the Summaries
-
-The skill uses plain-English prompt files to control how content is summarized.
-You can customize them two ways:
-
-**Through conversation (recommended):**
-Tell your agent what you want — "Make summaries more concise," "Focus on actionable
-insights," "Use a more casual tone." The agent updates the prompts for you.
-
-**Direct editing (power users):**
-Edit the files in the `prompts/` folder:
-- `summarize-podcast.md` — how podcast episodes are summarized
-- `summarize-tweets.md` — how X/Twitter posts are summarized
-- `summarize-blogs.md` — how blog posts are summarized
-- `digest-intro.md` — the overall digest format and tone
-- `translate.md` — how English content is translated to Chinese
-
-These are plain English instructions, not code. Changes take effect on the next digest.
-
-## Default Sources
+## 📝 Default Sources
 
 ### Podcasts (6)
 - [Latent Space](https://www.youtube.com/@LatentSpacePod)
@@ -82,49 +127,20 @@ These are plain English instructions, not code. Changes take effect on the next 
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — technical deep-dives from the Anthropic team
 - [Claude Blog](https://claude.com/blog) — product announcements and updates from Claude
 
-## Installation
+## 🔧 How It Works
 
-### OpenClaw
-```bash
-# From ClawhHub (coming soon)
-clawhub install follow-builders
+1. **Central Feed Generation:** A GitHub Actions workflow updates feeds daily with the latest content from all sources
+2. **Local/Cloud Processing:** The digest script fetches the feed and generates summaries
+3. **Email Delivery:** The formatted HTML digest is sent via SMTP to your inbox
+4. **Zero Maintenance:** Once configured, everything runs automatically
 
-# Or manually
-git clone https://github.com/zarazhangrui/follow-builders.git ~/skills/follow-builders
-cd ~/skills/follow-builders/scripts && npm install
-```
+## 🔒 Privacy
 
-### Claude Code
-```bash
-git clone https://github.com/zarazhangrui/follow-builders.git ~/.claude/skills/follow-builders
-cd ~/.claude/skills/follow-builders/scripts && npm install
-```
-
-## Requirements
-
-- An AI agent (OpenClaw, Claude Code, or similar)
-- Internet connection (to fetch the central feed)
-
-That's it. No API keys needed. All content (blog articles + YouTube transcripts + X/Twitter posts)
-is fetched centrally and updated daily.
-
-## How It Works
-
-1. A central feed is updated daily with the latest content from all sources
-   (blog articles via web scraping, YouTube transcripts via Supadata, X/Twitter via official API)
-2. Your agent fetches the feed — one HTTP request, no API keys
-3. Your agent remixes the raw content into a digestible summary using your preferences
-4. The digest is delivered to your messaging app (or shown in-chat)
-
-See [examples/sample-digest.md](examples/sample-digest.md) for what the output looks like.
-
-## Privacy
-
-- No API keys are sent anywhere — all content is fetched centrally
-- If you use Telegram/email delivery, those keys are stored locally in `~/.follow-builders/.env`
+- All SMTP credentials are stored securely in GitHub Secrets or local `.env` file
+- No personal data is committed to version control
 - The skill only reads public content (public blog posts, public YouTube videos, public X posts)
-- Your configuration, preferences, and reading history stay on your machine
+- Your configuration and preferences stay private
 
-## License
+## 📄 License
 
 MIT

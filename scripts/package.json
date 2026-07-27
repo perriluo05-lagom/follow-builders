@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "dotenv": "^16.4.0",
+    "marked": "^18.0.7",
+    "nodemailer": "^6.9.13",
     "proper-lockfile": "^4.1.0"
   }
 }
