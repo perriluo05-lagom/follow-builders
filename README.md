@@ -8,13 +8,13 @@
 
 | 语言 | Language | 文件 | File |
 |------|----------|------|------|
-| 🇨🇳 **中文** | [English](README-en.md) | [README-CN.md](README-CN.md) | README-en.md |
+| 🇨🇳 **中文** | [English](README-en.md) | [README-cn.md](README-cn.md) | README-en.md |
 
 ---
 
 ### 🔗 快速访问
 
-- **📖 中文文档** → [README-CN.md](README-CN.md)
+- **📖 中文文档** → [README-cn.md](README-cn.md)
 - **📖 English Documentation** → [README-en.md](README-en.md)
 
 ---
