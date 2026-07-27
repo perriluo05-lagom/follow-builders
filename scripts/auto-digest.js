@@ -72,160 +72,37 @@ async function getFeedData() {
   };
 }
 
-function summarizePodcast(podcast) {
-  const title = podcast.title || '';
-  const transcript = podcast.transcript || '';
-  const url = podcast.url || '';
 
-  const keyPoints = extractKeyPoints(transcript);
-  
-  return {
-    title,
-    url,
-    keyPoints,
-    summary: generatePodcastSummary(title, url, keyPoints)
-  };
-}
-
-function extractKeyPoints(transcript) {
-  const points = [];
-  const lines = transcript.split('\n');
-  
-  let currentPoint = '';
-  for (const line of lines) {
-    const cleanLine = line.replace(/^Speaker \d+ \| \d{2}:\d{2} - \d{2}:\d{2}\s*/, '').trim();
-    if (!cleanLine) continue;
-    
-    if (currentPoint.length + cleanLine.length < 200) {
-      currentPoint += (currentPoint ? ' ' : '') + cleanLine;
-    } else {
-      if (currentPoint) points.push(currentPoint);
-      currentPoint = cleanLine;
-    }
-  }
-  if (currentPoint) points.push(currentPoint);
-  
-  return points.slice(0, 6);
-}
-
-function generatePodcastSummary(title, url, keyPoints) {
-  if (!keyPoints.length) return '';
-  
-  let summary = `## 🎙️ ${title}\n\n`;
-  summary += `**来源链接：** ${url}\n\n`;
-  summary += `### 📌 核心要点\n\n`;
-  
-  for (let i = 0; i < keyPoints.length; i++) {
-    const point = keyPoints[i];
-    summary += `${i + 1}. ${point}\n\n`;
-  }
-  
-  return summary;
-}
-
-function summarizeTweet(tweet) {
-  const text = tweet.text || '';
-  const url = tweet.url || '';
-  
-  const analysis = analyzeTweet(text);
-  
-  return {
-    text,
-    url,
-    analysis,
-    summary: generateTweetSummary(text, analysis, url)
-  };
-}
-
-function analyzeTweet(text) {
-  const analysis = {
-    topic: '',
-    keyMessage: '',
-    significance: ''
-  };
-  
-  if (text.length < 20) {
-    analysis.topic = '简短动态';
-    analysis.keyMessage = text;
-    analysis.significance = '作者分享了简短的个人感受或状态更新。';
-    return analysis;
-  }
-  
-  const techKeywords = ['AI', 'compute', 'model', 'chip', 'GPU', 'training', 'inference', 'open source', 'research', 'product', 'startup', 'innovation', 'safety', 'regulation'];
-  const businessKeywords = ['funding', 'revenue', 'growth', 'strategy', 'partnership', 'acquisition', 'market'];
-  const socialKeywords = ['trust', 'privacy', 'concern', 'community', 'impact', 'future'];
-  
-  for (const kw of techKeywords) {
-    if (text.toLowerCase().includes(kw)) {
-      analysis.topic = '技术动态';
-      break;
-    }
-  }
-  if (!analysis.topic) {
-    for (const kw of businessKeywords) {
-      if (text.toLowerCase().includes(kw)) {
-        analysis.topic = '商业动态';
-        break;
-      }
-    }
-  }
-  if (!analysis.topic) {
-    for (const kw of socialKeywords) {
-      if (text.toLowerCase().includes(kw)) {
-        analysis.topic = '社会影响';
-        break;
-      }
-    }
-  }
-  if (!analysis.topic) analysis.topic = '行业观察';
-  
-  analysis.keyMessage = text;
-  
-  if (text.includes('never seen') || text.includes('best') || text.includes('strong')) {
-    analysis.significance = '作者表达了对当前趋势的强烈积极看法。';
-  } else if (text.includes('worry') || text.includes('concern') || text.includes('problem')) {
-    analysis.significance = '作者指出了行业面临的挑战或问题。';
-  } else if (text.includes('phase') || text.includes('stage') || text.includes('future')) {
-    analysis.significance = '作者对行业发展阶段或未来趋势进行了分析。';
-  } else if (text.includes('hackers') || text.includes('attack') || text.includes('security')) {
-    analysis.significance = '作者揭示了安全相关的重要洞见。';
-  } else {
-    analysis.significance = '作者分享了有价值的行业观点或经验。';
-  }
-  
-  return analysis;
-}
-
-function generateTweetSummary(text, analysis, url) {
-  return `**🔹 ${analysis.topic}\n${text}\n\n**要点：** ${analysis.significance}\n\n${url}\n\n`;
-}
 
 function generateDigest(feedData, config) {
   const now = new Date();
-  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const dateStr = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   
   let digest = `# AI Builders Digest — ${dateStr}\n\n`;
   
-  if (feedData.podcasts && feedData.podcasts.length > 0) {
-    const podcast = feedData.podcasts[0];
-    const summary = summarizePodcast(podcast);
-    digest += summary.summary;
-    digest += '---\n\n';
-  }
-  
   if (feedData.x && feedData.x.length > 0) {
-    digest += '## 💬 X/Twitter Builders\n\n';
+    digest += '## 💬 X/Twitter 动态\n\n';
     
-    for (const builder of feedData.x.slice(0, 8)) {
+    for (const builder of feedData.x) {
       if (!builder.tweets || builder.tweets.length === 0) continue;
       
-      digest += `### ${builder.name} (${builder.bio || ''})\n\n`;
+      digest += `### ${builder.name}（${builder.bio || ''}）\n\n`;
       
-      for (const tweet of builder.tweets.slice(0, 3)) {
-        const summary = summarizeTweet(tweet);
-        digest += summary.summary;
+      for (const tweet of builder.tweets) {
+        digest += `${tweet.text}\n\n${tweet.url}\n\n`;
       }
       
+      digest += '---\n\n';
+    }
+  }
+  
+  if (feedData.podcasts && feedData.podcasts.length > 0) {
+    digest += '## 🎙️ 播客\n\n';
+    
+    for (const podcast of feedData.podcasts) {
+      digest += `### ${podcast.title}\n\n`;
+      digest += `**来源链接：** ${podcast.url}\n\n`;
+      digest += `**发布时间：** ${new Date(podcast.publishedAt).toLocaleString('zh-CN')}\n\n`;
       digest += '---\n\n';
     }
   }
@@ -239,8 +116,7 @@ function generateDigest(feedData, config) {
   digest += `- **X 动态：** ${builderCount} 位 Builder，共 ${totalTweets} 条推文\n`;
   digest += `- **语言：** ${config.language === 'zh' ? '中文' : config.language === 'bilingual' ? '双语' : 'English'}\n\n`;
   
-  digest += `**下一份摘要将于明天 ${config.deliveryTime}（${config.timezone}）发送。**\n\n`;
-  digest += `如需调整设置，请回复此邮件。`;
+  digest += `Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders`;
   
   return digest;
 }
