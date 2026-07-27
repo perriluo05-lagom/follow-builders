@@ -1,4 +1,4 @@
-[English](README-en.md) | **中文**
+**中文** | [English](README-en.md)
 
 # 追踪建造者，而非网红
 
