@@ -19,7 +19,8 @@
 - **专业排版**：适当的行间距和字间距，长时间阅读不疲劳
 - **清晰的信息架构**：内容分区明确，重点突出
 
-样例
+👐样例
+
 <img width="1227" height="5531" alt="result" src="https://github.com/user-attachments/assets/3d1c0a36-100b-4f13-a012-b139d3e2515e" />
 
 ### 🤖 高质量摘要
