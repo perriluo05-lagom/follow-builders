@@ -97,11 +97,11 @@ A daily digest with:
 
 ## ⏰ Schedule Configuration
 
-The GitHub Actions workflow runs daily at **06:17 UTC** (14:17 Beijing time by default).
+The GitHub Actions workflow runs daily at **09:00 Beijing time** (01:00 UTC).
 
 To change the schedule, edit `.github/workflows/generate-feed.yml`:
 ```yaml
-cron: '17 6 * * *'  # minute hour day month weekday
+cron: '0 1 * * *'  # minute hour day month weekday (01:00 UTC = 09:00 Beijing time)
 ```
 
 ## 🎨 Customizing the Email Template

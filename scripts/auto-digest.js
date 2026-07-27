@@ -11,7 +11,7 @@ import { marked } from 'marked';
 const USER_DIR = join(homedir(), '.follow-builders');
 const CONFIG_PATH = join(USER_DIR, 'config.json');
 const ENV_PATH = join(USER_DIR, '.env');
-const SCRIPT_DIR = decodeURIComponent(new URL('.', import.meta.url).pathname);
+const SCRIPT_DIR = process.cwd();
 const SKILL_DIR = join(SCRIPT_DIR, '..');
 
 loadEnv({ path: ENV_PATH });
