@@ -111,8 +111,14 @@ async function callLLM(systemPrompt, userPrompt, config) {
 
   console.log(`LLM config: base=${apiBase}, model=${model}, key=${apiKey.slice(0, 8)}...`);
   console.log(`LLM endpoint: ${endpoint}`);
+  console.log(`System prompt length: ${systemPrompt.length} chars`);
+  console.log(`User prompt length: ${userPrompt.length} chars`);
   
   try {
+    // 30秒超时保护
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 30000);
+    
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -126,13 +132,16 @@ async function callLLM(systemPrompt, userPrompt, config) {
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.7,
-        max_tokens: 8000
-      })
+        max_tokens: 4096
+      }),
+      signal: controller.signal
     });
+    
+    clearTimeout(timeout);
     
     if (!response.ok) {
       const errText = await response.text();
-      console.error(`LLM API error ${response.status}: ${errText.slice(0, 300)}`);
+      console.error(`LLM API error ${response.status}: ${errText.slice(0, 500)}`);
       return null;
     }
     
@@ -141,6 +150,9 @@ async function callLLM(systemPrompt, userPrompt, config) {
     return data.choices[0].message.content;
   } catch (err) {
     console.error('LLM call exception:', err.message);
+    if (err.name === 'AbortError') {
+      console.error('Request timed out after 30s');
+    }
     return null;
   }
 }
