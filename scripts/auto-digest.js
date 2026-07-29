@@ -181,6 +181,11 @@ function markdownToHtml(markdownText) {
 }
 
 async function sendEmail(text, toEmail) {
+  // 加载 .env 文件（本地开发用）
+  if (existsSync(ENV_PATH)) {
+    loadEnv({ path: ENV_PATH });
+  }
+  
   const smtpServer = process.env.SMTP_SERVER || 'smtp.qq.com';
   const smtpPort = parseInt(process.env.SMTP_PORT || '587');
   const smtpUsername = process.env.SMTP_USERNAME;
@@ -227,6 +232,18 @@ async function main() {
     if (existsSync(CONFIG_PATH)) {
       config = JSON.parse(await readFile(CONFIG_PATH, 'utf-8'));
     }
+
+    // 环境变量覆盖本地配置（用于 GitHub Actions 云端部署）
+    const configOverrides = {
+      language: process.env.DIGEST_LANGUAGE || config.language,
+      timezone: process.env.DIGEST_TIMEZONE || config.timezone,
+      deliveryTime: process.env.DIGEST_DELIVERY_TIME || config.deliveryTime,
+      delivery: {
+        method: process.env.DIGEST_DELIVERY_METHOD || config.delivery?.method || 'stdout',
+        email: process.env.DIGEST_EMAIL || config.delivery?.email || ''
+      }
+    };
+    config = { ...config, ...configOverrides };
 
     const smtpRecipients = process.env.SMTP_RECIPIENTS;
     const toEmail = smtpRecipients || config.delivery.email;

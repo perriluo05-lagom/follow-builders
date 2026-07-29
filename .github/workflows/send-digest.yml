@@ -1,0 +1,42 @@
+name: Send Daily Digest
+
+on:
+  schedule:
+    # Daily at 9:00am Beijing time (1:00am UTC)
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+    inputs:
+      test_mode:
+        description: 'Send a test digest immediately'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: cd scripts && npm install
+        
+      - name: Send digest email
+        env:
+          SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          SMTP_SENDER: ${{ secrets.SMTP_SENDER }}
+          SMTP_RECIPIENTS: ${{ secrets.SMTP_RECIPIENTS }}
+          DIGEST_LANGUAGE: ${{ secrets.DIGEST_LANGUAGE || 'zh' }}
+          DIGEST_TIMEZONE: ${{ secrets.DIGEST_TIMEZONE || 'Asia/Shanghai' }}
+          DIGEST_DELIVERY_TIME: ${{ secrets.DIGEST_DELIVERY_TIME || '09:00' }}
+          DIGEST_DELIVERY_METHOD: 'email'
+          DIGEST_EMAIL: ${{ secrets.DIGEST_EMAIL }}
+        run: cd scripts && node auto-digest.js
