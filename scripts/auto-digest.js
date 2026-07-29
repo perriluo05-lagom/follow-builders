@@ -132,7 +132,7 @@ async function callLLM(systemPrompt, userPrompt, config) {
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.7,
-        max_tokens: 4096
+        max_tokens: 8000
       }),
       signal: controller.signal
     });
@@ -167,7 +167,6 @@ async function generateDigest(feedData, config) {
     const summarizePodcastPrompt = await readPromptFile('summarize-podcast.md');
     const summarizeBlogsPrompt = await readPromptFile('summarize-blogs.md');
     const digestIntroPrompt = await readPromptFile('digest-intro.md');
-    const translatePrompt = await readPromptFile('translate.md');
     
     // 构建原始 feed 数据文本
     let feedText = '';
@@ -206,41 +205,46 @@ async function generateDigest(feedData, config) {
       }
     }
     
-    // 构建结构化系统提示：整合所有 prompt 规则，明确要求直接中文输出
-    const systemPrompt = `你是一位专业的 AI 行业资讯摘要作者。请根据提供的原始 Feed 数据，直接用中文撰写一份高质量的 AI Builders Digest。
+    // 系统提示：精简，只定义角色和语言要求
+    const systemPrompt = `你是一位专业的 AI 行业资讯摘要作者。请根据用户提供的写作规则和原始数据，直接用中文撰写一份高质量的 AI Builders Digest。
 
-## 语言要求（必须严格遵守）
-
-${translatePrompt}
-
-重要：不要先写英文再翻译。直接用中文思考和撰写，让内容读起来像原本就是用中文写的。
-
-## X/Twitter 摘要规则
-
-${summarizeTweetsPrompt}
-
-## 播客摘要规则
-
-${summarizePodcastPrompt}
-
-## 博客摘要规则
-
-${summarizeBlogsPrompt}
-
-## 最终组装格式
-
-${digestIntroPrompt}
-
-## 关键提醒
-
-- 每条内容后面必须附上原始链接
-- 不要编造任何内容，只使用 Feed 数据中的真实信息
-- 保持格式简洁清晰，方便在手机上阅读`;
+关键要求：
+- 直接用中文撰写，不要先写英文再翻译，让内容读起来像原本就是用中文写的
+- 语气像一位懂行的朋友在跟你聊天，自然、不晦涩、不AI腔
+- 保留技术术语英文：AI, LLM, GPU, API, fine-tuning, RAG, token, prompt, agent, transformer 等
+- 保留人名、公司名、产品名的英文原文
+- 所有 URL 保持不变
+- 不要使用破折号（em-dash）
+- 严格按照用户消息中的各项规则处理每种内容类型`;
     
+    // 用户提示：用清晰的分隔符组织规则和数据
     const userPrompt = `今天是 ${dateStr}。
 
-以下是今天的原始 Feed 数据，请按照上述规则直接用中文生成 AI Builders Digest：
+请严格按照以下规则处理数据，直接用中文生成 AI Builders Digest。
 
+${'='.repeat(60)}
+X/Twitter 摘要规则
+${'='.repeat(60)}
+${summarizeTweetsPrompt}
+
+${'='.repeat(60)}
+播客摘要规则
+${'='.repeat(60)}
+${summarizePodcastPrompt}
+
+${'='.repeat(60)}
+博客摘要规则
+${'='.repeat(60)}
+${summarizeBlogsPrompt}
+
+${'='.repeat(60)}
+最终组装格式
+${'='.repeat(60)}
+${digestIntroPrompt}
+
+${'='.repeat(60)}
+原始 Feed 数据（只使用这些真实数据，不要编造）
+${'='.repeat(60)}
 ${feedText}`;
     
     console.log('Calling LLM to generate Chinese digest...');
