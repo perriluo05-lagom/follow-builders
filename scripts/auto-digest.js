@@ -126,7 +126,7 @@ async function callLLM(systemPrompt, userPrompt, config) {
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.7,
-        max_tokens: 4000
+        max_tokens: 8000
       })
     });
     
@@ -153,39 +153,83 @@ async function generateDigest(feedData, config) {
   if (config.language === 'zh') {
     const summarizeTweetsPrompt = await readPromptFile('summarize-tweets.md');
     const summarizePodcastPrompt = await readPromptFile('summarize-podcast.md');
-    const translatePrompt = await readPromptFile('translate.md');
+    const summarizeBlogsPrompt = await readPromptFile('summarize-blogs.md');
     const digestIntroPrompt = await readPromptFile('digest-intro.md');
+    const translatePrompt = await readPromptFile('translate.md');
     
     // 构建原始 feed 数据文本
-    let feedText = `## 原始 Feed 数据\n\n`;
+    let feedText = '';
     
     if (feedData.x && feedData.x.length > 0) {
-      feedText += `### X/Twitter Builders\n\n`;
+      feedText += `# X/Twitter 原始数据\n\n`;
       for (const builder of feedData.x) {
         if (!builder.tweets || builder.tweets.length === 0) continue;
-        feedText += `**${builder.name}** (${builder.bio || ''})\n`;
+        feedText += `## ${builder.name}\n`;
+        feedText += `身份: ${builder.bio || '未知'}\n\n`;
         for (const tweet of builder.tweets) {
-          feedText += `- ${tweet.text}\n  URL: ${tweet.url}\n`;
+          feedText += `推文内容: ${tweet.text}\n`;
+          feedText += `链接: ${tweet.url}\n\n`;
         }
-        feedText += '\n';
+      }
+    }
+    
+    if (feedData.blogs && feedData.blogs.length > 0) {
+      feedText += `# 博客原始数据\n\n`;
+      for (const blog of feedData.blogs) {
+        feedText += `## ${blog.title}\n`;
+        feedText += `来源: ${blog.source || ''}\n`;
+        feedText += `链接: ${blog.url}\n`;
+        if (blog.content) feedText += `内容: ${blog.content.slice(0, 1500)}\n\n`;
       }
     }
     
     if (feedData.podcasts && feedData.podcasts.length > 0) {
-      feedText += `### Podcasts\n\n`;
+      feedText += `# 播客原始数据\n\n`;
       for (const podcast of feedData.podcasts) {
-        feedText += `**${podcast.title}**\n`;
-        feedText += `URL: ${podcast.url}\n`;
+        feedText += `## ${podcast.title}\n`;
+        feedText += `链接: ${podcast.url}\n`;
         if (podcast.transcript) {
-          feedText += `Transcript: ${podcast.transcript.slice(0, 2000)}...\n`;
+          feedText += `转录稿: ${podcast.transcript.slice(0, 3000)}\n\n`;
         }
-        feedText += '\n';
       }
     }
     
-    // 组合系统提示和用户提示
-    const systemPrompt = `You are a professional AI industry news digest writer. ${translatePrompt}`;
-    const userPrompt = `${summarizeTweetsPrompt}\n\n${summarizePodcastPrompt}\n\n${digestIntroPrompt}\n\n今天的日期：${dateStr}\n\n以下是需要整理的原始 Feed 数据：\n\n${feedText}`;
+    // 构建结构化系统提示：整合所有 prompt 规则，明确要求直接中文输出
+    const systemPrompt = `你是一位专业的 AI 行业资讯摘要作者。请根据提供的原始 Feed 数据，直接用中文撰写一份高质量的 AI Builders Digest。
+
+## 语言要求（必须严格遵守）
+
+${translatePrompt}
+
+重要：不要先写英文再翻译。直接用中文思考和撰写，让内容读起来像原本就是用中文写的。
+
+## X/Twitter 摘要规则
+
+${summarizeTweetsPrompt}
+
+## 播客摘要规则
+
+${summarizePodcastPrompt}
+
+## 博客摘要规则
+
+${summarizeBlogsPrompt}
+
+## 最终组装格式
+
+${digestIntroPrompt}
+
+## 关键提醒
+
+- 每条内容后面必须附上原始链接
+- 不要编造任何内容，只使用 Feed 数据中的真实信息
+- 保持格式简洁清晰，方便在手机上阅读`;
+    
+    const userPrompt = `今天是 ${dateStr}。
+
+以下是今天的原始 Feed 数据，请按照上述规则直接用中文生成 AI Builders Digest：
+
+${feedText}`;
     
     console.log('Calling LLM to generate Chinese digest...');
     const llmResult = await callLLM(systemPrompt, userPrompt, config);
