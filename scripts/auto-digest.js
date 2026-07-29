@@ -13,6 +13,7 @@ const CONFIG_PATH = join(USER_DIR, 'config.json');
 const ENV_PATH = join(USER_DIR, '.env');
 const SCRIPT_DIR = process.cwd();
 const SKILL_DIR = join(SCRIPT_DIR, '..');
+const PROMPTS_DIR = join(SKILL_DIR, 'prompts');
 
 loadEnv({ path: ENV_PATH });
 
@@ -74,10 +75,104 @@ async function getFeedData() {
 
 
 
-function generateDigest(feedData, config) {
+async function readPromptFile(filename) {
+  try {
+    const filePath = join(PROMPTS_DIR, filename);
+    if (existsSync(filePath)) {
+      return await readFile(filePath, 'utf-8');
+    }
+  } catch {}
+  return '';
+}
+
+async function callLLM(systemPrompt, userPrompt, config) {
+  const apiKey = process.env.LLM_API_KEY;
+  const apiBase = process.env.LLM_API_BASE || 'https://api.openai.com';
+  const model = process.env.LLM_MODEL || 'gpt-4o-mini';
+  
+  if (!apiKey) {
+    console.log('Warning: LLM_API_KEY not set, returning raw data');
+    return null;
+  }
+  
+  const response = await fetch(`${apiBase}/v1/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.7,
+      max_tokens: 4000
+    })
+  });
+  
+  if (!response.ok) {
+    console.error('LLM API error:', response.status, await response.text());
+    return null;
+  }
+  
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+async function generateDigest(feedData, config) {
   const now = new Date();
   const dateStr = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   
+  // 如果配置为中文，调用 LLM 生成中文摘要
+  if (config.language === 'zh') {
+    const summarizeTweetsPrompt = await readPromptFile('summarize-tweets.md');
+    const summarizePodcastPrompt = await readPromptFile('summarize-podcast.md');
+    const translatePrompt = await readPromptFile('translate.md');
+    const digestIntroPrompt = await readPromptFile('digest-intro.md');
+    
+    // 构建原始 feed 数据文本
+    let feedText = `## 原始 Feed 数据\n\n`;
+    
+    if (feedData.x && feedData.x.length > 0) {
+      feedText += `### X/Twitter Builders\n\n`;
+      for (const builder of feedData.x) {
+        if (!builder.tweets || builder.tweets.length === 0) continue;
+        feedText += `**${builder.name}** (${builder.bio || ''})\n`;
+        for (const tweet of builder.tweets) {
+          feedText += `- ${tweet.text}\n  URL: ${tweet.url}\n`;
+        }
+        feedText += '\n';
+      }
+    }
+    
+    if (feedData.podcasts && feedData.podcasts.length > 0) {
+      feedText += `### Podcasts\n\n`;
+      for (const podcast of feedData.podcasts) {
+        feedText += `**${podcast.title}**\n`;
+        feedText += `URL: ${podcast.url}\n`;
+        if (podcast.transcript) {
+          feedText += `Transcript: ${podcast.transcript.slice(0, 2000)}...\n`;
+        }
+        feedText += '\n';
+      }
+    }
+    
+    // 组合系统提示和用户提示
+    const systemPrompt = `You are a professional AI industry news digest writer. ${translatePrompt}`;
+    const userPrompt = `${summarizeTweetsPrompt}\n\n${summarizePodcastPrompt}\n\n${digestIntroPrompt}\n\n今天的日期：${dateStr}\n\n以下是需要整理的原始 Feed 数据：\n\n${feedText}`;
+    
+    console.log('Calling LLM to generate Chinese digest...');
+    const llmResult = await callLLM(systemPrompt, userPrompt, config);
+    
+    if (llmResult) {
+      return llmResult;
+    }
+    console.log('LLM call failed, falling back to raw data');
+  }
+  
+  // 回退：直接输出原始数据
   let digest = `# AI Builders Digest — ${dateStr}\n\n`;
   
   if (feedData.x && feedData.x.length > 0) {
@@ -252,7 +347,7 @@ async function main() {
     const feedData = await getFeedData();
     
     console.log('Generating digest...');
-    const digest = generateDigest(feedData, config);
+    const digest = await generateDigest(feedData, config);
     
     if (toEmail) {
       console.log(`Sending to ${toEmail}...`);

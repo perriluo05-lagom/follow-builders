@@ -39,4 +39,7 @@ jobs:
           DIGEST_DELIVERY_TIME: ${{ secrets.DIGEST_DELIVERY_TIME || '09:00' }}
           DIGEST_DELIVERY_METHOD: 'email'
           DIGEST_EMAIL: ${{ secrets.DIGEST_EMAIL }}
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          LLM_API_BASE: ${{ secrets.LLM_API_BASE }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
         run: cd scripts && node auto-digest.js
