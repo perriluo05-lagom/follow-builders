@@ -87,38 +87,62 @@ async function readPromptFile(filename) {
 
 async function callLLM(systemPrompt, userPrompt, config) {
   const apiKey = process.env.LLM_API_KEY;
-  const apiBase = process.env.LLM_API_BASE || 'https://api.openai.com';
-  const model = process.env.LLM_MODEL || 'gpt-4o-mini';
+  let apiBase = process.env.LLM_API_BASE || 'https://api.openai.com';
+  let model = process.env.LLM_MODEL || 'gpt-4o-mini';
   
   if (!apiKey) {
     console.log('Warning: LLM_API_KEY not set, returning raw data');
     return null;
   }
+
+  // 自动检测 Groq 并设置默认值
+  const isGroq = apiBase.includes('groq.com') || (!process.env.LLM_API_BASE && process.env.GROQ_API_KEY);
+  if (isGroq) {
+    if (!process.env.LLM_API_BASE) apiBase = 'https://api.groq.com/openai';
+    if (!process.env.LLM_MODEL) model = 'llama-3.3-70b-versatile';
+  }
+
+  // 规范化 base URL：去除末尾斜杠，避免 /v1 重复
+  apiBase = apiBase.replace(/\/+$/, '');
+  // 如果 base 已经包含 /v1，不再重复拼接
+  const endpoint = apiBase.endsWith('/v1')
+    ? `${apiBase}/chat/completions`
+    : `${apiBase}/v1/chat/completions`;
+
+  console.log(`LLM config: base=${apiBase}, model=${model}, key=${apiKey.slice(0, 8)}...`);
+  console.log(`LLM endpoint: ${endpoint}`);
   
-  const response = await fetch(`${apiBase}/v1/chat/completions`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
-      ],
-      temperature: 0.7,
-      max_tokens: 4000
-    })
-  });
-  
-  if (!response.ok) {
-    console.error('LLM API error:', response.status, await response.text());
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 4000
+      })
+    });
+    
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error(`LLM API error ${response.status}: ${errText.slice(0, 300)}`);
+      return null;
+    }
+    
+    const data = await response.json();
+    console.log('LLM call succeeded, got response');
+    return data.choices[0].message.content;
+  } catch (err) {
+    console.error('LLM call exception:', err.message);
     return null;
   }
-  
-  const data = await response.json();
-  return data.choices[0].message.content;
 }
 
 async function generateDigest(feedData, config) {
