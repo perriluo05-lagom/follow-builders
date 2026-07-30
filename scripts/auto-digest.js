@@ -38,32 +38,41 @@ async function fetchText(url) {
 }
 
 async function getFeedData() {
-  const FEED_X_URL = 'https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-x.json';
-  const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-podcasts.json';
-  const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/zarazhangrui/follow-builders/main/feed-blogs.json';
-
+  // 优先读取本地文件（GitHub Actions 中已是本仓库的最新 feed）
   const feedXPath = join(SKILL_DIR, 'feed-x.json');
   const feedPodcastsPath = join(SKILL_DIR, 'feed-podcasts.json');
   const feedBlogsPath = join(SKILL_DIR, 'feed-blogs.json');
 
-  const [feedXRemote, feedPodcastsRemote, feedBlogsRemote] = await Promise.all([
-    fetchJSON(FEED_X_URL),
-    fetchJSON(FEED_PODCASTS_URL),
-    fetchJSON(FEED_BLOGS_URL)
-  ]);
+  let feedX = null;
+  let feedPodcasts = null;
+  let feedBlogs = null;
 
-  let feedX = feedXRemote;
-  let feedPodcasts = feedPodcastsRemote;
-  let feedBlogs = feedBlogsRemote;
+  // 从本地文件读取
+  if (existsSync(feedXPath)) {
+    try { feedX = JSON.parse(await readFile(feedXPath, 'utf-8')); } catch {}
+  }
+  if (existsSync(feedPodcastsPath)) {
+    try { feedPodcasts = JSON.parse(await readFile(feedPodcastsPath, 'utf-8')); } catch {}
+  }
+  if (existsSync(feedBlogsPath)) {
+    try { feedBlogs = JSON.parse(await readFile(feedBlogsPath, 'utf-8')); } catch {}
+  }
 
-  if (!feedX && existsSync(feedXPath)) {
-    feedX = JSON.parse(await readFile(feedXPath, 'utf-8'));
-  }
-  if (!feedPodcasts && existsSync(feedPodcastsPath)) {
-    feedPodcasts = JSON.parse(await readFile(feedPodcastsPath, 'utf-8'));
-  }
-  if (!feedBlogs && existsSync(feedBlogsPath)) {
-    feedBlogs = JSON.parse(await readFile(feedBlogsPath, 'utf-8'));
+  // 如果本地文件不足，从远程获取作为备用
+  if (!feedX || !feedPodcasts || !feedBlogs) {
+    const FEED_X_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-x.json';
+    const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-podcasts.json';
+    const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-blogs.json';
+
+    const [remoteX, remotePodcasts, remoteBlogs] = await Promise.all([
+      !feedX ? fetchJSON(FEED_X_URL) : Promise.resolve(null),
+      !feedPodcasts ? fetchJSON(FEED_PODCASTS_URL) : Promise.resolve(null),
+      !feedBlogs ? fetchJSON(FEED_BLOGS_URL) : Promise.resolve(null)
+    ]);
+
+    if (!feedX && remoteX) feedX = remoteX;
+    if (!feedPodcasts && remotePodcasts) feedPodcasts = remotePodcasts;
+    if (!feedBlogs && remoteBlogs) feedBlogs = remoteBlogs;
   }
 
   return {
