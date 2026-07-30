@@ -163,88 +163,67 @@ async function generateDigest(feedData, config) {
   
   // 如果配置为中文，调用 LLM 生成中文摘要
   if (config.language === 'zh') {
-    const summarizeTweetsPrompt = await readPromptFile('summarize-tweets.md');
-    const summarizePodcastPrompt = await readPromptFile('summarize-podcast.md');
-    const summarizeBlogsPrompt = await readPromptFile('summarize-blogs.md');
-    const digestIntroPrompt = await readPromptFile('digest-intro.md');
-    
-    // 构建原始 feed 数据文本
+    // 构建原始 feed 数据文本（精简版，控制 token 消耗）
     let feedText = '';
     
     if (feedData.x && feedData.x.length > 0) {
-      feedText += `# X/Twitter 原始数据\n\n`;
+      feedText += `【X/Twitter 数据】\n`;
       for (const builder of feedData.x) {
         if (!builder.tweets || builder.tweets.length === 0) continue;
-        feedText += `## ${builder.name}\n`;
-        feedText += `身份: ${builder.bio || '未知'}\n\n`;
+        feedText += `# ${builder.name}（${builder.bio || '未知'}）\n`;
         for (const tweet of builder.tweets) {
-          feedText += `推文内容: ${tweet.text}\n`;
-          feedText += `链接: ${tweet.url}\n\n`;
+          feedText += `- ${tweet.text}\n  ${tweet.url}\n`;
         }
-      }
-    }
-    
-    if (feedData.blogs && feedData.blogs.length > 0) {
-      feedText += `# 博客原始数据\n\n`;
-      for (const blog of feedData.blogs) {
-        feedText += `## ${blog.title}\n`;
-        feedText += `来源: ${blog.source || ''}\n`;
-        feedText += `链接: ${blog.url}\n`;
-        if (blog.content) feedText += `内容: ${blog.content.slice(0, 1500)}\n\n`;
       }
     }
     
     if (feedData.podcasts && feedData.podcasts.length > 0) {
-      feedText += `# 播客原始数据\n\n`;
+      feedText += `\n【播客数据】\n`;
       for (const podcast of feedData.podcasts) {
-        feedText += `## ${podcast.title}\n`;
-        feedText += `链接: ${podcast.url}\n`;
+        feedText += `# ${podcast.title}\n  链接: ${podcast.url}\n`;
         if (podcast.transcript) {
-          feedText += `转录稿: ${podcast.transcript.slice(0, 3000)}\n\n`;
+          feedText += `  转录: ${podcast.transcript.slice(0, 1500)}\n`;
         }
       }
     }
     
-    // 系统提示：精简，只定义角色和语言要求
-    const systemPrompt = `你是一位专业的 AI 行业资讯摘要作者。请根据用户提供的写作规则和原始数据，直接用中文撰写一份高质量的 AI Builders Digest。
+    // 构建精简的指令（整合所有 prompt 规则，压缩 token）
+    const systemPrompt = `你是AI行业资讯摘要作者。用中文撰写"AI Builders Digest"。
 
-关键要求：
-- 直接用中文撰写，不要先写英文再翻译，让内容读起来像原本就是用中文写的
-- 语气像一位懂行的朋友在跟你聊天，自然、不晦涩、不AI腔
-- 保留技术术语英文：AI, LLM, GPU, API, fine-tuning, RAG, token, prompt, agent, transformer 等
-- 保留人名、公司名、产品名的英文原文
-- 所有 URL 保持不变
-- 不要使用破折号（em-dash）
-- 严格按照用户消息中的各项规则处理每种内容类型`;
+语言风格：
+- 直接用中文写，不要翻译腔，像懂行的朋友聊天
+- 保留技术术语英文：AI, LLM, GPU, API, fine-tuning, RAG, token, prompt, agent
+- 保留人名、公司名、产品名英文原文
+- 不用破折号，不用AI腔套话
+
+X/Twitter部分规则：
+- 以"角色+姓名"开头（如"Box CEO Aaron Levie"），不用@handle
+- 只写实质性内容（原创观点、产品发布、行业分析），跳过日常/转发/营销推文
+- 2-4句总结每个builder的要点
+- 每条后面附链接
+
+播客部分规则：
+- 以"The Takeaway：一句话核心观点"开头
+- 200-400字，包含直接引述
+- 不要"在这期节目中"等套话，直接进入实质
+- 每条附链接
+
+博客部分规则：
+- 以博客名+标题开头
+- 100-300字摘要，突出核心公告
+- 附原文链接
+
+整体格式：
+- 标题：AI Builders Digest — [日期]
+- 顺序：X/Twitter → 博客 → 播客
+- 每条内容必须有原始链接
+- 不编造内容，只用提供的数据
+- 结尾加：Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders`;
     
-    // 用户提示：用清晰的分隔符组织规则和数据
-    const userPrompt = `今天是 ${dateStr}。
+    const userPrompt = `日期：${dateStr}
 
-请严格按照以下规则处理数据，直接用中文生成 AI Builders Digest。
+请按上述规则整理以下原始数据，直接输出中文摘要：
 
-${'='.repeat(60)}
-X/Twitter 摘要规则
-${'='.repeat(60)}
-${summarizeTweetsPrompt}
-
-${'='.repeat(60)}
-播客摘要规则
-${'='.repeat(60)}
-${summarizePodcastPrompt}
-
-${'='.repeat(60)}
-博客摘要规则
-${'='.repeat(60)}
-${summarizeBlogsPrompt}
-
-${'='.repeat(60)}
-最终组装格式
-${'='.repeat(60)}
-${digestIntroPrompt}
-
-${'='.repeat(60)}
-原始 Feed 数据（只使用这些真实数据，不要编造）
-${'='.repeat(60)}
 ${feedText}`;
     
     console.log('Calling LLM to generate Chinese digest...');
