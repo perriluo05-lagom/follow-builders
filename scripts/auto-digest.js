@@ -188,37 +188,16 @@ async function generateDigest(feedData, config) {
     }
     
     // 构建精简的指令（整合所有 prompt 规则，压缩 token）
-    const systemPrompt = `你是AI行业资讯摘要作者。用中文撰写"AI Builders Digest"。
-
-语言风格：
-- 直接用中文写，不要翻译腔，像懂行的朋友聊天
-- 保留技术术语英文：AI, LLM, GPU, API, fine-tuning, RAG, token, prompt, agent
-- 保留人名、公司名、产品名英文原文
-- 不用破折号，不用AI腔套话
-
-X/Twitter部分规则：
-- 以"角色+姓名"开头（如"Box CEO Aaron Levie"），不用@handle
-- 只写实质性内容（原创观点、产品发布、行业分析），跳过日常/转发/营销推文
-- 2-4句总结每个builder的要点
-- 每条后面附链接
-
-播客部分规则：
-- 以"The Takeaway：一句话核心观点"开头
-- 200-400字，包含直接引述
-- 不要"在这期节目中"等套话，直接进入实质
-- 每条附链接
-
-博客部分规则：
-- 以博客名+标题开头
-- 100-300字摘要，突出核心公告
-- 附原文链接
-
-整体格式：
-- 标题：AI Builders Digest — [日期]
-- 顺序：X/Twitter → 博客 → 播客
-- 每条内容必须有原始链接
-- 不编造内容，只用提供的数据
-- 结尾加：Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders`;
+    const systemPrompt = `任务：用中文生成AI行业简报，包含三类内容：X平台博主推文摘要、AI 企业博客摘要、播客精华改写
+基础规范
+专业术语 (AI、LLM、GPU、RAG、prompt、agent 等) 保留英文；人名、公司、产品名、URL 原样保留；行文流畅中文，风格专业接地气，杜绝空洞套话，不编造信息，所有条目必须附带原始来源链接。
+分模块要求
+X推文摘要：标注作者全名 + 职位；只提炼实质观点、行业分析、产品信息，舍弃日常闲聊、转发无评论内容；每人 2-4 句；附上推文链接
+博客摘要：标题格式【博客名称：文章标题】，100-300 字；优先核心发布、数据、新功能，摘录原文引言，标注落地影响；附原文链接
+播客改写：篇幅200-400字；开头一句核心结论，介绍嘉宾背景；优先反直觉观点，引用原文金句；独立成文，不要 “本期节目” 这类表述；附单集视频链接
+最终简报排版
+表头：AI Builders Digest — [日期]
+板块顺序：X / TWITTER → OFFICIAL BLOGS → PODCASTS`;
     
     const userPrompt = `日期：${dateStr}
 
