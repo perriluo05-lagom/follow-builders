@@ -2,3 +2,5 @@ scripts/node_modules/
 .env
 *.log
 .DS_Store
+# digest-state.json 是运行时产物（记录已推送的 feed 批次），由 GitHub Actions 用 -f 强制提交
+digest-state.json

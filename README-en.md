@@ -18,11 +18,11 @@ Receive well-formatted digests with:
 - Clear visual hierarchy with proper spacing
 - Professional typography optimized for reading
 
-### 🤖 High-Quality Summaries
-- **Podcast Summaries:** Key points extracted directly from transcripts
-- **X/Twitter Insights:** Curated posts from 26 AI builders with topic analysis
-- **Blog Articles:** Full articles from official AI company blogs
-- Available in English, Chinese, or bilingual
+### 🤖 High-Quality Summaries (Pure Programmatic, No LLM API Required)
+- **X/Twitter Insights:** Curated posts from 26 AI builders — full original text preserved with topic tags (product launch / technical depth / business strategy / opinion), engagement data, Quote Tweet annotations, and key-number highlighting
+- **Podcast Summaries:** Guest background + timestamped key-point segments extracted from transcripts — zero information loss
+- **Blog Articles:** Full articles from official AI company blogs (Anthropic Engineering, Claude Blog) with author, summary, and body excerpts
+- **Chinese-first:** Defaults to Chinese output — no AI model API key required
 
 ### ☁️ Zero-Downtime Automation
 Run the digest entirely through GitHub Actions — **no local server required**:
@@ -89,11 +89,11 @@ node scripts/auto-digest.js
 ## 📋 What You Get
 
 A daily digest with:
-- Summaries of new podcast episodes from top AI podcasts
-- Key posts and insights from 26 curated AI builders on X/Twitter
-- Full articles from official AI company blogs (Anthropic Engineering, Claude Blog)
-- Links to all original content
-- Available in English, Chinese, or bilingual
+- 💬 **X/Twitter Insights:** Key posts from 26 curated AI builders — **original tweet text preserved** with topic tags, engagement data, and Quote Tweet context
+- 📝 **Blog Articles:** Full articles from official AI company blogs (Anthropic Engineering, Claude Blog) with author, summary, and body excerpts
+- 🎙️ **Podcast Summaries:** Top AI podcast episodes with guest background + timestamped key-point segments
+- 🔗 **Links to all original content**
+- 🚫 **Content Dedup:** `digest-state.json` records sent feed batches to prevent duplicate delivery
 
 ## ⏰ Schedule Configuration
 
@@ -131,10 +131,13 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 
 ## 🔧 How It Works
 
-1. **Central Feed Generation:** A GitHub Actions workflow updates feeds daily with the latest content from all sources
-2. **Local/Cloud Processing:** The digest script fetches the feed and generates summaries
-3. **Email Delivery:** The formatted HTML digest is sent via SMTP to your inbox
-4. **Zero Maintenance:** Once configured, everything runs automatically
+1. **Central Feed Generation:** [generate-feed.yml](.github/workflows/generate-feed.yml) runs daily at 09:00 Beijing time, fetches the latest content from all sources into `feed-x.json` / `feed-podcasts.json` / `feed-blogs.json`, and tracks fetched items via `state-feed.json` (prevents re-fetching the same tweet/podcast/blog)
+2. **Digest Generation:** [send-digest.yml](.github/workflows/send-digest.yml) is triggered automatically after feed generation completes; it runs `auto-digest.js` to generate Chinese summaries using pure programmatic logic (original content preserved + smart annotations — no LLM API needed)
+3. **Content Dedup:** `digest-state.json` records sent feed-batch timestamps so the same batch is never sent twice
+4. **Email Delivery:** The formatted HTML digest is sent via SMTP to your inbox
+
+**Why no LLM API?**
+LLMs tend to compress "Sam Altman shared ChatGPT's specific experiment results in XX scenario" into generic statements like "Sam Altman discussed AI's potential and applications", losing all concrete information. This project preserves the original tweet/podcast/blog content and only adds smart annotations (topic classification, key-number highlighting, Quote Tweet detection, guest background extraction) — zero information loss, and no AI model API key required.
 
 ## 🔒 Privacy
 

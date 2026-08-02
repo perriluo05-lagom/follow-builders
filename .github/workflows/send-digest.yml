@@ -1,9 +1,14 @@
 name: Send Daily Digest
 
 on:
+  # Generate Feeds workflow 成功完成后自动触发
+  workflow_run:
+    workflows: ["Generate Feeds"]
+    types:
+      - completed
+  # 备用触发：比 Generate Feeds (01:00 UTC) 晚 20 分钟启动，防止 workflow_run 未触发
   schedule:
-    # Daily at 9:00am Beijing time (1:00am UTC)
-    - cron: '0 1 * * *'
+    - cron: '20 1 * * *'
   workflow_dispatch:
     inputs:
       test_mode:
@@ -14,18 +19,23 @@ on:
 
 jobs:
   send-digest:
+    # 仅在 Generate Feeds 成功完成或手动触发或备用定时触发时执行
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          # workflow_run 时 checkout 到上游 workflow 已提交的最新 commit（含最新 feed/state）
+          ref: ${{ github.event.workflow_run.head_sha || github.ref }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          
+
       - name: Install dependencies
         run: cd scripts && npm install
-        
+
       - name: Send digest email
         env:
           SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
@@ -39,7 +49,12 @@ jobs:
           DIGEST_DELIVERY_TIME: ${{ secrets.DIGEST_DELIVERY_TIME || '09:00' }}
           DIGEST_DELIVERY_METHOD: 'email'
           DIGEST_EMAIL: ${{ secrets.DIGEST_EMAIL }}
-          LLM_API_KEY: ${{ secrets.LLM_API_KEY || secrets.GROQ_API_KEY }}
-          LLM_API_BASE: ${{ secrets.LLM_API_BASE || 'https://api.groq.com/openai' }}
-          LLM_MODEL: ${{ secrets.LLM_MODEL || 'llama-3.3-70b-versatile' }}
         run: cd scripts && node auto-digest.js
+
+      - name: Commit digest state (dedup record)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f digest-state.json
+          git diff --cached --quiet || git commit -m "chore: update digest state [skip ci]"
+          git push

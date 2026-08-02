@@ -35,7 +35,8 @@ const X_RETRY_STATUSES = new Set([500, 502, 503, 504]);
 const X_RETRY_ATTEMPTS = 3;
 
 // State file lives in the repo root so it gets committed by GitHub Actions
-const SCRIPT_DIR = decodeURIComponent(new URL(".", import.meta.url).pathname);
+// 使用 process.cwd() 而非 new URL('.', import.meta.url).pathname，避免 Windows 上路径解析错误
+const SCRIPT_DIR = process.cwd();
 const STATE_PATH = join(SCRIPT_DIR, "..", "state-feed.json");
 
 // -- State Management --------------------------------------------------------
