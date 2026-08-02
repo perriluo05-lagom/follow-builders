@@ -164,6 +164,7 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — Anthropic 团队的技术深度文章
 - [Claude Blog](https://claude.com/blog) — Claude 的产品公告与更新
 
+💬可以自行添加其他信息源，如增添关注的博主、小宇宙上的播客等等
 ---
 
 ## 🔧 工作原理
@@ -174,9 +175,6 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 2. **摘要生成**：[send-digest.yml](.github/workflows/send-digest.yml) 在 Feed 生成成功后自动触发，运行 `auto-digest.js` 用纯程序化逻辑生成中文摘要（保留原文 + 智能标注，无需 LLM API）
 3. **内容去重**：通过 `digest-state.json` 记录已推送的 feed 批次时间戳，确保同一批内容不会被重复发送
 4. **邮件推送**：格式化的 HTML 摘要通过 SMTP 发送到你的邮箱
-
-**为什么不用 LLM API？**
-LLM 在做摘要时会把"Sam Altman 分享了 ChatGPT 在 XX 场景的具体实验结果"压缩成"Sam Altman 讨论了 AI 的潜力和应用"这种空话，丢掉了所有具体信息。本方案保留推文/播客/博客的原始内容，仅做智能标注（话题分类、关键数据高亮、Quote Tweet 检测、嘉宾背景提取），让信息零损失，且无需配置任何 AI 模型 API key。
 
 ---
 
