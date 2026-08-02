@@ -129,6 +129,8 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — technical deep-dives from the Anthropic team
 - [Claude Blog](https://claude.com/blog) — product announcements and updates from Claude
 
+💬you can also add other information resources according to your personal needs~
+
 ## 🔧 How It Works
 
 1. **Central Feed Generation:** [generate-feed.yml](.github/workflows/generate-feed.yml) runs daily at 09:00 Beijing time, fetches the latest content from all sources into `feed-x.json` / `feed-podcasts.json` / `feed-blogs.json`, and tracks fetched items via `state-feed.json` (prevents re-fetching the same tweet/podcast/blog)
@@ -136,8 +138,6 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 3. **Content Dedup:** `digest-state.json` records sent feed-batch timestamps so the same batch is never sent twice
 4. **Email Delivery:** The formatted HTML digest is sent via SMTP to your inbox
 
-**Why no LLM API?**
-LLMs tend to compress "Sam Altman shared ChatGPT's specific experiment results in XX scenario" into generic statements like "Sam Altman discussed AI's potential and applications", losing all concrete information. This project preserves the original tweet/podcast/blog content and only adds smart annotations (topic classification, key-number highlighting, Quote Tweet detection, guest background extraction) — zero information loss, and no AI model API key required.
 
 ## 🔒 Privacy
 
