@@ -114,8 +114,14 @@ function parseRssFeed(xml) {
     const linkMatch = block.match(/<link>([\s\S]*?)<\/link>/);
     const link = linkMatch ? linkMatch[1].trim() : null;
 
+    // Extract description/shownotes (CDATA or plain, used for xiaoyuzhou podcasts)
+    const descMatch =
+      block.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/) ||
+      block.match(/<description>([\s\S]*?)<\/description>/);
+    const description = descMatch ? descMatch[1].trim() : "";
+
     if (guid) {
-      episodes.push({ title, guid, publishedAt, link });
+      episodes.push({ title, guid, publishedAt, link, description });
     }
   }
   return episodes;
@@ -456,8 +462,27 @@ async function fetchPodcastContent(podcasts, apiKey, state, errors) {
     console.error(`    - "${v.title}" published=${v.publishedAt || "unknown"}`);
   }
 
-  // Step 3: Try each candidate until we get a transcript from pod2txt
+  // Step 3: Try each candidate until we get a transcript
   for (const selected of withinWindow) {
+    // 小宇宙播客：跳过 pod2txt 转写，直接用 RSS 中的 shownotes 作为内容
+    if (selected.podcast.platform === "xiaoyuzhou") {
+      console.error(`    [小宇宙] Using RSS shownotes for "${selected.title}" (skip pod2txt)`);
+      state.seenVideos[selected.guid] = Date.now();
+      const shownotes = selected.description || selected.summary || "";
+      return [
+        {
+          source: "podcast",
+          name: selected.podcast.name,
+          title: selected.title,
+          guid: selected.guid,
+          url: selected.link || selected.podcast.url,
+          publishedAt: selected.publishedAt,
+          transcript: shownotes.slice(0, 1500), // 限制长度避免 token 过大
+        },
+      ];
+    }
+
+    // 其他播客：使用 pod2txt 获取 transcript
     console.error(`    Fetching transcript for "${selected.title}"...`);
 
     const result = await fetchPod2txtTranscript(

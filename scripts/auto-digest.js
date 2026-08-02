@@ -200,7 +200,7 @@ function extractHighlights(text) {
   return highlights.length ? `**关键数据：** ${highlights.join(' / ')}` : '';
 }
 
-// 渲染单条推文（保留原文，加标注）
+// 渲染单条推文（中文引导 + 英文原文，绝不压缩信息）
 function renderTweet(tweet, builder) {
   const text = tweet.text || '';
   const tags = classifyTopic(text);
@@ -208,16 +208,20 @@ function renderTweet(tweet, builder) {
   const likes = tweet.likes || 0;
   const retweets = tweet.retweets || 0;
 
+  // 话题标签 + 互动数据（中文）
   let block = `**${tags}**`;
   if (likes >= 1000 || retweets >= 100) block += `  🔥热门(${formatNum(likes)}赞)`;
   if (isQuote) block += `  💬引用回应`;
-  block += `\n\n${text}\n\n`;
+  block += `\n\n`;
 
-  // 关键数据高亮（如有）
+  // 推文原文（完整保留，不翻译、不压缩）
+  block += `> ${text}\n\n`;
+
+  // 关键数据高亮（如有，用中文标注）
   const hl = extractHighlights(text);
   if (hl) block += `${hl}\n\n`;
 
-  block += `${tweet.url}\n\n`;
+  block += `🔗 原文链接：${tweet.url}\n\n`;
   return block;
 }
 
@@ -226,17 +230,19 @@ function formatNum(n) {
   return String(n);
 }
 
-// 渲染一位作者的推文区块
+// 渲染一位作者的推文区块（中文标题+引导 + 英文原文）
 function renderBuilder(builder) {
   if (!builder.tweets || builder.tweets.length === 0) return '';
 
   const role = extractAuthorRole(builder.bio);
   const handle = builder.handle;
   const header = role
-    ? `### ${builder.name}（${role}，${handle}）`
-    : `### ${builder.name}（${handle}）`;
+    ? `### ${builder.name}（${role}，@${handle}）`
+    : `### ${builder.name}（@${handle}）`;
 
   let block = `${header}\n\n`;
+  // 中文引导说明
+  block += `*以下是 ${builder.name} 近期发布的 ${builder.tweets.length} 条推文原文：*\n\n`;
   for (const tweet of builder.tweets) {
     if (!isSubstantive(tweet.text)) continue;
     block += renderTweet(tweet, builder);
@@ -328,9 +334,12 @@ function renderPodcast(podcast) {
   } else if (transcript) {
     // 兜底：直接给前 800 字符的转录摘录
     block += `**📌 转录摘录：**\n\n> ${transcript.slice(0, 800).replace(/\n/g, ' ')}...\n\n`;
+  } else {
+    // 无 transcript（如小宇宙播客），提示内容来源
+    block += `*本期节目暂无转录稿，请点击下方链接收听完整内容。*\n\n`;
   }
 
-  block += `**单集链接：** ${url}\n\n`;
+  block += `🔗 单集链接：${url}\n\n`;
   block += '---\n\n';
   return block;
 }
@@ -368,7 +377,7 @@ function renderBlog(blog) {
     }
   }
 
-  block += `**原文链接：** ${url}\n\n`;
+  block += `🔗 原文链接：${url}\n\n`;
   block += '---\n\n';
   return block;
 }
@@ -382,13 +391,14 @@ function generateDigest(feedData, config) {
   const dateStr = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   let digest = `# 🤖 AI Builders 每日简报 — ${dateStr}\n\n`;
+  digest += `> 本简报追踪 AI 领域顶尖建造者（研究员、创始人、产品经理、工程师）的最新动态，保留原文不压缩，附中文标注。\n\n`;
 
   // —— X / TWITTER 板块 ——
   if (feedData.x && feedData.x.length > 0) {
     const buildersWithTweets = feedData.x.filter(b => b.tweets && b.tweets.length > 0);
     if (buildersWithTweets.length > 0) {
-      digest += `## 💬 X / TWITTER\n\n`;
-      digest += `*追踪 ${buildersWithTweets.length} 位 AI 建造者的最新动态*\n\n`;
+      digest += `## 💬 X / TWITTER 推文动态\n\n`;
+      digest += `*追踪 ${buildersWithTweets.length} 位 AI 建造者的最新推文（原文保留，附话题分类与关键数据高亮）*\n\n`;
       for (const builder of buildersWithTweets) {
         digest += renderBuilder(builder);
       }
@@ -397,7 +407,8 @@ function generateDigest(feedData, config) {
 
   // —— OFFICIAL BLOGS 板块 ——
   if (feedData.blogs && feedData.blogs.length > 0) {
-    digest += `## 📝 OFFICIAL BLOGS\n\n`;
+    digest += `## 📝 OFFICIAL BLOGS 官方博客\n\n`;
+    digest += `*AI 公司官方博客深度文章（含作者、摘要、正文摘录）*\n\n`;
     for (const blog of feedData.blogs) {
       digest += renderBlog(blog);
     }
@@ -405,7 +416,8 @@ function generateDigest(feedData, config) {
 
   // —— PODCASTS 板块 ——
   if (feedData.podcasts && feedData.podcasts.length > 0) {
-    digest += `## 🎙️ PODCASTS\n\n`;
+    digest += `## 🎙️ PODCASTS 播客\n\n`;
+    digest += `*顶级 AI 播客最新一期（嘉宾背景 + 带时间戳的核心要点）*\n\n`;
     for (const podcast of feedData.podcasts) {
       digest += renderPodcast(podcast);
     }
