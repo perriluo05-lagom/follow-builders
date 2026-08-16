@@ -31,6 +31,41 @@
       "url": "https://www.youtube.com/playlist?list=PLuMcoKK9mKgHtW_o9h5sGO2vXrffKHwJL"
     },
     {
+      "name": "Lex Fridman Podcast",
+      "rssUrl": "https://lexfridman.com/feed/podcast",
+      "url": "https://www.youtube.com/@lexfridman"
+    },
+    {
+      "name": "Gradient Dissent",
+      "rssUrl": "https://feeds.simplecast.com/gvFh_i9j",
+      "url": "https://www.youtube.com/@WeightsBiases"
+    },
+    {
+      "name": "Machine Learning Street Talk",
+      "rssUrl": "https://feeds.buzzsprout.com/1149188.rss",
+      "url": "https://www.youtube.com/@MachineLearningStreetTalk"
+    },
+    {
+      "name": "Practical AI",
+      "rssUrl": "https://changelog.com/practicalai/feed",
+      "url": "https://www.youtube.com/@changelogdotcom"
+    },
+    {
+      "name": "TWIML AI Podcast",
+      "rssUrl": "https://feeds.simplecast.com/cF596r",
+      "url": "https://twimlai.com/podcast/"
+    },
+    {
+      "name": "AI in Business",
+      "rssUrl": "https://feeds.megaphone.fm/MLN8563555553",
+      "url": "https://www.youtube.com/@DanielFaggella"
+    },
+    {
+      "name": "The AI Podcast (NVIDIA)",
+      "rssUrl": "https://feeds.simplecast.com/SvBSVp_X",
+      "url": "https://www.youtube.com/@NVIDIAAI"
+    },
+    {
       "name": "三点下班",
       "rssUrl": "https://rsshub.rssforever.com/xiaoyuzhou/podcast/62bd91adf288fd4eae3606ff",
       "url": "https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff",
@@ -59,6 +94,18 @@
       "rssUrl": "https://rsshub.rssforever.com/xiaoyuzhou/podcast/62382c1103bea1ebfffa1c00",
       "url": "https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c00",
       "platform": "xiaoyuzhou"
+    },
+    {
+      "name": "OnBoard!",
+      "rssUrl": "https://rsshub.rssforever.com/xiaoyuzhou/podcast/65a4a7e04e4b3d837f4e3a5c",
+      "url": "https://www.xiaoyuzhoufm.com/podcast/65a4a7e04e4b3d837f4e3a5c",
+      "platform": "xiaoyuzhou"
+    },
+    {
+      "name": "硅谷早知道",
+      "rssUrl": "https://rsshub.rssforever.com/xiaoyuzhou/podcast/62382c1103bea1ebfffa1c01",
+      "url": "https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c01",
+      "platform": "xiaoyuzhou"
     }
   ],
   "blogs": [
@@ -75,6 +122,76 @@
       "indexUrl": "https://claude.com/blog",
       "articleBaseUrl": "https://claude.com/blog/",
       "fetchMethod": "http"
+    },
+    {
+      "name": "OpenAI Blog",
+      "type": "scrape",
+      "indexUrl": "https://openai.com/blog",
+      "articleBaseUrl": "https://openai.com/blog/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "Google DeepMind Blog",
+      "type": "scrape",
+      "indexUrl": "https://deepmind.google/blog/",
+      "articleBaseUrl": "https://deepmind.google/blog/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "Meta AI Blog",
+      "type": "scrape",
+      "indexUrl": "https://ai.meta.com/blog/",
+      "articleBaseUrl": "https://ai.meta.com/blog/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "Hugging Face Blog",
+      "type": "scrape",
+      "indexUrl": "https://huggingface.co/blog",
+      "articleBaseUrl": "https://huggingface.co/blog/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "Microsoft Research Blog",
+      "type": "scrape",
+      "indexUrl": "https://www.microsoft.com/en-us/research/blog/",
+      "articleBaseUrl": "https://www.microsoft.com/en-us/research/blog/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "NVIDIA AI Blog",
+      "type": "scrape",
+      "indexUrl": "https://blogs.nvidia.com/blog/category/deep-learning/",
+      "articleBaseUrl": "https://blogs.nvidia.com/blog/category/deep-learning/",
+      "fetchMethod": "http"
+    },
+    {
+      "name": "Lilian Weng's Blog",
+      "type": "rss",
+      "indexUrl": "https://lilianweng.github.io/index.xml",
+      "articleBaseUrl": "https://lilianweng.github.io/",
+      "fetchMethod": "rss"
+    },
+    {
+      "name": "Jay Alammar's Blog",
+      "type": "rss",
+      "indexUrl": "https://jalammar.github.io/feed.xml",
+      "articleBaseUrl": "https://jalammar.github.io/",
+      "fetchMethod": "rss"
+    },
+    {
+      "name": "Sebastian Raschka's Blog",
+      "type": "rss",
+      "indexUrl": "https://magazine.sebastianraschka.com/feed",
+      "articleBaseUrl": "https://magazine.sebastianraschka.com/",
+      "fetchMethod": "rss"
+    },
+    {
+      "name": "Chip Huyen's Blog",
+      "type": "rss",
+      "indexUrl": "https://huyenchip.com/feed.xml",
+      "articleBaseUrl": "https://huyenchip.com/",
+      "fetchMethod": "rss"
     }
   ],
   "x_accounts": [
@@ -103,6 +220,27 @@
     { "name": "Dan Shipper", "handle": "danshipper" },
     { "name": "Aditya Agarwal", "handle": "adityaag" },
     { "name": "Sam Altman", "handle": "sama" },
-    { "name": "Claude", "handle": "claudeai" }
+    { "name": "Claude", "handle": "claudeai" },
+    { "name": "Dario Amodei", "handle": "DarioAmodei" },
+    { "name": "Daniela Amodei", "handle": "DanielaAmodei" },
+    { "name": "Yann LeCun", "handle": "ylecun" },
+    { "name": "Jeff Dean", "handle": "JeffDean" },
+    { "name": "Jim Fan", "handle": "DrJimFan" },
+    { "name": "Ethan Mollick", "handle": "emollick" },
+    { "name": "Harrison Chase", "handle": "hwchase17" },
+    { "name": "Elvis Saravia", "handle": "omarsar0" },
+    { "name": "Linus Lee", "handle": "thesephist" },
+    { "name": "Simon Willison", "handle": "simonw" },
+    { "name": "Riley Goodside", "handle": "goodside" },
+    { "name": "Brandon Willard", "handle": "brandonwillard" },
+    { "name": "Luke Zettlemoyer", "handle": "luke_zettlemoyer" },
+    { "name": "Tri Dao", "handle": "tri_dao" },
+    { "name": "Albert Gu", "handle": "albertgu_" },
+    { "name": "Lilian Weng", "handle": "lilianweng" },
+    { "name": "Jay Alammar", "handle": "JayAlammar" },
+    { "name": "Fei-Fei Li", "handle": "drfeifei" },
+    { "name": "Percy Liang", "handle": "PercyLiang" },
+    { "name": "Scott Alexander", "handle": "ScottAlexander" },
+    { "name": "Emad Mostaque", "handle": "EMostaque" }
   ]
 }

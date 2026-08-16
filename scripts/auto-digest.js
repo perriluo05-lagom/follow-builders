@@ -43,34 +43,95 @@ async function fetchJSON(url) {
 
 async function loadDigestState() {
   if (!existsSync(DIGEST_STATE_PATH)) {
-    return { lastSentAt: 0, feedTimestamps: {} };
+    return { lastSentAt: 0, feedTimestamps: {}, sentItemIds: [] };
   }
   try {
-    return JSON.parse(await readFile(DIGEST_STATE_PATH, 'utf-8'));
+    const state = JSON.parse(await readFile(DIGEST_STATE_PATH, 'utf-8'));
+    // 兼容旧版 state，确保 sentItemIds 存在
+    if (!state.sentItemIds) state.sentItemIds = [];
+    return state;
   } catch {
-    return { lastSentAt: 0, feedTimestamps: {} };
+    return { lastSentAt: 0, feedTimestamps: {}, sentItemIds: [] };
   }
 }
 
 async function saveDigestState(state) {
   try {
+    // 清理超过 14 天的旧 ID，防止文件无限增长
+    const cutoff = Date.now() - 14 * 24 * 60 * 60 * 1000;
+    state.sentItemIds = (state.sentItemIds || []).filter(entry => entry.ts > cutoff);
     await writeFile(DIGEST_STATE_PATH, JSON.stringify(state, null, 2));
   } catch (e) {
     console.error('Warning: failed to save digest state:', e.message);
   }
 }
 
-// 比较三类 feed 的 generatedAt 与上次记录，判断是否同一批已推送过
-function isFeedAlreadySent(digestState, feedX, feedPodcasts, feedBlogs) {
-  const tsX = feedX?.generatedAt;
-  const tsPod = feedPodcasts?.generatedAt;
-  const tsBlog = feedBlogs?.generatedAt;
-  const prev = digestState.feedTimestamps || {};
-  const hasNew =
-    (tsX && tsX !== prev.x) ||
-    (tsPod && tsPod !== prev.podcasts) ||
-    (tsBlog && tsBlog !== prev.blogs);
-  return !hasNew && (prev.x || prev.podcasts || prev.blogs);
+// 从 feed 数据中提取所有内容 ID（推文 ID、播客 GUID、博客 URL）
+function extractContentIds(feedX, feedPodcasts, feedBlogs) {
+  const ids = [];
+  // 推文 ID
+  if (feedX?.x) {
+    for (const builder of feedX.x) {
+      if (builder.tweets) {
+        for (const tweet of builder.tweets) {
+          if (tweet.id) ids.push(`tweet:${tweet.id}`);
+        }
+      }
+    }
+  }
+  // 播客 GUID
+  if (feedPodcasts?.podcasts) {
+    for (const pod of feedPodcasts.podcasts) {
+      if (pod.guid) ids.push(`podcast:${pod.guid}`);
+    }
+  }
+  // 博客 URL
+  if (feedBlogs?.blogs) {
+    for (const blog of feedBlogs.blogs) {
+      if (blog.url) ids.push(`blog:${blog.url}`);
+    }
+  }
+  return ids;
+}
+
+// 基于内容 ID 过滤掉已推送过的项目，返回仅包含新内容的 feed 数据
+function filterNewContent(feedX, feedPodcasts, feedBlogs, sentItemIds) {
+  const sentSet = new Set(sentItemIds.map(e => e.id));
+
+  // 过滤推文：移除已发送的推文
+  let filteredX = feedX;
+  if (feedX?.x) {
+    const newX = feedX.x.map(builder => {
+      if (!builder.tweets) return builder;
+      const newTweets = builder.tweets.filter(t => !sentSet.has(`tweet:${t.id}`));
+      return { ...builder, tweets: newTweets };
+    }).filter(builder => builder.tweets && builder.tweets.length > 0);
+    filteredX = { ...feedX, x: newX };
+  }
+
+  // 过滤播客：移除已发送的剧集
+  let filteredPodcasts = feedPodcasts;
+  if (feedPodcasts?.podcasts) {
+    const newPods = feedPodcasts.podcasts.filter(p => !sentSet.has(`podcast:${p.guid}`));
+    filteredPodcasts = { ...feedPodcasts, podcasts: newPods };
+  }
+
+  // 过滤博客：移除已发送的文章
+  let filteredBlogs = feedBlogs;
+  if (feedBlogs?.blogs) {
+    const newBlogs = feedBlogs.blogs.filter(b => !sentSet.has(`blog:${b.url}`));
+    filteredBlogs = { ...feedBlogs, blogs: newBlogs };
+  }
+
+  return { filteredX, filteredPodcasts, filteredBlogs };
+}
+
+// 检查过滤后是否还有任何新内容
+function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs) {
+  const tweetCount = (filteredX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
+  const podcastCount = (filteredPodcasts?.podcasts || []).length;
+  const blogCount = (filteredBlogs?.blogs || []).length;
+  return tweetCount + podcastCount + blogCount > 0;
 }
 
 // -- Feed 读取 ---------------------------------------------------------------
@@ -111,17 +172,19 @@ async function getFeedData() {
     if (!feedBlogs && remoteBlogs) feedBlogs = remoteBlogs;
   }
 
-  // —— 同一批 feed 已推送过则直接跳过 ——
+  // —— 基于内容 ID 去重：过滤掉已推送过的项目 ——
   const digestState = await loadDigestState();
-  if (isFeedAlreadySent(digestState, feedX, feedPodcasts, feedBlogs)) {
-    console.log('检测到这批 feed 已在之前推送过，为避免重复将终止本次发送。若需强制重发请删除 digest-state.json 或使用 workflow_dispatch');
+  const { filteredX, filteredPodcasts, filteredBlogs } = filterNewContent(feedX, feedPodcasts, feedBlogs, digestState.sentItemIds || []);
+
+  if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs)) {
+    console.log('检测到所有 feed 内容均已在之前推送过，为避免重复将终止本次发送。若需强制重发请删除 digest-state.json 或使用 workflow_dispatch');
     return { alreadySent: true, podcasts: [], x: [], blogs: [], _digestState: digestState, _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs };
   }
 
   return {
-    podcasts: feedPodcasts?.podcasts || [],
-    x: feedX?.x || [],
-    blogs: feedBlogs?.blogs || [],
+    podcasts: filteredPodcasts?.podcasts || [],
+    x: filteredX?.x || [],
+    blogs: filteredBlogs?.blogs || [],
     _digestState: digestState,
     _feedX: feedX,
     _feedPod: feedPodcasts,
@@ -606,16 +669,23 @@ async function main() {
       console.log(`Sending to ${toEmail}...`);
       await sendEmail(digest, toEmail);
       console.log('Email sent successfully!');
-      // —— 发送成功后记录 feed 时间戳，防止重复推送 ——
-      const ds = feedData._digestState || { lastSentAt: 0, feedTimestamps: {} };
+      // —— 发送成功后记录已推送的内容 ID，防止重复推送 ——
+      const ds = feedData._digestState || { lastSentAt: 0, feedTimestamps: {}, sentItemIds: [] };
       ds.lastSentAt = Date.now();
       ds.feedTimestamps = {
         x: feedData._feedX?.generatedAt || ds.feedTimestamps?.x,
         podcasts: feedData._feedPod?.generatedAt || ds.feedTimestamps?.podcasts,
         blogs: feedData._feedBlog?.generatedAt || ds.feedTimestamps?.blogs,
       };
+      // 记录本次发送的所有内容 ID（推文 ID、播客 GUID、博客 URL）
+      const now = Date.now();
+      const newItemIds = extractContentIds(feedData._feedX, feedData._feedPod, feedData._feedBlog);
+      ds.sentItemIds = [
+        ...(ds.sentItemIds || []),
+        ...newItemIds.map(id => ({ id, ts: now }))
+      ];
       await saveDigestState(ds);
-      console.log('已保存 digest-state.json，下次将跳过这批已推送内容。');
+      console.log(`已保存 digest-state.json，记录了 ${newItemIds.length} 个内容 ID，下次将跳过这些已推送内容。`);
     } else {
       console.log(digest);
     }
