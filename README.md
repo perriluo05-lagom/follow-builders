@@ -27,9 +27,9 @@
 
 从海量信息中提炼核心价值，**完整保留原始内容**，绝不压缩成空话：
 
-- **X/Twitter 洞察**：26 位精选 AI 建造者的最新动态，每条推文保留原文，附带话题分类（产品发布/技术深度/商业战略/行业观点）、互动数据、Quote Tweet 标注、关键数据高亮
+- **X/Twitter 洞察**：47 位精选 AI 建造者的最新动态，每条推文保留原文，附带话题分类（产品发布/技术深度/商业战略/行业观点）、互动数据、Quote Tweet 标注、关键数据高亮
 - **播客摘要**：从转录稿中智能提取嘉宾背景介绍 + 带时间戳的核心要点段落，信息零损失
-- **博客文章**：Anthropic Engineering、Claude Blog 的深度文章，含作者、摘要、正文摘录
+- **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - **中文优先**：默认中文输出，无需任何 AI 模型 API key
 
 ### ☁️ 零停机自动化
@@ -112,11 +112,11 @@ node scripts/auto-digest.js
 
 每日摘要包含以下内容：
 
-- 💬 **X/Twitter 洞察**：26 位精选 AI 建造者的关键观点和动态，**保留推文原文**，附话题分类、互动数据、Quote Tweet 上下文标注
-- 📝 **博客文章**：AI 公司官方博客的技术深度文章（Anthropic Engineering、Claude Blog），含作者、摘要、正文摘录
+- 💬 **X/Twitter 洞察**：47 位精选 AI 建造者的关键观点和动态，**保留推文原文**，附话题分类、互动数据、Quote Tweet 上下文标注
+- 📝 **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - 🎙️ **播客摘要**：顶级 AI 播客新节目的精华内容，嘉宾背景介绍 + 带时间戳的核心要点段落
 - 🔗 **原始链接**：所有内容都附带原文链接，方便深入阅读
-- 🚫 **内容去重**：通过 `digest-state.json` 记录已推送 feed，避免同一批内容重复发送
+- 🚫 **内容去重**：通过 `digest-state.json` 记录已推送的内容 ID（推文 ID、播客 GUID、博客 URL），确保每条内容只推送一次
 
 ---
 
@@ -149,20 +149,44 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 ## 📝 默认信息源
 
-### 播客（6个）
+### 播客（15个）
 - [Latent Space](https://www.youtube.com/@LatentSpacePod)
 - [Training Data](https://www.youtube.com/playlist?list=PLOhHNjZItNnMm5tdW61JpnyxeYH5NDDx8)
 - [No Priors](https://www.youtube.com/@NoPriorsPodcast)
 - [Unsupervised Learning](https://www.youtube.com/@RedpointAI)
 - [The MAD Podcast with Matt Turck](https://www.youtube.com/@DataDrivenNYC)
 - [AI & I by Every](https://www.youtube.com/playlist?list=PLuMcoKK9mKgHtW_o9h5sGO2vXrffKHwJL)
+- [Lex Fridman Podcast](https://www.youtube.com/@lexfridman)
+- [Gradient Dissent](https://www.youtube.com/@WeightsBiases)
+- [Machine Learning Street Talk](https://www.youtube.com/@MachineLearningStreetTalk)
+- [Practical AI](https://www.youtube.com/@changelogdotcom)
+- [TWIML AI Podcast](https://twimlai.com/podcast/)
+- [AI in Business](https://www.youtube.com/@DanielFaggella)
+- [The AI Podcast (NVIDIA)](https://www.youtube.com/@NVIDIAAI)
+- [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)
+- [Web3 101](https://www.xiaoyuzhoufm.com/podcast/62c2b6b3a61b9fd92a401b39)
+- [硬地骇客](https://www.xiaoyuzhoufm.com/podcast/640ee2438be5d40013fe4a87)
+- [难得正经](https://www.xiaoyuzhoufm.com/podcast/68c2889c9eff50753c639da0)
+- [半拿铁](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c00)
+- [OnBoard!](https://www.xiaoyuzhoufm.com/podcast/65a4a7e04e4b3d837f4e3a5c)
+- [硅谷早知道](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c01)
 
-### X 上的 AI 建造者（26位）
-[Andrej Karpathy](https://x.com/karpathy), [Swyx](https://x.com/swyx), [Josh Woodward](https://x.com/joshwoodward), [Boris Cherny](https://x.com/bcherny), [Thibault Sottiaux](https://x.com/thsottiaux), [Peter Yang](https://x.com/petergyang), [Nan Yu](https://x.com/thenanyu), [Madhu Guru](https://x.com/realmadhuguru), [Amanda Askell](https://x.com/AmandaAskell), [Cat Wu](https://x.com/_catwu), [Thariq](https://x.com/trq212), [Google Labs](https://x.com/GoogleLabs), [Amjad Masad](https://x.com/amasad), [Guillermo Rauch](https://x.com/rauchg), [Alex Albert](https://x.com/alexalbert__), [Aaron Levie](https://x.com/levie), [Ryo Lu](https://x.com/ryolu_), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Zara Zhang](https://x.com/zarazhangrui), [Nikunj Kothari](https://x.com/nikunj), [Peter Steinberger](https://x.com/steipete), [Dan Shipper](https://x.com/danshipper), [Aditya Agarwal](https://x.com/adityaag), [Sam Altman](https://x.com/sama), [Claude](https://x.com/claudeai)
+### X 上的 AI 建造者（47位）
+[Andrej Karpathy](https://x.com/karpathy), [Swyx](https://x.com/swyx), [Josh Woodward](https://x.com/joshwoodward), [Boris Cherny](https://x.com/bcherny), [Thibault Sottiaux](https://x.com/thsottiaux), [Peter Yang](https://x.com/petergyang), [Nan Yu](https://x.com/thenanyu), [Madhu Guru](https://x.com/realmadhuguru), [Amanda Askell](https://x.com/AmandaAskell), [Cat Wu](https://x.com/_catwu), [Thariq](https://x.com/trq212), [Google Labs](https://x.com/GoogleLabs), [Amjad Masad](https://x.com/amasad), [Guillermo Rauch](https://x.com/rauchg), [Alex Albert](https://x.com/alexalbert__), [Aaron Levie](https://x.com/levie), [Ryo Lu](https://x.com/ryolu_), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Zara Zhang](https://x.com/zarazhangrui), [Nikunj Kothari](https://x.com/nikunj), [Peter Steinberger](https://x.com/steipete), [Dan Shipper](https://x.com/danshipper), [Aditya Agarwal](https://x.com/adityaag), [Sam Altman](https://x.com/sama), [Claude](https://x.com/claudeai), [Dario Amodei](https://x.com/DarioAmodei), [Daniela Amodei](https://x.com/DanielaAmodei), [Yann LeCun](https://x.com/ylecun), [Jeff Dean](https://x.com/JeffDean), [Jim Fan](https://x.com/DrJimFan), [Ethan Mollick](https://x.com/emollick), [Harrison Chase](https://x.com/hwchase17), [Elvis Saravia](https://x.com/omarsar0), [Linus Lee](https://x.com/thesephist), [Simon Willison](https://x.com/simonw), [Riley Goodside](https://x.com/goodside), [Brandon Willard](https://x.com/brandonwillard), [Luke Zettlemoyer](https://x.com/luke_zettlemoyer), [Tri Dao](https://x.com/tri_dao), [Albert Gu](https://x.com/albertgu_), [Lilian Weng](https://x.com/lilianweng), [Jay Alammar](https://x.com/JayAlammar), [Fei-Fei Li](https://x.com/drfeifei), [Percy Liang](https://x.com/PercyLiang), [Scott Alexander](https://x.com/ScottAlexander), [Emad Mostaque](https://x.com/EMostaque)
 
-### 官方博客（2个）
+### 官方博客（12个）
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — Anthropic 团队的技术深度文章
 - [Claude Blog](https://claude.com/blog) — Claude 的产品公告与更新
+- [OpenAI Blog](https://openai.com/blog) — OpenAI 的官方博客
+- [Google DeepMind Blog](https://deepmind.google/blog/) — Google DeepMind 的研究博客
+- [Meta AI Blog](https://ai.meta.com/blog/) — Meta AI 的研究博客
+- [Hugging Face Blog](https://huggingface.co/blog) — Hugging Face 的技术博客
+- [Microsoft Research Blog](https://www.microsoft.com/en-us/research/blog/) — 微软研究院博客
+- [NVIDIA AI Blog](https://blogs.nvidia.com/blog/category/deep-learning/) — NVIDIA AI 博客
+- [Lilian Weng's Blog](https://lilianweng.github.io/) — OpenAI 研究员的个人博客
+- [Jay Alammar's Blog](https://jalammar.github.io/) — AI 可视化专家的个人博客
+- [Sebastian Raschka's Blog](https://magazine.sebastianraschka.com/) — Lightning AI 创始人的技术博客
+- [Chip Huyen's Blog](https://huyenchip.com/) — MLOps 专家的个人博客
 
 💬可以自行添加其他信息源，如增添关注的博主、小宇宙上的播客等等
 ---
@@ -173,7 +197,7 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 1. **中心化 Feed 生成**：[generate-feed.yml](.github/workflows/generate-feed.yml) 每天 09:00（北京时间）自动抓取所有信息源的最新内容，写入 `feed-x.json` / `feed-podcasts.json` / `feed-blogs.json`，并通过 `state-feed.json` 记录已抓取内容（防止同一推文/播客/博客被重复抓取）
 2. **摘要生成**：[send-digest.yml](.github/workflows/send-digest.yml) 在 Feed 生成成功后自动触发，运行 `auto-digest.js` 用纯程序化逻辑生成中文摘要（保留原文 + 智能标注，无需 LLM API）
-3. **内容去重**：通过 `digest-state.json` 记录已推送的 feed 批次时间戳，确保同一批内容不会被重复发送
+3. **内容去重**：通过 `digest-state.json` 记录已推送的内容 ID（推文 ID、播客 GUID、博客 URL），确保每条内容只推送一次
 4. **邮件推送**：格式化的 HTML 摘要通过 SMTP 发送到你的邮箱
 
 ---
