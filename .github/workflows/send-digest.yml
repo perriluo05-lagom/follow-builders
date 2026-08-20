@@ -52,6 +52,7 @@ jobs:
           DIGEST_DELIVERY_TIME: ${{ secrets.DIGEST_DELIVERY_TIME || '09:00' }}
           DIGEST_DELIVERY_METHOD: 'email'
           DIGEST_EMAIL: ${{ secrets.DIGEST_EMAIL }}
+          DIGEST_SEND_WHEN_EMPTY: ${{ secrets.DIGEST_SEND_WHEN_EMPTY || 'true' }}
         run: cd scripts && node auto-digest.js
 
       - name: Commit digest state (dedup record)
@@ -59,6 +60,7 @@ jobs:
         continue-on-error: true
         env:
           PAT_TOKEN: ${{ secrets.pat_token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -67,5 +69,5 @@ jobs:
           if [ -n "$PAT_TOKEN" ]; then
             git push https://x-access-token:${PAT_TOKEN}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
           else
-            echo "PAT_TOKEN not set, skipping push"
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git HEAD:${{ github.ref_name }}
           fi

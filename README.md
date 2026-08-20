@@ -84,12 +84,15 @@ cd follow-builders/scripts && npm install
   "frequency": "daily",
   "deliveryTime": "09:00",
   "timezone": "Asia/Shanghai",
+  "sendWhenEmpty": true,
   "delivery": {
     "method": "email",
     "email": "your@email.com"
   }
 }
 ```
+
+> `sendWhenEmpty`：当没有新内容时是否仍发送"今日暂无新内容"的通知邮件。默认为 `true`。设为 `false` 则跳过无内容日的推送。
 
 创建 `~/.follow-builders/.env` 文件：
 ```env
@@ -117,6 +120,7 @@ node scripts/auto-digest.js
 - 🎙️ **播客摘要**：顶级 AI 播客新节目的精华内容，嘉宾背景介绍 + 带时间戳的核心要点段落
 - 🔗 **原始链接**：所有内容都附带原文链接，方便深入阅读
 - 🚫 **内容去重**：通过 `digest-state.json` 记录已推送的内容 ID（推文 ID、播客 GUID、博客 URL），确保每条内容只推送一次
+- 📭 **无内容通知**：当没有新内容时，默认发送"今日暂无新内容"的通知邮件（可通过 `sendWhenEmpty: false` 关闭）
 
 ---
 

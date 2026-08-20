@@ -614,6 +614,26 @@ async function sendEmail(text, toEmail) {
 // 主入口
 // ============================================================================
 
+// 生成"无新内容"的摘要
+function generateEmptyDigest(config) {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  let digest = `# 🤖 AI Builders 每日简报 — ${dateStr}\n\n`;
+  digest += `> 本简报追踪 AI 领域顶尖建造者（研究员、创始人、产品经理、工程师）的最新动态。\n\n`;
+  digest += `## 📭 今日暂无新内容\n\n`;
+  digest += `今日没有从关注的信息源中获取到新的推文、播客或博客文章。\n\n`;
+  digest += `可能的原因：\n`;
+  digest += `- 关注的建造者今日暂未发布新内容\n`;
+  digest += `- 播客/博客更新频率较低（通常每周或每月更新）\n`;
+  digest += `- 信息源抓取可能遇到临时问题\n\n`;
+  digest += `请明日再查看，或访问 [Follow Builders](https://github.com/zarazhangrui/follow-builders) 了解更多信息。\n\n`;
+  digest += `---\n\n`;
+  digest += `Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders\n\n`;
+
+  return digest;
+}
+
 async function main() {
   try {
     let config = {
@@ -621,7 +641,8 @@ async function main() {
       frequency: 'daily',
       deliveryTime: '09:00',
       timezone: 'Asia/Shanghai',
-      delivery: { method: 'stdout', email: '' }
+      delivery: { method: 'stdout', email: '' },
+      sendWhenEmpty: true  // 默认发送"无更新"通知
     };
 
     if (existsSync(CONFIG_PATH)) {
@@ -633,6 +654,9 @@ async function main() {
       language: process.env.DIGEST_LANGUAGE || config.language,
       timezone: process.env.DIGEST_TIMEZONE || config.timezone,
       deliveryTime: process.env.DIGEST_DELIVERY_TIME || config.deliveryTime,
+      sendWhenEmpty: process.env.DIGEST_SEND_WHEN_EMPTY !== undefined
+        ? process.env.DIGEST_SEND_WHEN_EMPTY === 'true'
+        : (config.sendWhenEmpty !== undefined ? config.sendWhenEmpty : true),
       delivery: {
         method: process.env.DIGEST_DELIVERY_METHOD || config.delivery?.method || 'stdout',
         email: process.env.DIGEST_EMAIL || config.delivery?.email || ''
@@ -649,6 +673,13 @@ async function main() {
     // 同一批 feed 已推送过则跳过
     if (feedData.alreadySent) {
       console.log('此批 feed 已推送过，本次跳过不重复发送。');
+      // 如果配置为发送空通知，则发送"无更新"邮件
+      if (config.sendWhenEmpty && toEmail) {
+        console.log('sendWhenEmpty=true，发送"无更新"通知邮件...');
+        const emptyDigest = generateEmptyDigest(config);
+        await sendEmail(emptyDigest, toEmail);
+        console.log('Empty digest email sent successfully!');
+      }
       return;
     }
 
@@ -659,6 +690,13 @@ async function main() {
       (feedData.blogs?.length || 0);
     if (totalItems === 0) {
       console.log('今日没有新内容（0 条推文 / 0 集播客 / 0 篇博客），跳过发送。');
+      // 如果配置为发送空通知，则发送"无更新"邮件
+      if (config.sendWhenEmpty && toEmail) {
+        console.log('sendWhenEmpty=true，发送"无更新"通知邮件...');
+        const emptyDigest = generateEmptyDigest(config);
+        await sendEmail(emptyDigest, toEmail);
+        console.log('Empty digest email sent successfully!');
+      }
       return;
     }
 

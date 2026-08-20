@@ -64,12 +64,15 @@ Create a config file at `~/.follow-builders/config.json`:
   "frequency": "daily",
   "deliveryTime": "09:00",
   "timezone": "Asia/Shanghai",
+  "sendWhenEmpty": true,
   "delivery": {
     "method": "email",
     "email": "your@email.com"
   }
 }
 ```
+
+> `sendWhenEmpty`: Whether to send a "no new content today" notification email when there are no updates. Defaults to `true`. Set to `false` to skip delivery on empty days.
 
 Create `~/.follow-builders/.env` with your SMTP credentials:
 ```env
@@ -94,6 +97,7 @@ A daily digest with:
 - 🎙️ **Podcast Summaries:** Top AI podcast episodes with guest background + timestamped key-point segments
 - 🔗 **Links to all original content**
 - 🚫 **Content Dedup:** `digest-state.json` records sent content IDs (tweet IDs, podcast GUIDs, blog URLs) to ensure each item is delivered only once
+- 📭 **Empty Digest Notification:** Sends a "no new content today" email by default when there are no updates (disable with `sendWhenEmpty: false`)
 
 ## ⏰ Schedule Configuration
 
