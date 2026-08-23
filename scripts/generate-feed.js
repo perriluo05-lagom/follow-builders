@@ -116,6 +116,10 @@ function parseRssFeed(xml) {
 
     // Extract description/shownotes (CDATA or plain, used for xiaoyuzhou podcasts)
     const descMatch =
+      block.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/) ||
+      block.match(/<content:encoded>([\s\S]*?)<\/content:encoded>/) ||
+      block.match(/<itunes:summary><!\[CDATA\[([\s\S]*?)\]\]><\/itunes:summary>/) ||
+      block.match(/<itunes:summary>([\s\S]*?)<\/itunes:summary>/) ||
       block.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/) ||
       block.match(/<description>([\s\S]*?)<\/description>/);
     const description = descMatch ? descMatch[1].trim() : "";
@@ -125,6 +129,36 @@ function parseRssFeed(xml) {
     }
   }
   return episodes;
+}
+
+// 把 RSS shownotes 里常见的 HTML tag / 双重 HTML entity 转成可读中文文本，
+// 避免 feed-podcasts.json.transcript 里出现 `&lt;p&gt;`、`<br>` 这类垃圾字符。
+function cleanShownotes(raw) {
+  if (!raw) return "";
+  // 先处理 HTML entity（RSS 里可能被双重转义）
+  let s = String(raw);
+  for (let i = 0; i < 2; i++) {
+    s = s
+      .replace(/&nbsp;/g, " ")
+      .replace(/&#160;/g, " ")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#34;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      .replace(/&amp;/g, "&");
+  }
+  // 换行/段落标签变成换行，其它 HTML 标签直接去掉
+  s = s.replace(/<br\s*\/?>/gi, "\n").replace(/<\/p>/gi, "\n").replace(/<\/div>/gi, "\n");
+  s = s.replace(/<[^>]+>/g, " ");
+  // 压缩多余空白，但保留段落
+  return s
+    .split("\n")
+    .map((l) => l.replace(/[ \t]+/g, " ").trim())
+    .filter(Boolean)
+    .join("\n")
+    .trim();
 }
 
 // -- YouTube Episode URL Lookup ----------------------------------------------
@@ -464,11 +498,16 @@ async function fetchPodcastContent(podcasts, apiKey, state, errors) {
 
   // Step 3: Try each candidate until we get a transcript
   for (const selected of withinWindow) {
-    // 小宇宙播客：跳过 pod2txt 转写，直接用 RSS 中的 shownotes 作为内容
+    // 小宇宙播客：跳过 pod2txt 转写，直接用 RSS 中的 shownotes 作为内容（无需任何 API key）。
     if (selected.podcast.platform === "xiaoyuzhou") {
       console.error(`    [小宇宙] Using RSS shownotes for "${selected.title}" (skip pod2txt)`);
       state.seenVideos[selected.guid] = Date.now();
-      const shownotes = selected.description || selected.summary || "";
+      const shownotes = cleanShownotes(selected.description || selected.summary || "");
+      // shownotes 可能非常短（主播只写了一句话/免责声明），此时仍然返回但提示一下，
+      // 让下游 digest 一眼知道是 shownotes 不是 transcript。
+      if (shownotes.length < 80) {
+        console.warn(`    [小宇宙] Shownotes 很短 (${shownotes.length} chars)，内容可能不完整`);
+      }
       return [
         {
           source: "podcast",
@@ -480,6 +519,19 @@ async function fetchPodcastContent(podcasts, apiKey, state, errors) {
           transcript: shownotes.slice(0, 1500), // 限制长度避免 token 过大
         },
       ];
+    }
+
+    // 非 xiaoyuzhou 播客必须靠 pod2txt 把音频转成文字；没 key 时直接跳过，避免对 pod2txt 做
+    // 一个 apikey 为空的 POST 请求（会 401 / 抛错然后把 podcast 板块也污染成 0）。
+    if (!apiKey) {
+      console.error(
+        `    No POD2TXT_API_KEY; skip non-xiaoyuzhou podcast "${selected.title}"`,
+      );
+      errors.push(
+        `Podcast: skipped "${selected.title}" (${selected.podcast.name}) — POD2TXT_API_KEY not set`,
+      );
+      // 注意：不 mark seen，这样用户以后加上 POD2TXT_API_KEY 再跑还能补抓。
+      continue;
     }
 
     // 其他播客：使用 pod2txt 获取 transcript
@@ -1043,17 +1095,31 @@ async function main() {
 
   const xBearerToken = process.env.X_BEARER_TOKEN;
   const pod2txtKey = process.env.POD2TXT_API_KEY;
+  const sources = await loadSources();
 
+  // POD2TXT_API_KEY 缺失时：
+  //  - 小宇宙 / platform === "xiaoyuzhou" 的节目完全不依赖 pod2txt，直接用 RSS shownotes 当摘要，
+  //    因此 fork 下来没有 pod2txt key 的用户依然可以稳定获得中文播客板块；
+  //  - 只有英文 / 非 xiaoyuzhou 播客会被跳过（它们必须用 pod2txt 转写音频）。
+  // 所以此处不再粗暴设置 runPodcasts=false，而是在 fetchPodcastContent 内部按平台分支处理。
   if (runPodcasts && !pod2txtKey) {
-    console.error("POD2TXT_API_KEY not set, skipping podcasts");
-    runPodcasts = false;
+    const hasXiaoyuzhou = sources.podcasts?.some((p) => p.platform === "xiaoyuzhou");
+    if (!hasXiaoyuzhou) {
+      console.error("POD2TXT_API_KEY not set, and no xiaoyuzhou podcasts configured — skipping podcasts");
+      runPodcasts = false;
+    } else {
+      console.warn(
+        "POD2TXT_API_KEY not set — non-xiaoyuzhou podcasts will be skipped, " +
+          "but xiaoyuzhou podcasts will still be ingested using RSS shownotes " +
+          "(no API key required for xiaoyuzhou).",
+      );
+    }
   }
   if (runTweets && !xBearerToken) {
     console.error("X_BEARER_TOKEN not set");
     process.exit(1);
   }
 
-  const sources = await loadSources();
   const state = await loadState();
   const errors = [];
 
