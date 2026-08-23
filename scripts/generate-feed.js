@@ -1036,9 +1036,10 @@ async function main() {
 
   // If a specific --*-only flag is set, only that feed type runs.
   // If no flag is set, all three run.
-  const runTweets = tweetsOnly || (!podcastsOnly && !blogsOnly);
-  const runPodcasts = podcastsOnly || (!tweetsOnly && !blogsOnly);
-  const runBlogs = blogsOnly || (!tweetsOnly && !podcastsOnly);
+  // 注意：使用 let 而非 const，因为后面会基于 Token 存在情况关闭某些类型
+  let runTweets = tweetsOnly || (!podcastsOnly && !blogsOnly);
+  let runPodcasts = podcastsOnly || (!tweetsOnly && !blogsOnly);
+  let runBlogs = blogsOnly || (!tweetsOnly && !podcastsOnly);
 
   const xBearerToken = process.env.X_BEARER_TOKEN;
   const pod2txtKey = process.env.POD2TXT_API_KEY;
