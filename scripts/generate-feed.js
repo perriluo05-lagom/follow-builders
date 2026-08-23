@@ -1116,8 +1116,20 @@ async function main() {
     }
   }
   if (runTweets && !xBearerToken) {
-    console.error("X_BEARER_TOKEN not set");
-    process.exit(1);
+    // 只有当用户明确选择 --tweets-only（意味着本次只跑 X）时，缺 key 才 exit 1，
+    // 否则只把 runTweets 关掉——播客（尤其是小宇宙）和博客板块照样能产出，
+    // 避免为了 X 一项的 secret 没配就让整条 Generate Feeds 全挂。
+    if (tweetsOnly) {
+      console.error("X_BEARER_TOKEN not set and running in --tweets-only mode — aborting");
+      process.exit(1);
+    }
+    console.warn(
+      "X_BEARER_TOKEN not set — X/Twitter content will be skipped this run, " +
+        "but podcasts and blogs will still be generated normally. " +
+        "Re-run with --tweets-only to fail fast on X-only jobs, " +
+        "or configure X_BEARER_TOKEN in repository secrets to re-enable tweets.",
+    );
+    runTweets = false;
   }
 
   const state = await loadState();
