@@ -16,6 +16,16 @@ on:
         required: false
         default: false
         type: boolean
+      force_remote_fetch:
+        description: 'Force fetch feed-x/podcasts/blogs from GitHub raw (ignore local copies)'
+        required: false
+        default: true
+        type: boolean
+      send_when_empty:
+        description: 'Send email even when there is no new content (keep true for diagnostics)'
+        required: false
+        default: true
+        type: boolean
 
 jobs:
   send-digest:
@@ -52,7 +62,9 @@ jobs:
           DIGEST_DELIVERY_TIME: ${{ secrets.DIGEST_DELIVERY_TIME || '09:00' }}
           DIGEST_DELIVERY_METHOD: 'email'
           DIGEST_EMAIL: ${{ secrets.DIGEST_EMAIL }}
-          DIGEST_SEND_WHEN_EMPTY: ${{ secrets.DIGEST_SEND_WHEN_EMPTY || 'true' }}
+          DIGEST_SEND_WHEN_EMPTY: ${{ github.event.inputs.send_when_empty || secrets.DIGEST_SEND_WHEN_EMPTY || 'true' }}
+          # 2026-08 新增：每次都对比本地 feed vs GitHub raw feed 的生成时间；手动触发默认强制远程
+          DIGEST_FORCE_REMOTE_FETCH: ${{ github.event.inputs.force_remote_fetch == 'true' && 'true' || secrets.DIGEST_FORCE_REMOTE_FETCH || 'false' }}
         run: cd scripts && node auto-digest.js
 
       - name: Commit digest state (dedup record)

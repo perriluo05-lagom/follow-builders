@@ -1077,9 +1077,35 @@ async function main() {
       }
     }
 
+    // Fail-closed：以下任一情况都视为抓取链路失败，直接退出：
+    //  1) 内容为 0 且存在任何 X API 错误（原条件）
+    //  2) 成功 lookup 的用户占比 < 50%（通常意味着 Token 或批次调用连续失败）
+    //  3) 所有 lookup 全部失败（根本没打上任何一个账号）
+    const lookedUpCount = Object.keys(userMap).length;
+    const totalHandles = handles.length;
+    const lookupRatio = totalHandles > 0 ? lookedUpCount / totalHandles : 0;
+    console.error(
+      `  X 用户 lookup: ${lookedUpCount}/${totalHandles} (${(lookupRatio * 100).toFixed(0)}%)`,
+    );
+
     if (xContent.length === 0 && xErrors.length > 0) {
       throw new Error(
         `X feed failed: 0 builders returned and ${xErrors.length} X API error(s) occurred`,
+      );
+    }
+    if (totalHandles > 0 && lookedUpCount === 0) {
+      throw new Error(
+        `X feed failed: user lookup returned 0/${totalHandles} handles. ` +
+          `Please check X_BEARER_TOKEN scope / validity. ` +
+          `First few errors: ${xErrors.slice(0, 3).join(" | ")}`,
+      );
+    }
+    if (totalHandles > 0 && lookupRatio < 0.5) {
+      // 过半账号 lookup 失败，不是正常"今日没发推"，抛出避免写入空 feed
+      throw new Error(
+        `X feed degraded: only ${lookedUpCount}/${totalHandles} users were looked up (<50%). ` +
+          `Aborting to avoid committing an empty / partial feed. ` +
+          `First few errors: ${xErrors.slice(0, 3).join(" | ")}`,
       );
     }
 
@@ -1087,7 +1113,7 @@ async function main() {
       generatedAt: new Date().toISOString(),
       lookbackHours: TWEET_LOOKBACK_HOURS,
       x: xContent,
-      stats: { xBuilders: xContent.length, totalTweets },
+      stats: { xBuilders: xContent.length, totalTweets, usersLookedUp: lookedUpCount, usersTotal: totalHandles },
       errors: xErrors.length > 0 ? xErrors : undefined,
     };
     await writeFile(

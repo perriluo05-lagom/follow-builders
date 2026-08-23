@@ -8,6 +8,13 @@
 //   • 播客：嘉宾背景 + 带时间戳的核心要点段落（从 transcript 提取）
 //   • 博客：标题 + 描述 + 正文摘录 + 作者
 // 所有内容附原始来源链接，无链接不收录。
+//
+// 运行可靠性（2026-08 新增）：
+//   • 每次运行都会对比本地 feed 与 GitHub raw 上的 generatedAt，
+//     自动采用更新的那份，避免"仓库里有旧文件就永远跳过抓取"的假阴性。
+//   • 若 feed 文件整体过旧（> STALE_FEED_HOURS），空邮件会改为**告警级别**，
+//     明确提示去查看 Generate Feeds Actions 日志，而不是假装"没有新推送"。
+//   • 空邮件附带结构化诊断块：抓取总数 / 去重后新数 / feed 来源 / 状态窗口。
 // ============================================================================
 
 import { readFile, writeFile } from 'fs/promises';
@@ -25,18 +32,47 @@ const SCRIPT_DIR = process.cwd();
 const SKILL_DIR = join(SCRIPT_DIR, '..');
 const DIGEST_STATE_PATH = join(SKILL_DIR, 'digest-state.json');
 
+const FEED_X_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-x.json';
+const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-podcasts.json';
+const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-blogs.json';
+
+// feed 文件超过这个时间视为过旧——说明 Generate Feeds 很可能连续失败了
+const STALE_FEED_HOURS = 30;
+
 loadEnv({ path: ENV_PATH });
 
 // -- 网络拉取辅助 ------------------------------------------------------------
 
-async function fetchJSON(url) {
+async function fetchJSON(url, label = '') {
   try {
+    const start = Date.now();
     const res = await fetch(url);
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
+    if (!res.ok) {
+      console.error(`[fetchJSON] ${label || url} HTTP ${res.status} (${Date.now() - start}ms)`);
+      return null;
+    }
+    const data = await res.json();
+    console.error(`[fetchJSON] ${label || url} OK, generatedAt=${data?.generatedAt || 'N/A'} (${Date.now() - start}ms)`);
+    return data;
+  } catch (e) {
+    console.error(`[fetchJSON] ${label || url} 异常: ${e.message}`);
     return null;
   }
+}
+
+// 比较两份 feed 哪份更新：返回更"新鲜"（generatedAt 更大）的那份
+function pickFresherFeed(local, remote, name) {
+  const localAt = local?.generatedAt ? new Date(local.generatedAt).getTime() : 0;
+  const remoteAt = remote?.generatedAt ? new Date(remote.generatedAt).getTime() : 0;
+  if (!remote && local) return { feed: local, source: 'local' };
+  if (!local && remote) return { feed: remote, source: 'remote' };
+  if (!local && !remote) return { feed: null, source: 'missing' };
+  if (remoteAt > localAt) {
+    console.error(`[freshness] ${name}: 远程更新 (${remote?.generatedAt} > ${local?.generatedAt})，采用远程`);
+    return { feed: remote, source: 'remote' };
+  }
+  console.error(`[freshness] ${name}: 本地 >= 远程 (${local?.generatedAt} vs ${remote?.generatedAt})，采用本地`);
+  return { feed: local, source: 'local' };
 }
 
 // -- 推送去重状态 ------------------------------------------------------------
@@ -136,49 +172,107 @@ function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs) {
 
 // -- Feed 读取 ---------------------------------------------------------------
 
+function countFeedItems(feedX, feedPodcasts, feedBlogs) {
+  const tweets = (feedX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
+  const podcasts = (feedPodcasts?.podcasts || []).length;
+  const blogs = (feedBlogs?.blogs || []).length;
+  return { tweets, podcasts, blogs, total: tweets + podcasts + blogs };
+}
+
 async function getFeedData() {
+  const forceRemote = process.env.DIGEST_FORCE_REMOTE_FETCH === 'true';
+
   const feedXPath = join(SKILL_DIR, 'feed-x.json');
   const feedPodcastsPath = join(SKILL_DIR, 'feed-podcasts.json');
   const feedBlogsPath = join(SKILL_DIR, 'feed-blogs.json');
 
-  let feedX = null;
-  let feedPodcasts = null;
-  let feedBlogs = null;
+  // 1) 读取本地
+  let localX = null, localPod = null, localBlog = null;
+  if (existsSync(feedXPath)) try { localX = JSON.parse(await readFile(feedXPath, 'utf-8')); } catch {}
+  if (existsSync(feedPodcastsPath)) try { localPod = JSON.parse(await readFile(feedPodcastsPath, 'utf-8')); } catch {}
+  if (existsSync(feedBlogsPath)) try { localBlog = JSON.parse(await readFile(feedBlogsPath, 'utf-8')); } catch {}
 
-  if (existsSync(feedXPath)) {
-    try { feedX = JSON.parse(await readFile(feedXPath, 'utf-8')); } catch {}
+  // 2) 并发拉远程（每次都拉；forceRemote 时忽略本地，只采用远程）
+  console.error(`[feed] 正在并行获取 GitHub raw 上的 3 份 feed（forceRemote=${forceRemote}）...`);
+  const [remoteX, remotePodcasts, remoteBlogs] = await Promise.all([
+    fetchJSON(FEED_X_URL, 'feed-x (remote)'),
+    fetchJSON(FEED_PODCASTS_URL, 'feed-podcasts (remote)'),
+    fetchJSON(FEED_BLOGS_URL, 'feed-blogs (remote)'),
+  ]);
+
+  // 3) 比较新鲜度，择优选用
+  const chosenX = forceRemote
+    ? { feed: remoteX ?? localX, source: remoteX ? 'remote(force)' : 'local(fallback)' }
+    : pickFresherFeed(localX, remoteX, 'feed-x');
+  const chosenPod = forceRemote
+    ? { feed: remotePodcasts ?? localPod, source: remotePodcasts ? 'remote(force)' : 'local(fallback)' }
+    : pickFresherFeed(localPod, remotePodcasts, 'feed-podcasts');
+  const chosenBlog = forceRemote
+    ? { feed: remoteBlogs ?? localBlog, source: remoteBlogs ? 'remote(force)' : 'local(fallback)' }
+    : pickFresherFeed(localBlog, remoteBlogs, 'feed-blogs');
+
+  const feedX = chosenX.feed;
+  const feedPodcasts = chosenPod.feed;
+  const feedBlogs = chosenBlog.feed;
+
+  // 4) 新鲜度 / 过旧诊断
+  const nowTs = Date.now();
+  const ages = {
+    x: feedX?.generatedAt ? (nowTs - new Date(feedX.generatedAt).getTime()) / 3_600_000 : Infinity,
+    podcasts: feedPodcasts?.generatedAt ? (nowTs - new Date(feedPodcasts.generatedAt).getTime()) / 3_600_000 : Infinity,
+    blogs: feedBlogs?.generatedAt ? (nowTs - new Date(feedBlogs.generatedAt).getTime()) / 3_600_000 : Infinity,
+  };
+  const staleFeeds = Object.entries(ages)
+    .filter(([, h]) => h > STALE_FEED_HOURS)
+    .map(([k, h]) => `${k}(${h.toFixed(1)}h 前)`);
+
+  const rawCounts = countFeedItems(feedX, feedPodcasts, feedBlogs);
+  console.error(`[feed] 原始抓取量: 推文 ${rawCounts.tweets} / 播客 ${rawCounts.podcasts} / 博客 ${rawCounts.blogs}`);
+  if (staleFeeds.length > 0) {
+    console.error(`[feed] ⚠️  存在过旧 feed (阈值 ${STALE_FEED_HOURS}h): ${staleFeeds.join(', ')}，Generate Feeds 可能连续失败！`);
   }
-  if (existsSync(feedPodcastsPath)) {
-    try { feedPodcasts = JSON.parse(await readFile(feedPodcastsPath, 'utf-8')); } catch {}
-  }
-  if (existsSync(feedBlogsPath)) {
-    try { feedBlogs = JSON.parse(await readFile(feedBlogsPath, 'utf-8')); } catch {}
-  }
 
-  // 本地缺失则远程兜底
-  if (!feedX || !feedPodcasts || !feedBlogs) {
-    const FEED_X_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-x.json';
-    const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-podcasts.json';
-    const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-blogs.json';
-
-    const [remoteX, remotePodcasts, remoteBlogs] = await Promise.all([
-      !feedX ? fetchJSON(FEED_X_URL) : Promise.resolve(null),
-      !feedPodcasts ? fetchJSON(FEED_PODCASTS_URL) : Promise.resolve(null),
-      !feedBlogs ? fetchJSON(FEED_BLOGS_URL) : Promise.resolve(null)
-    ]);
-
-    if (!feedX && remoteX) feedX = remoteX;
-    if (!feedPodcasts && remotePodcasts) feedPodcasts = remotePodcasts;
-    if (!feedBlogs && remoteBlogs) feedBlogs = remoteBlogs;
-  }
-
-  // —— 基于内容 ID 去重：过滤掉已推送过的项目 ——
+  // 5) 基于内容 ID 去重：过滤掉已推送过的项目
   const digestState = await loadDigestState();
-  const { filteredX, filteredPodcasts, filteredBlogs } = filterNewContent(feedX, feedPodcasts, feedBlogs, digestState.sentItemIds || []);
+  const { filteredX, filteredPodcasts, filteredBlogs } = filterNewContent(
+    feedX, feedPodcasts, feedBlogs, digestState.sentItemIds || [],
+  );
+  const newCounts = countFeedItems(filteredX, filteredPodcasts, filteredBlogs);
+  console.error(`[feed] 去重后新量: 推文 ${newCounts.tweets} / 播客 ${newCounts.podcasts} / 博客 ${newCounts.blogs}`);
+
+  const diagnosis = {
+    sources: { x: chosenX.source, podcasts: chosenPod.source, blogs: chosenBlog.source },
+    generatedAt: {
+      x: feedX?.generatedAt || null,
+      podcasts: feedPodcasts?.generatedAt || null,
+      blogs: feedBlogs?.generatedAt || null,
+    },
+    ageHours: {
+      x: Number(ages.x.toFixed(1)),
+      podcasts: Number(ages.podcasts.toFixed(1)),
+      blogs: Number(ages.blogs.toFixed(1)),
+    },
+    staleFeeds,
+    rawCounts,
+    newCounts,
+    sentItemCount: (digestState.sentItemIds || []).length,
+    lastSentAt: digestState.lastSentAt || 0,
+    forceRemote,
+  };
 
   if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs)) {
-    console.log('检测到所有 feed 内容均已在之前推送过，为避免重复将终止本次发送。若需强制重发请删除 digest-state.json 或使用 workflow_dispatch');
-    return { alreadySent: true, podcasts: [], x: [], blogs: [], _digestState: digestState, _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs };
+    const why = rawCounts.total === 0
+      ? '上游 feed 本身为空（Generate Feeds 抓取后未收录任何条目）'
+      : (staleFeeds.length > 0 ? `feed 过旧：${staleFeeds.join(', ')}；内容全部已在之前推送过` : '所有内容均在之前推送过（去重后为 0）');
+    console.log(`[feed] 无新内容可发送 → 原因：${why}`);
+    return {
+      alreadySent: true,
+      podcasts: [], x: [], blogs: [],
+      _digestState: digestState,
+      _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs,
+      _diagnosis: diagnosis,
+      _emptyReason: why,
+    };
   }
 
   return {
@@ -186,9 +280,8 @@ async function getFeedData() {
     x: filteredX?.x || [],
     blogs: filteredBlogs?.blogs || [],
     _digestState: digestState,
-    _feedX: feedX,
-    _feedPod: feedPodcasts,
-    _feedBlog: feedBlogs
+    _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs,
+    _diagnosis: diagnosis,
   };
 }
 
@@ -572,7 +665,7 @@ function markdownToHtml(markdownText) {
 // 邮件发送
 // ============================================================================
 
-async function sendEmail(text, toEmail) {
+async function sendEmail(text, toEmail, opts = {}) {
   if (existsSync(ENV_PATH)) {
     loadEnv({ path: ENV_PATH });
   }
@@ -598,40 +691,110 @@ async function sendEmail(text, toEmail) {
   });
 
   const html = markdownToHtml(text);
+  const subjectPrefix = opts.isAlert ? '🚨 [ALERT] ' : '';
+  const subjectSuffix = opts.subjectSuffix || '';
+  const subject = `${subjectPrefix}AI Builders Digest — ${new Date().toLocaleDateString('en-US', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  })}${subjectSuffix ? ` ${subjectSuffix}` : ''}`;
 
   await transporter.sendMail({
     from: `AI Builders Digest <${smtpSender}>`,
     to: toEmail,
-    subject: `AI Builders Digest — ${new Date().toLocaleDateString('en-US', {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-    })}`,
+    subject,
     text: text,
     html: html
   });
+}
+
+// 把诊断对象写到 GitHub Actions Summary（本地没有这个 env 时跳过）
+async function writeActionsSummary(title, fields) {
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  if (!summaryPath) return;
+  try {
+    let md = `## ${title}\n\n`;
+    for (const [k, v] of Object.entries(fields)) {
+      md += `- **${k}:** ${v}\n`;
+    }
+    md += `\n`;
+    await writeFile(summaryPath, md, { flag: 'a' });
+  } catch (e) {
+    console.error('[summary] 写入 GITHUB_STEP_SUMMARY 失败:', e.message);
+  }
 }
 
 // ============================================================================
 // 主入口
 // ============================================================================
 
-// 生成"无新内容"的摘要
-function generateEmptyDigest(config) {
+// 生成"无新内容"的摘要（附带结构化诊断 + 过旧告警）
+function generateEmptyDigest(config, extra = {}) {
   const now = new Date();
   const dateStr = now.toLocaleDateString('zh-CN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+  const { diagnosis, emptyReason, totalItems } = extra;
+  const staleFeeds = diagnosis?.staleFeeds || [];
+  const isAlert = staleFeeds.length > 0 || (diagnosis?.rawCounts?.total === 0);
+
+  const headerLevel = isAlert ? '## 🚨 运行告警：今日无法确认是否有新内容' : '## 📭 今日暂无新内容';
+  const actionHint = isAlert
+    ? [
+        '本邮件为**告警级**：上游抓取链路（Generate Feeds workflow）疑似未成功运行或产出为空，',
+        '不代表 AI 建造者真的没有更新。请立即排查：',
+        '',
+        '1. 打开仓库 Actions 页，查看最近的 `Generate Feeds` 运行日志：',
+        '   https://github.com/perriluo05-lagom/follow-builders/actions/workflows/generate-feed.yml',
+        '2. 检查以下 Secret 是否有效：`X_BEARER_TOKEN`、`POD2TXT_API_KEY`、`pat_token`。',
+        '3. 手动点击 Actions 中的 `Run workflow` 触发一次 `Generate Feeds`，然后再手动跑一次 `Send Daily Digest`。',
+        '',
+        `**自动判断原因：** ${emptyReason || '（未知）'}`,
+        '',
+      ].join('\n')
+    : [
+        '今日没有从关注的信息源中获取到新的推文、播客或博客文章。',
+        '',
+        `**自动判断原因：** ${emptyReason || '所有内容均已在之前推送过（去重后为 0）'}`,
+        '',
+      ].join('\n');
+
   let digest = `# 🤖 AI Builders 每日简报 — ${dateStr}\n\n`;
   digest += `> 本简报追踪 AI 领域顶尖建造者（研究员、创始人、产品经理、工程师）的最新动态。\n\n`;
-  digest += `## 📭 今日暂无新内容\n\n`;
-  digest += `今日没有从关注的信息源中获取到新的推文、播客或博客文章。\n\n`;
-  digest += `可能的原因：\n`;
+  digest += `${headerLevel}\n\n`;
+  digest += `${actionHint}\n`;
+  digest += `可能的补充说明：\n`;
   digest += `- 关注的建造者今日暂未发布新内容\n`;
   digest += `- 播客/博客更新频率较低（通常每周或每月更新）\n`;
-  digest += `- 信息源抓取可能遇到临时问题\n\n`;
+  digest += `- 信息源抓取可能遇到临时问题（具体见下表）\n\n`;
+
+  // —— 结构化诊断表（关键！下次再收到空邮件时一眼就能定位）
+  digest += `### 🔍 运行诊断\n\n`;
+  if (diagnosis) {
+    const { sources, generatedAt, ageHours, rawCounts, newCounts, sentItemCount, lastSentAt, forceRemote } = diagnosis;
+    const fm = (d) => d ? new Date(d).toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' }) : '—';
+    const lastSentStr = lastSentAt
+      ? new Date(lastSentAt).toLocaleString('zh-CN', { hour12: false, timeZone: 'Asia/Shanghai' })
+      : '—';
+    const tag = (s) => (s || '').startsWith('remote') ? '🌐远程' : (s === 'missing' ? '❌缺失' : '💾本地');
+    digest += `| 类别  | 数据来源 | 生成时间 (UTC+8) | 距今(小时) | 抓取条目 | 去重后新条目 |\n`;
+    digest += `| :---  | :------- | :--------------- | :--------- | :------- | :----------- |\n`;
+    digest += `| 推文X | ${tag(sources.x)} ${sources.x || ''} | ${fm(generatedAt.x)} | ${Number.isFinite(ageHours.x) ? ageHours.x.toFixed(1) : '∞'} | ${rawCounts.tweets} | ${newCounts.tweets} |\n`;
+    digest += `| 播客  | ${tag(sources.podcasts)} ${sources.podcasts || ''} | ${fm(generatedAt.podcasts)} | ${Number.isFinite(ageHours.podcasts) ? ageHours.podcasts.toFixed(1) : '∞'} | ${rawCounts.podcasts} | ${newCounts.podcasts} |\n`;
+    digest += `| 博客  | ${tag(sources.blogs)} ${sources.blogs || ''} | ${fm(generatedAt.blogs)} | ${Number.isFinite(ageHours.blogs) ? ageHours.blogs.toFixed(1) : '∞'} | ${rawCounts.blogs} | ${newCounts.blogs} |\n\n`;
+    digest += `- **已记录去重 ID 数：** ${sentItemCount}（超过 14 天会自动清理）\n`;
+    digest += `- **上次成功发送简报：** ${lastSentStr}\n`;
+    if (forceRemote) digest += `- **模式：** 强制远程抓取（DIGEST_FORCE_REMOTE_FETCH=true）\n`;
+    if (totalItems !== undefined) digest += `- **已处理条目计数：** ${totalItems}\n`;
+    if (staleFeeds.length > 0) digest += `- **⚠️ 过旧 feed（> ${STALE_FEED_HOURS}h）：** ${staleFeeds.join('，')}\n`;
+  } else {
+    digest += `_诊断数据缺失（可能是 sendWhenEmpty 走到了 totalItems===0 分支且未传递 diagnosis）_\n\n`;
+  }
+
+  digest += `\n`;
   digest += `请明日再查看，或访问 [Follow Builders](https://github.com/zarazhangrui/follow-builders) 了解更多信息。\n\n`;
   digest += `---\n\n`;
   digest += `Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders\n\n`;
 
-  return digest;
+  // 返回时额外携带邮件主题建议（主入口会覆盖 subject）
+  return { text: digest, isAlert };
 }
 
 async function main() {
@@ -669,16 +832,32 @@ async function main() {
 
     console.log('Fetching feed data...');
     const feedData = await getFeedData();
+    const diagnosis = feedData._diagnosis || null;
 
     // 同一批 feed 已推送过则跳过
     if (feedData.alreadySent) {
       console.log('此批 feed 已推送过，本次跳过不重复发送。');
-      // 如果配置为发送空通知，则发送"无更新"邮件
+      await writeActionsSummary('Digest Result — Already Sent / Empty', {
+        '原因': feedData._emptyReason || 'all feed items deduped',
+        '上游 feed 距今(推文/播客/博客)': diagnosis
+          ? `${diagnosis.ageHours.x}h / ${diagnosis.ageHours.podcasts}h / ${diagnosis.ageHours.blogs}h`
+          : 'N/A',
+        '抓取总数': diagnosis ? `${diagnosis.rawCounts.tweets}/${diagnosis.rawCounts.podcasts}/${diagnosis.rawCounts.blogs}` : 'N/A',
+        '去重后新数': diagnosis ? `${diagnosis.newCounts.tweets}/${diagnosis.newCounts.podcasts}/${diagnosis.newCounts.blogs}` : 'N/A',
+        '过旧 feed': diagnosis?.staleFeeds?.length > 0 ? diagnosis.staleFeeds.join('，') : '无',
+      });
+      // 如果配置为发送空通知，则发送"无更新"邮件（带结构化诊断）
       if (config.sendWhenEmpty && toEmail) {
-        console.log('sendWhenEmpty=true，发送"无更新"通知邮件...');
-        const emptyDigest = generateEmptyDigest(config);
-        await sendEmail(emptyDigest, toEmail);
-        console.log('Empty digest email sent successfully!');
+        console.log('sendWhenEmpty=true，发送"无更新"通知邮件（含诊断）...');
+        const { text: emptyDigest, isAlert } = generateEmptyDigest(config, {
+          diagnosis,
+          emptyReason: feedData._emptyReason,
+        });
+        await sendEmail(emptyDigest, toEmail, {
+          isAlert,
+          subjectSuffix: isAlert ? '— 上游抓取疑似异常' : '— 暂无新推送',
+        });
+        console.log(`Empty digest email sent successfully (isAlert=${isAlert})`);
       }
       return;
     }
@@ -690,18 +869,41 @@ async function main() {
       (feedData.blogs?.length || 0);
     if (totalItems === 0) {
       console.log('今日没有新内容（0 条推文 / 0 集播客 / 0 篇博客），跳过发送。');
+      await writeActionsSummary('Digest Result — Empty', {
+        '原因': diagnosis?._emptyReason || 'totalItems===0',
+        '上游 feed 距今(推文/播客/博客)': diagnosis
+          ? `${diagnosis.ageHours.x}h / ${diagnosis.ageHours.podcasts}h / ${diagnosis.ageHours.blogs}h`
+          : 'N/A',
+        '抓取总数': diagnosis ? `${diagnosis.rawCounts.tweets}/${diagnosis.rawCounts.podcasts}/${diagnosis.rawCounts.blogs}` : 'N/A',
+        '过旧 feed': diagnosis?.staleFeeds?.length > 0 ? diagnosis.staleFeeds.join('，') : '无',
+      });
       // 如果配置为发送空通知，则发送"无更新"邮件
       if (config.sendWhenEmpty && toEmail) {
-        console.log('sendWhenEmpty=true，发送"无更新"通知邮件...');
-        const emptyDigest = generateEmptyDigest(config);
-        await sendEmail(emptyDigest, toEmail);
-        console.log('Empty digest email sent successfully!');
+        console.log('sendWhenEmpty=true，发送"无更新"通知邮件（含诊断）...');
+        const { text: emptyDigest, isAlert } = generateEmptyDigest(config, {
+          diagnosis,
+          emptyReason: '过滤后 totalItems===0：上游 feed 为空或全部被去重',
+          totalItems: 0,
+        });
+        await sendEmail(emptyDigest, toEmail, {
+          isAlert,
+          subjectSuffix: isAlert ? '— 上游抓取疑似异常' : '— 暂无新推送',
+        });
+        console.log(`Empty digest email sent successfully (isAlert=${isAlert})`);
       }
       return;
     }
 
     console.log(`Generating digest (${totalItems} 条新内容)...`);
     const digest = generateDigest(feedData, config);
+
+    await writeActionsSummary('Digest Result — Sent', {
+      '新增内容': `${totalItems} 条（推文 ${(feedData.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0)} / 播客 ${feedData.podcasts?.length || 0} / 博客 ${feedData.blogs?.length || 0}）`,
+      '上游 feed 距今(推文/播客/博客)': diagnosis
+        ? `${diagnosis.ageHours.x}h / ${diagnosis.ageHours.podcasts}h / ${diagnosis.ageHours.blogs}h`
+        : 'N/A',
+      '数据来源': diagnosis ? `X=${diagnosis.sources.x} / 播客=${diagnosis.sources.podcasts} / 博客=${diagnosis.sources.blogs}` : 'N/A',
+    });
 
     if (toEmail) {
       console.log(`Sending to ${toEmail}...`);
@@ -735,3 +937,44 @@ async function main() {
 }
 
 main();
+
+// —— 本地诊断自测：DEBUG_DIAG_TEST=1 node auto-digest.js 即可打印 generateEmptyDigest 两个样例不发邮件
+if (process.env.DEBUG_DIAG_TEST === '1') {
+  (async () => {
+    console.log('\n===== DEBUG 自测 1：过旧 feed + 全部被去重 → 应告警级 =====');
+    const case1 = generateEmptyDigest({ language: 'zh' }, {
+      diagnosis: {
+        sources: { x: 'remote', podcasts: 'local', blogs: 'missing' },
+        generatedAt: { x: '2026-07-27T07:26:55.001Z', podcasts: '2026-07-27T07:26:58.386Z', blogs: null },
+        ageHours: { x: 648.0, podcasts: 648.0, blogs: Infinity },
+        staleFeeds: ['x(648.0h 前)','podcasts(648.0h 前)'],
+        rawCounts: { tweets: 21, podcasts: 1, blogs: 0, total: 22 },
+        newCounts: { tweets: 0, podcasts: 0, blogs: 0, total: 0 },
+        sentItemCount: 95,
+        lastSentAt: 1786886460418,
+        forceRemote: true,
+      },
+      emptyReason: 'feed 过旧：x(648h 前)、podcasts(648h 前)；内容全部已在之前推送过',
+    });
+    console.log('isAlert =', case1.isAlert);
+    console.log(case1.text.split('\n').slice(0, 50).join('\n'));
+
+    console.log('\n===== DEBUG 自测 2：feed 很新、真的没有内容 → 不应告警级 =====');
+    const case2 = generateEmptyDigest({ language: 'zh' }, {
+      diagnosis: {
+        sources: { x: 'remote', podcasts: 'remote', blogs: 'remote' },
+        generatedAt: { x: new Date().toISOString(), podcasts: new Date().toISOString(), blogs: new Date().toISOString() },
+        ageHours: { x: 0.2, podcasts: 0.2, blogs: 0.2 },
+        staleFeeds: [],
+        rawCounts: { tweets: 0, podcasts: 0, blogs: 0, total: 0 },
+        newCounts: { tweets: 0, podcasts: 0, blogs: 0, total: 0 },
+        sentItemCount: 50,
+        lastSentAt: Date.now() - 20*3600*1000,
+        forceRemote: false,
+      },
+      emptyReason: '上游 feed 本身为空（Generate Feeds 抓取后未收录任何条目）',
+    });
+    console.log('isAlert =', case2.isAlert);
+    console.log(case2.text.split('\n').slice(0, 45).join('\n'));
+  })();
+}
