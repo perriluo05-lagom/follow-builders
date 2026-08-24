@@ -50,4 +50,6 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add feed-podcasts.json feed-blogs.json feed-news.json state-feed.json
           git diff --cached --quiet || git commit -m "chore: update feeds [skip ci]"
-          git push
+          # 先拉取远程最新代码再推送，避免并发 workflow 冲突
+          git pull --rebase origin main || true
+          git push origin main || echo "Push failed, will retry on next run"
