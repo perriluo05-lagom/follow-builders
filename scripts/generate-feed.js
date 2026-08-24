@@ -28,8 +28,10 @@ const RSS_USER_AGENT =
 const TWEET_LOOKBACK_HOURS = 24;
 const PODCAST_LOOKBACK_HOURS = 336; // 14 days — podcasts publish weekly/biweekly, not daily
 const BLOG_LOOKBACK_HOURS = 72;
+const NEWS_LOOKBACK_HOURS = 24; // News: last 24 hours
 const MAX_TWEETS_PER_USER = 3;
 const MAX_ARTICLES_PER_BLOG = 3;
+const MAX_NEWS_PER_SOURCE = 5; // Top 5 items per news source
 const X_USER_LOOKUP_BATCH_SIZE = 5;
 const X_RETRY_STATUSES = new Set([500, 502, 503, 504]);
 const X_RETRY_ATTEMPTS = 3;
@@ -46,15 +48,16 @@ const STATE_PATH = join(SCRIPT_DIR, "..", "state-feed.json");
 
 async function loadState() {
   if (!existsSync(STATE_PATH)) {
-    return { seenTweets: {}, seenVideos: {}, seenArticles: {} };
+    return { seenTweets: {}, seenVideos: {}, seenArticles: {}, seenNews: {} };
   }
   try {
     const state = JSON.parse(await readFile(STATE_PATH, "utf-8"));
-    // Ensure seenArticles exists for older state files
+    // Ensure new fields exist for older state files
     if (!state.seenArticles) state.seenArticles = {};
+    if (!state.seenNews) state.seenNews = {};
     return state;
   } catch {
-    return { seenTweets: {}, seenVideos: {}, seenArticles: {} };
+    return { seenTweets: {}, seenVideos: {}, seenArticles: {}, seenNews: {} };
   }
 }
 
@@ -69,6 +72,9 @@ async function saveState(state) {
   }
   for (const [id, ts] of Object.entries(state.seenArticles || {})) {
     if (ts < cutoff) delete state.seenArticles[id];
+  }
+  for (const [id, ts] of Object.entries(state.seenNews || {})) {
+    if (ts < cutoff) delete state.seenNews[id];
   }
   await writeFile(STATE_PATH, JSON.stringify(state, null, 2));
 }
@@ -1128,6 +1134,96 @@ function extractGenericArticleContent(html) {
   return { title, author, publishedAt, content };
 }
 
+// -- News Fetching (RSS) -----------------------------------------------------
+
+// Fetches news items from RSS feeds (Hacker News, ArXiv, TechCrunch, Reddit)
+async function fetchNewsContent(newsSources, state, errors) {
+  const results = [];
+  const cutoff = new Date(Date.now() - NEWS_LOOKBACK_HOURS * 60 * 60 * 1000);
+
+  for (const source of newsSources) {
+    console.error(`  Processing news: ${source.name}...`);
+
+    try {
+      const rssRes = await fetch(source.rssUrl, {
+        headers: { "User-Agent": RSS_USER_AGENT },
+        signal: AbortSignal.timeout(15000),
+      });
+
+      if (!rssRes.ok) {
+        errors.push(`News: Failed to fetch RSS for ${source.name}: HTTP ${rssRes.status}`);
+        continue;
+      }
+
+      const rssXml = await rssRes.text();
+      const items = parseRssNewsFeed(rssXml);
+      console.error(`  ${source.name}: found ${items.length} items in RSS feed`);
+
+      // Filter by lookback window and dedup
+      const newItems = [];
+      for (const item of items.slice(0, MAX_NEWS_PER_SOURCE)) {
+        if (state.seenNews[item.url]) continue;
+        if (item.publishedAt && new Date(item.publishedAt) < cutoff) continue;
+        newItems.push(item);
+        if (newItems.length >= MAX_NEWS_PER_SOURCE) break;
+      }
+
+      if (newItems.length === 0) {
+        console.error(`    No new items from ${source.name}`);
+        continue;
+      }
+
+      console.error(`    Found ${newItems.length} new item(s) from ${source.name}`);
+
+      for (const item of newItems) {
+        results.push({
+          source: "news",
+          name: source.name,
+          category: source.category || "general",
+          title: item.title,
+          url: item.url,
+          publishedAt: item.publishedAt,
+          description: item.description || "",
+        });
+        state.seenNews[item.url] = Date.now();
+      }
+    } catch (err) {
+      errors.push(`News: Error processing ${source.name}: ${err.message}`);
+    }
+  }
+
+  return results;
+}
+
+// Parses RSS feed for news items
+function parseRssNewsFeed(xml) {
+  const items = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+  let itemMatch;
+
+  while ((itemMatch = itemRegex.exec(xml)) !== null) {
+    const block = itemMatch[1];
+
+    const titleMatch = block.match(/<title>([\s\S]*?)<\/title>/);
+    const title = titleMatch ? titleMatch[1].trim() : "";
+
+    const linkMatch = block.match(/<link>([\s\S]*?)<\/link>/);
+    const url = linkMatch ? linkMatch[1].trim() : "";
+
+    const pubDateMatch = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+    const publishedAt = pubDateMatch ? new Date(pubDateMatch[1].trim()).toISOString() : null;
+
+    const descMatch = block.match(/<description>([\s\S]*?)<\/description>/);
+    const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, "").trim() : "";
+
+    if (url) {
+      items.push({ title, url, publishedAt, description });
+    }
+  }
+
+  return items;
+}
+
 // Main blog fetching orchestrator.
 // For each blog source in the config, discovers new articles, deduplicates
 // against previously seen URLs, fetches full article content, and returns
@@ -1271,18 +1367,16 @@ async function fetchBlogContent(blogs, state, errors) {
 
 async function main() {
   const args = process.argv.slice(2);
-  const tweetsOnly = args.includes("--tweets-only");
   const podcastsOnly = args.includes("--podcasts-only");
   const blogsOnly = args.includes("--blogs-only");
+  const newsOnly = args.includes("--news-only");
 
   // If a specific --*-only flag is set, only that feed type runs.
   // If no flag is set, all three run.
-  // 注意：使用 let 而非 const，因为后面会基于 Token 存在情况关闭某些类型
-  let runTweets = tweetsOnly || (!podcastsOnly && !blogsOnly);
-  let runPodcasts = podcastsOnly || (!tweetsOnly && !blogsOnly);
-  let runBlogs = blogsOnly || (!tweetsOnly && !podcastsOnly);
+  let runPodcasts = podcastsOnly || (!blogsOnly && !newsOnly);
+  let runBlogs = blogsOnly || (!podcastsOnly && !newsOnly);
+  let runNews = newsOnly || (!podcastsOnly && !blogsOnly);
 
-  const xBearerToken = process.env.X_BEARER_TOKEN;
   const pod2txtKey = process.env.POD2TXT_API_KEY;
   const sources = await loadSources();
 
@@ -1304,94 +1398,9 @@ async function main() {
       );
     }
   }
-  if (runTweets && !xBearerToken) {
-    // 只有当用户明确选择 --tweets-only（意味着本次只跑 X）时，缺 key 才 exit 1，
-    // 否则只把 runTweets 关掉——播客（尤其是小宇宙）和博客板块照样能产出，
-    // 避免为了 X 一项的 secret 没配就让整条 Generate Feeds 全挂。
-    if (tweetsOnly) {
-      console.error("X_BEARER_TOKEN not set and running in --tweets-only mode — aborting");
-      process.exit(1);
-    }
-    console.warn(
-      "X_BEARER_TOKEN not set — X/Twitter content will be skipped this run, " +
-        "but podcasts and blogs will still be generated normally. " +
-        "Re-run with --tweets-only to fail fast on X-only jobs, " +
-        "or configure X_BEARER_TOKEN in repository secrets to re-enable tweets.",
-    );
-    runTweets = false;
-  }
 
   const state = await loadState();
   const errors = [];
-
-  // Fetch tweets
-  if (runTweets) {
-    console.error("Fetching X/Twitter content...");
-    const { results: xContent, userMap, handles } = await fetchXContent(
-      sources.x_accounts,
-      xBearerToken,
-      state,
-      errors,
-    );
-    console.error(`  Found ${xContent.length} builders with new tweets`);
-
-    const totalTweets = xContent.reduce((sum, a) => sum + a.tweets.length, 0);
-    const xErrors = errors.filter((e) => e.startsWith("X API"));
-
-    if (xErrors.length > 0) {
-      console.error("  X API errors:");
-      for (const error of xErrors) {
-        console.error(`    - ${error}`);
-      }
-    }
-
-    // Fail-closed：以下任一情况都视为抓取链路失败，直接退出：
-    //  1) 内容为 0 且存在任何 X API 错误（原条件）
-    //  2) 成功 lookup 的用户占比 < 50%（通常意味着 Token 或批次调用连续失败）
-    //  3) 所有 lookup 全部失败（根本没打上任何一个账号）
-    const lookedUpCount = Object.keys(userMap).length;
-    const totalHandles = handles.length;
-    const lookupRatio = totalHandles > 0 ? lookedUpCount / totalHandles : 0;
-    console.error(
-      `  X 用户 lookup: ${lookedUpCount}/${totalHandles} (${(lookupRatio * 100).toFixed(0)}%)`,
-    );
-
-    if (xContent.length === 0 && xErrors.length > 0) {
-      throw new Error(
-        `X feed failed: 0 builders returned and ${xErrors.length} X API error(s) occurred`,
-      );
-    }
-    if (totalHandles > 0 && lookedUpCount === 0) {
-      throw new Error(
-        `X feed failed: user lookup returned 0/${totalHandles} handles. ` +
-          `Please check X_BEARER_TOKEN scope / validity. ` +
-          `First few errors: ${xErrors.slice(0, 3).join(" | ")}`,
-      );
-    }
-    if (totalHandles > 0 && lookupRatio < 0.5) {
-      // 过半账号 lookup 失败，不是正常"今日没发推"，抛出避免写入空 feed
-      throw new Error(
-        `X feed degraded: only ${lookedUpCount}/${totalHandles} users were looked up (<50%). ` +
-          `Aborting to avoid committing an empty / partial feed. ` +
-          `First few errors: ${xErrors.slice(0, 3).join(" | ")}`,
-      );
-    }
-
-    const xFeed = {
-      generatedAt: new Date().toISOString(),
-      lookbackHours: TWEET_LOOKBACK_HOURS,
-      x: xContent,
-      stats: { xBuilders: xContent.length, totalTweets, usersLookedUp: lookedUpCount, usersTotal: totalHandles },
-      errors: xErrors.length > 0 ? xErrors : undefined,
-    };
-    await writeFile(
-      join(SCRIPT_DIR, "..", "feed-x.json"),
-      JSON.stringify(xFeed, null, 2),
-    );
-    console.error(
-      `  feed-x.json: ${xContent.length} builders, ${totalTweets} tweets`,
-    );
-  }
 
   // Fetch podcasts
   if (runPodcasts) {
@@ -1442,6 +1451,29 @@ async function main() {
       JSON.stringify(blogFeed, null, 2),
     );
     console.error(`  feed-blogs.json: ${blogContent.length} posts`);
+  }
+
+  // Fetch news
+  if (runNews && sources.news && sources.news.length > 0) {
+    console.error("Fetching news content (RSS)...");
+    const newsContent = await fetchNewsContent(sources.news, state, errors);
+    console.error(`  Found ${newsContent.length} new news item(s)`);
+
+    const newsFeed = {
+      generatedAt: new Date().toISOString(),
+      lookbackHours: NEWS_LOOKBACK_HOURS,
+      news: newsContent,
+      stats: { newsItems: newsContent.length },
+      errors:
+        errors.filter((e) => e.startsWith("News")).length > 0
+          ? errors.filter((e) => e.startsWith("News"))
+          : undefined,
+    };
+    await writeFile(
+      join(SCRIPT_DIR, "..", "feed-news.json"),
+      JSON.stringify(newsFeed, null, 2),
+    );
+    console.error(`  feed-news.json: ${newsContent.length} items`);
   }
 
   // Save dedup state

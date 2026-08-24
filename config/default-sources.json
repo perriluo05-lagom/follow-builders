@@ -153,26 +153,36 @@
       "fetchMethod": "rss"
     }
   ],
-  "x_accounts": [
-    { "name": "Sam Altman", "handle": "sama" },
-    { "name": "Dario Amodei", "handle": "DarioAmodei" },
-    { "name": "Andrej Karpathy", "handle": "karpathy" },
-    { "name": "Yann LeCun", "handle": "ylecun" },
-    { "name": "Jim Fan", "handle": "DrJimFan" },
-    { "name": "Thibault Sottiaux", "handle": "thsottiaux" },
-    { "name": "Alex Albert", "handle": "alexalbert__" },
-    { "name": "Amanda Askell", "handle": "AmandaAskell" },
-    { "name": "Swyx", "handle": "swyx" },
-    { "name": "Harrison Chase", "handle": "hwchase17" },
-    { "name": "Garry Tan", "handle": "garrytan" },
-    { "name": "Matt Turck", "handle": "mattturck" },
-    { "name": "Ethan Mollick", "handle": "emollick" },
-    { "name": "Lilian Weng", "handle": "lilianweng" },
-    { "name": "Jay Alammar", "handle": "JayAlammar" },
-    { "name": "Simon Willison", "handle": "simonw" },
-    { "name": "Fei-Fei Li", "handle": "drfeifei" },
-    { "name": "Zara Zhang", "handle": "zarazhangrui" },
-    { "name": "Guillermo Rauch", "handle": "rauchg" },
-    { "name": "Jeff Dean", "handle": "JeffDean" }
+  "news": [
+    {
+      "name": "Hacker News",
+      "rssUrl": "https://hnrss.org/frontpage",
+      "url": "https://news.ycombinator.com/",
+      "category": "tech"
+    },
+    {
+      "name": "ArXiv cs.AI",
+      "rssUrl": "https://rss.arxiv.org/rss/cs.AI",
+      "url": "https://arxiv.org/list/cs.AI/recent",
+      "category": "research"
+    },
+    {
+      "name": "TechCrunch AI",
+      "rssUrl": "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "url": "https://techcrunch.com/category/artificial-intelligence/",
+      "category": "industry"
+    },
+    {
+      "name": "Reddit r/MachineLearning",
+      "rssUrl": "https://www.reddit.com/r/MachineLearning/.rss",
+      "url": "https://www.reddit.com/r/MachineLearning/",
+      "category": "community"
+    },
+    {
+      "name": "Reddit r/LocalLLaMA",
+      "rssUrl": "https://www.reddit.com/r/LocalLLaMA/.rss",
+      "url": "https://www.reddit.com/r/LocalLLaMA/",
+      "category": "community"
+    }
   ]
 }

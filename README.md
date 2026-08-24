@@ -27,7 +27,7 @@
 
 从海量信息中提炼核心价值，**完整保留原始内容**，绝不压缩成空话：
 
-- **X/Twitter 洞察**：20 位精选 AI 建造者的最新动态，每条推文保留原文，附带话题分类（产品发布/技术深度/商业战略/行业观点）、互动数据、Quote Tweet 标注、关键数据高亮
+- **AI 行业动态**：来自 Hacker News、ArXiv、TechCrunch、Reddit 等社区的 AI 相关资讯，按技术/研究/行业/社区分类
 - **播客摘要**：从转录稿中智能提取嘉宾背景介绍 + 带时间戳的核心要点段落，信息零损失
 - **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - **中文优先**：默认中文输出，无需任何 AI 模型 API key
@@ -115,11 +115,11 @@ node scripts/auto-digest.js
 
 每日摘要包含以下内容：
 
-- 💬 **X/Twitter 洞察**：20 位精选 AI 建造者的关键观点和动态，**保留推文原文**，附话题分类、互动数据、Quote Tweet 上下文标注
+-  **AI 行业动态**：来自 Hacker News、ArXiv、TechCrunch、Reddit 等社区的 AI 相关资讯，按技术/研究/行业/社区分类
 - 📝 **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - 🎙️ **播客摘要**：顶级 AI 播客新节目的精华内容，嘉宾背景介绍 + 带时间戳的核心要点段落
 - 🔗 **原始链接**：所有内容都附带原文链接，方便深入阅读
-- 🚫 **内容去重**：通过 `digest-state.json` 记录已推送的内容 ID（推文 ID、播客 GUID、博客 URL），确保每条内容只推送一次
+-  **内容去重**：通过 `digest-state.json` 记录已推送的内容 ID（新闻 URL、播客 GUID、博客 URL），确保每条内容只推送一次
 - 📭 **无内容通知**：当没有新内容时，默认发送"今日暂无新内容"的通知邮件（可通过 `sendWhenEmpty: false` 关闭）
 
 ---
@@ -151,9 +151,16 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 ---
 
-## 📝 默认信息源
+##  默认信息源
 
-### 播客（11个 - 小宇宙）
+### 📰 AI 行业动态（5个）
+- [Hacker News](https://news.ycombinator.com/) — 全球顶级技术社区，AI 相关内容极多
+- [ArXiv cs.AI](https://arxiv.org/list/cs.AI/recent) — 最新 AI/ML 研究论文
+- [TechCrunch AI](https://techcrunch.com/category/artificial-intelligence/) — AI 行业新闻、融资、产品发布
+- [Reddit r/MachineLearning](https://www.reddit.com/r/MachineLearning/) — 机器学习社区讨论
+- [Reddit r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/) — 本地 LLM 社区
+
+### 🎙️ 播客（11个 - 小宇宙）
 - [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)
 - [Web3 101](https://www.xiaoyuzhoufm.com/podcast/62c2b6b3a61b9fd92a401b39)
 - [硬地骇客](https://www.xiaoyuzhoufm.com/podcast/640ee2438be5d40013fe4a87)
@@ -166,10 +173,7 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 - [声东击西](https://www.xiaoyuzhoufm.com/podcast/5e2831ed418a84a046231c00)
 - [忽左忽右](https://www.xiaoyuzhoufm.com/podcast/5e4ee557418a84a0466737b7)
 
-### X 上的 AI 建造者（20位）
-[Sam Altman](https://x.com/sama), [Dario Amodei](https://x.com/DarioAmodei), [Andrej Karpathy](https://x.com/karpathy), [Yann LeCun](https://x.com/ylecun), [Jim Fan](https://x.com/DrJimFan), [Thibault Sottiaux](https://x.com/thsottiaux), [Alex Albert](https://x.com/alexalbert__), [Amanda Askell](https://x.com/AmandaAskell), [Swyx](https://x.com/swyx), [Harrison Chase](https://x.com/hwchase17), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Ethan Mollick](https://x.com/emollick), [Lilian Weng](https://x.com/lilianweng), [Jay Alammar](https://x.com/JayAlammar), [Simon Willison](https://x.com/simonw), [Fei-Fei Li](https://x.com/drfeifei), [Zara Zhang](https://x.com/zarazhangrui), [Guillermo Rauch](https://x.com/rauchg), [Jeff Dean](https://x.com/JeffDean)
-
-### 官方博客（12个）
+### 📝 官方博客（12个）
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — Anthropic 团队的技术深度文章
 - [Claude Blog](https://claude.com/blog) — Claude 的产品公告与更新
 - [OpenAI Blog](https://openai.com/blog) — OpenAI 的官方博客
@@ -187,10 +191,9 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 ### 🔑 数据源配置说明
 
-**X/Twitter 推文抓取**
-- 需要配置 `X_BEARER_TOKEN`（X API v2 Bearer Token）
-- 获取方式：访问 [X Developer Portal](https://developer.x.com/) → 申请开发者账号 → 创建 Project 和 App → 获取 Bearer Token
-- Free 计划每月可读取 1500 条推文，足够个人使用
+**新闻抓取**
+- 无需 API key，直接通过 RSS 获取
+- 支持 Hacker News、ArXiv、TechCrunch、Reddit 等主流技术社区
 
 **播客抓取**
 - 小宇宙播客：无需 API key，直接通过 RSS 获取

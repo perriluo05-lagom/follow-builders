@@ -35,6 +35,7 @@ const DIGEST_STATE_PATH = join(SKILL_DIR, 'digest-state.json');
 const FEED_X_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-x.json';
 const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-podcasts.json';
 const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-blogs.json';
+const FEED_NEWS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-news.json';
 
 // feed 文件超过这个时间视为过旧——说明 Generate Feeds 很可能连续失败了
 const STALE_FEED_HOURS = 30;
@@ -102,8 +103,8 @@ async function saveDigestState(state) {
   }
 }
 
-// 从 feed 数据中提取所有内容 ID（推文 ID、播客 GUID、博客 URL）
-function extractContentIds(feedX, feedPodcasts, feedBlogs) {
+// 从 feed 数据中提取所有内容 ID（推文 ID、播客 GUID、博客 URL、新闻 URL）
+function extractContentIds(feedX, feedPodcasts, feedBlogs, feedNews) {
   const ids = [];
   // 推文 ID
   if (feedX?.x) {
@@ -127,11 +128,17 @@ function extractContentIds(feedX, feedPodcasts, feedBlogs) {
       if (blog.url) ids.push(`blog:${blog.url}`);
     }
   }
+  // 新闻 URL
+  if (feedNews?.news) {
+    for (const item of feedNews.news) {
+      if (item.url) ids.push(`news:${item.url}`);
+    }
+  }
   return ids;
 }
 
 // 基于内容 ID 过滤掉已推送过的项目，返回仅包含新内容的 feed 数据
-function filterNewContent(feedX, feedPodcasts, feedBlogs, sentItemIds) {
+function filterNewContent(feedX, feedPodcasts, feedBlogs, feedNews, sentItemIds) {
   const sentSet = new Set(sentItemIds.map(e => e.id));
 
   // 过滤推文：移除已发送的推文
@@ -159,24 +166,33 @@ function filterNewContent(feedX, feedPodcasts, feedBlogs, sentItemIds) {
     filteredBlogs = { ...feedBlogs, blogs: newBlogs };
   }
 
-  return { filteredX, filteredPodcasts, filteredBlogs };
+  // 过滤新闻：移除已发送的新闻
+  let filteredNews = feedNews;
+  if (feedNews?.news) {
+    const newNews = feedNews.news.filter(n => !sentSet.has(`news:${n.url}`));
+    filteredNews = { ...feedNews, news: newNews };
+  }
+
+  return { filteredX, filteredPodcasts, filteredBlogs, filteredNews };
 }
 
 // 检查过滤后是否还有任何新内容
-function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs) {
+function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews) {
   const tweetCount = (filteredX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
   const podcastCount = (filteredPodcasts?.podcasts || []).length;
   const blogCount = (filteredBlogs?.blogs || []).length;
-  return tweetCount + podcastCount + blogCount > 0;
+  const newsCount = (filteredNews?.news || []).length;
+  return tweetCount + podcastCount + blogCount + newsCount > 0;
 }
 
 // -- Feed 读取 ---------------------------------------------------------------
 
-function countFeedItems(feedX, feedPodcasts, feedBlogs) {
+function countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews) {
   const tweets = (feedX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
   const podcasts = (feedPodcasts?.podcasts || []).length;
   const blogs = (feedBlogs?.blogs || []).length;
-  return { tweets, podcasts, blogs, total: tweets + podcasts + blogs };
+  const news = (feedNews?.news || []).length;
+  return { tweets, podcasts, blogs, news, total: tweets + podcasts + blogs + news };
 }
 
 async function getFeedData() {
@@ -185,19 +201,22 @@ async function getFeedData() {
   const feedXPath = join(SKILL_DIR, 'feed-x.json');
   const feedPodcastsPath = join(SKILL_DIR, 'feed-podcasts.json');
   const feedBlogsPath = join(SKILL_DIR, 'feed-blogs.json');
+  const feedNewsPath = join(SKILL_DIR, 'feed-news.json');
 
   // 1) 读取本地
-  let localX = null, localPod = null, localBlog = null;
+  let localX = null, localPod = null, localBlog = null, localNews = null;
   if (existsSync(feedXPath)) try { localX = JSON.parse(await readFile(feedXPath, 'utf-8')); } catch {}
   if (existsSync(feedPodcastsPath)) try { localPod = JSON.parse(await readFile(feedPodcastsPath, 'utf-8')); } catch {}
   if (existsSync(feedBlogsPath)) try { localBlog = JSON.parse(await readFile(feedBlogsPath, 'utf-8')); } catch {}
+  if (existsSync(feedNewsPath)) try { localNews = JSON.parse(await readFile(feedNewsPath, 'utf-8')); } catch {}
 
   // 2) 并发拉远程（每次都拉；forceRemote 时忽略本地，只采用远程）
-  console.error(`[feed] 正在并行获取 GitHub raw 上的 3 份 feed（forceRemote=${forceRemote}）...`);
-  const [remoteX, remotePodcasts, remoteBlogs] = await Promise.all([
+  console.error(`[feed] 正在并行获取 GitHub raw 上的 4 份 feed（forceRemote=${forceRemote}）...`);
+  const [remoteX, remotePodcasts, remoteBlogs, remoteNews] = await Promise.all([
     fetchJSON(FEED_X_URL, 'feed-x (remote)'),
     fetchJSON(FEED_PODCASTS_URL, 'feed-podcasts (remote)'),
     fetchJSON(FEED_BLOGS_URL, 'feed-blogs (remote)'),
+    fetchJSON(FEED_NEWS_URL, 'feed-news (remote)'),
   ]);
 
   // 3) 比较新鲜度，择优选用
@@ -210,10 +229,14 @@ async function getFeedData() {
   const chosenBlog = forceRemote
     ? { feed: remoteBlogs ?? localBlog, source: remoteBlogs ? 'remote(force)' : 'local(fallback)' }
     : pickFresherFeed(localBlog, remoteBlogs, 'feed-blogs');
+  const chosenNews = forceRemote
+    ? { feed: remoteNews ?? localNews, source: remoteNews ? 'remote(force)' : 'local(fallback)' }
+    : pickFresherFeed(localNews, remoteNews, 'feed-news');
 
   const feedX = chosenX.feed;
   const feedPodcasts = chosenPod.feed;
   const feedBlogs = chosenBlog.feed;
+  const feedNews = chosenNews.feed;
 
   // 4) 新鲜度 / 过旧诊断
   const nowTs = Date.now();
@@ -221,36 +244,39 @@ async function getFeedData() {
     x: feedX?.generatedAt ? (nowTs - new Date(feedX.generatedAt).getTime()) / 3_600_000 : Infinity,
     podcasts: feedPodcasts?.generatedAt ? (nowTs - new Date(feedPodcasts.generatedAt).getTime()) / 3_600_000 : Infinity,
     blogs: feedBlogs?.generatedAt ? (nowTs - new Date(feedBlogs.generatedAt).getTime()) / 3_600_000 : Infinity,
+    news: feedNews?.generatedAt ? (nowTs - new Date(feedNews.generatedAt).getTime()) / 3_600_000 : Infinity,
   };
   const staleFeeds = Object.entries(ages)
     .filter(([, h]) => h > STALE_FEED_HOURS)
     .map(([k, h]) => `${k}(${h.toFixed(1)}h 前)`);
 
-  const rawCounts = countFeedItems(feedX, feedPodcasts, feedBlogs);
-  console.error(`[feed] 原始抓取量: 推文 ${rawCounts.tweets} / 播客 ${rawCounts.podcasts} / 博客 ${rawCounts.blogs}`);
+  const rawCounts = countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews);
+  console.error(`[feed] 原始抓取量: 推文 ${rawCounts.tweets} / 播客 ${rawCounts.podcasts} / 博客 ${rawCounts.blogs} / 新闻 ${rawCounts.news}`);
   if (staleFeeds.length > 0) {
     console.error(`[feed] ⚠️  存在过旧 feed (阈值 ${STALE_FEED_HOURS}h): ${staleFeeds.join(', ')}，Generate Feeds 可能连续失败！`);
   }
 
   // 5) 基于内容 ID 去重：过滤掉已推送过的项目
   const digestState = await loadDigestState();
-  const { filteredX, filteredPodcasts, filteredBlogs } = filterNewContent(
-    feedX, feedPodcasts, feedBlogs, digestState.sentItemIds || [],
+  const { filteredX, filteredPodcasts, filteredBlogs, filteredNews } = filterNewContent(
+    feedX, feedPodcasts, feedBlogs, feedNews, digestState.sentItemIds || [],
   );
-  const newCounts = countFeedItems(filteredX, filteredPodcasts, filteredBlogs);
-  console.error(`[feed] 去重后新量: 推文 ${newCounts.tweets} / 播客 ${newCounts.podcasts} / 博客 ${newCounts.blogs}`);
+  const newCounts = countFeedItems(filteredX, filteredPodcasts, filteredBlogs, filteredNews);
+  console.error(`[feed] 去重后新量: 推文 ${newCounts.tweets} / 播客 ${newCounts.podcasts} / 博客 ${newCounts.blogs} / 新闻 ${newCounts.news}`);
 
   const diagnosis = {
-    sources: { x: chosenX.source, podcasts: chosenPod.source, blogs: chosenBlog.source },
+    sources: { x: chosenX.source, podcasts: chosenPod.source, blogs: chosenBlog.source, news: chosenNews.source },
     generatedAt: {
       x: feedX?.generatedAt || null,
       podcasts: feedPodcasts?.generatedAt || null,
       blogs: feedBlogs?.generatedAt || null,
+      news: feedNews?.generatedAt || null,
     },
     ageHours: {
       x: Number(ages.x.toFixed(1)),
       podcasts: Number(ages.podcasts.toFixed(1)),
       blogs: Number(ages.blogs.toFixed(1)),
+      news: Number(ages.news.toFixed(1)),
     },
     staleFeeds,
     rawCounts,
@@ -260,16 +286,16 @@ async function getFeedData() {
     forceRemote,
   };
 
-  if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs)) {
+  if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews)) {
     const why = rawCounts.total === 0
       ? '上游 feed 本身为空（Generate Feeds 抓取后未收录任何条目）'
       : (staleFeeds.length > 0 ? `feed 过旧：${staleFeeds.join(', ')}；内容全部已在之前推送过` : '所有内容均在之前推送过（去重后为 0）');
     console.log(`[feed] 无新内容可发送 → 原因：${why}`);
     return {
       alreadySent: true,
-      podcasts: [], x: [], blogs: [],
+      podcasts: [], x: [], blogs: [], news: [],
       _digestState: digestState,
-      _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs,
+      _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews,
       _diagnosis: diagnosis,
       _emptyReason: why,
     };
@@ -279,8 +305,9 @@ async function getFeedData() {
     podcasts: filteredPodcasts?.podcasts || [],
     x: filteredX?.x || [],
     blogs: filteredBlogs?.blogs || [],
+    news: filteredNews?.news || [],
     _digestState: digestState,
-    _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs,
+    _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews,
     _diagnosis: diagnosis,
   };
 }
@@ -558,6 +585,37 @@ function renderBlog(blog) {
 }
 
 // ============================================================================
+// 程序化摘要 —— 新闻
+// ============================================================================
+
+const CATEGORY_LABELS = {
+  tech: '🔧 技术',
+  research: '🔬 研究',
+  industry: '🏭 行业',
+  community: ' 社区',
+};
+
+function renderNewsItem(item) {
+  const title = item.title || '';
+  const url = item.url || '';
+  const name = item.name || '';
+  const category = item.category || 'general';
+  const description = item.description || '';
+  const label = CATEGORY_LABELS[category] || '📌 资讯';
+
+  let block = `### ${label} ${title}\n\n`;
+  block += `**来源：** ${name}\n\n`;
+  if (description) {
+    const cleanDesc = description.replace(/<[^>]+>/g, '').trim();
+    const excerpt = cleanDesc.length > 200 ? cleanDesc.slice(0, 200) + '...' : cleanDesc;
+    if (excerpt) block += `> ${excerpt}\n\n`;
+  }
+  block += `🔗 原文链接：${url}\n\n`;
+  block += '---\n\n';
+  return block;
+}
+
+// ============================================================================
 // 主摘要生成
 // ============================================================================
 
@@ -568,15 +626,12 @@ function generateDigest(feedData, config) {
   let digest = `# 🤖 AI Builders 每日简报 — ${dateStr}\n\n`;
   digest += `> 本简报追踪 AI 领域顶尖建造者（研究员、创始人、产品经理、工程师）的最新动态，保留原文不压缩，附中文标注。\n\n`;
 
-  // —— X / TWITTER 板块 ——
-  if (feedData.x && feedData.x.length > 0) {
-    const buildersWithTweets = feedData.x.filter(b => b.tweets && b.tweets.length > 0);
-    if (buildersWithTweets.length > 0) {
-      digest += `## 💬 X / TWITTER 推文动态\n\n`;
-      digest += `*追踪 ${buildersWithTweets.length} 位 AI 建造者的最新推文（原文保留，附话题分类与关键数据高亮）*\n\n`;
-      for (const builder of buildersWithTweets) {
-        digest += renderBuilder(builder);
-      }
+  // —— NEWS 板块 ——
+  if (feedData.news && feedData.news.length > 0) {
+    digest += `## 📰 AI 行业动态\n\n`;
+    digest += `*来自 Hacker News、ArXiv、TechCrunch、Reddit 等社区的 AI 相关资讯*\n\n`;
+    for (const item of feedData.news) {
+      digest += renderNewsItem(item);
     }
   }
 
@@ -591,7 +646,7 @@ function generateDigest(feedData, config) {
 
   // —— PODCASTS 板块 ——
   if (feedData.podcasts && feedData.podcasts.length > 0) {
-    digest += `## 🎙️ PODCASTS 播客\n\n`;
+    digest += `## ️ PODCASTS 播客\n\n`;
     digest += `*顶级 AI 播客最新一期（嘉宾背景 + 带时间戳的核心要点）*\n\n`;
     for (const podcast of feedData.podcasts) {
       digest += renderPodcast(podcast);
@@ -599,13 +654,12 @@ function generateDigest(feedData, config) {
   }
 
   // —— 今日数据统计 ——
-  const builderCount = feedData.x?.length || 0;
-  const totalTweets = (feedData.x || []).reduce((sum, b) => sum + (b.tweets?.length || 0), 0);
-  const podcastCount = feedData.podcasts?.length || 0;
+  const newsCount = feedData.news?.length || 0;
   const blogCount = feedData.blogs?.length || 0;
+  const podcastCount = feedData.podcasts?.length || 0;
 
-  digest += `## 📊 今日数据\n\n`;
-  digest += `- **X 动态：** ${builderCount} 位 Builder，共 ${totalTweets} 条推文\n`;
+  digest += `##  今日数据\n\n`;
+  digest += `- **行业动态：** ${newsCount} 条\n`;
   digest += `- **博客文章：** ${blogCount} 篇\n`;
   digest += `- **播客内容：** ${podcastCount} 集\n\n`;
 
