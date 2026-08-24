@@ -19,7 +19,7 @@ Receive well-formatted digests with:
 - Professional typography optimized for reading
 
 ### 🤖 High-Quality Summaries (Pure Programmatic, No LLM API Required)
-- **X/Twitter Insights:** Curated posts from 47 AI builders — full original text preserved with topic tags (product launch / technical depth / business strategy / opinion), engagement data, Quote Tweet annotations, and key-number highlighting
+- **AI Industry News:** Curated news from Hacker News, ArXiv, TechCrunch, Reddit and more — categorized by tech/research/industry/community
 - **Podcast Summaries:** Guest background + timestamped key-point segments extracted from transcripts — zero information loss
 - **Blog Articles:** Full articles from 12 curated AI tech blogs with author, summary, and body excerpts
 - **Chinese-first:** Defaults to Chinese output — no AI model API key required
@@ -118,20 +118,14 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 
 ## 📝 Default Sources
 
-### Podcasts (20)
-- [Latent Space](https://www.youtube.com/@LatentSpacePod)
-- [Training Data](https://www.youtube.com/playlist?list=PLOhHNjZItNnMm5tdW61JpnyxeYH5NDDx8)
-- [No Priors](https://www.youtube.com/@NoPriorsPodcast)
-- [Unsupervised Learning](https://www.youtube.com/@RedpointAI)
-- [The MAD Podcast with Matt Turck](https://www.youtube.com/@DataDrivenNYC)
-- [AI & I by Every](https://www.youtube.com/playlist?list=PLuMcoKK9mKgHtW_o9h5sGO2vXrffKHwJL)
-- [Lex Fridman Podcast](https://www.youtube.com/@lexfridman)
-- [Gradient Dissent](https://www.youtube.com/@WeightsBiases)
-- [Machine Learning Street Talk](https://www.youtube.com/@MachineLearningStreetTalk)
-- [Practical AI](https://www.youtube.com/@changelogdotcom)
-- [TWIML AI Podcast](https://twimlai.com/podcast/)
-- [AI in Business](https://www.youtube.com/@DanielFaggella)
-- [The AI Podcast (NVIDIA)](https://www.youtube.com/@NVIDIAAI)
+### 📰 AI Industry News (5)
+- [Hacker News](https://news.ycombinator.com/) — top tech community with extensive AI content
+- [ArXiv cs.AI](https://arxiv.org/list/cs.AI/recent) — latest AI/ML research papers
+- [TechCrunch AI](https://techcrunch.com/category/artificial-intelligence/) — AI industry news, funding, product launches
+- [Reddit r/MachineLearning](https://www.reddit.com/r/MachineLearning/) — ML community discussions
+- [Reddit r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/) — local LLM community
+
+### 🎙️ Podcasts (11 - Xiaoyuzhou)
 - [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)
 - [Web3 101](https://www.xiaoyuzhoufm.com/podcast/62c2b6b3a61b9fd92a401b39)
 - [硬地骇客](https://www.xiaoyuzhoufm.com/podcast/640ee2438be5d40013fe4a87)
@@ -139,11 +133,12 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 - [半拿铁](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c00)
 - [OnBoard!](https://www.xiaoyuzhoufm.com/podcast/65a4a7e04e4b3d837f4e3a5c)
 - [硅谷早知道](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c01)
+- [张小珺Jùn｜商业访谈录](https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962)
+- [商业就是这样](https://www.xiaoyuzhoufm.com/podcast/6022a180ef5fdaddc30bb101)
+- [声东击西](https://www.xiaoyuzhoufm.com/podcast/5e2831ed418a84a046231c00)
+- [忽左忽右](https://www.xiaoyuzhoufm.com/podcast/5e4ee557418a84a0466737b7)
 
-### AI Builders on X (47)
-[Andrej Karpathy](https://x.com/karpathy), [Swyx](https://x.com/swyx), [Josh Woodward](https://x.com/joshwoodward), [Boris Cherny](https://x.com/bcherny), [Thibault Sottiaux](https://x.com/thsottiaux), [Peter Yang](https://x.com/petergyang), [Nan Yu](https://x.com/thenanyu), [Madhu Guru](https://x.com/realmadhuguru), [Amanda Askell](https://x.com/AmandaAskell), [Cat Wu](https://x.com/_catwu), [Thariq](https://x.com/trq212), [Google Labs](https://x.com/GoogleLabs), [Amjad Masad](https://x.com/amasad), [Guillermo Rauch](https://x.com/rauchg), [Alex Albert](https://x.com/alexalbert__), [Aaron Levie](https://x.com/levie), [Ryo Lu](https://x.com/ryolu_), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Zara Zhang](https://x.com/zarazhangrui), [Nikunj Kothari](https://x.com/nikunj), [Peter Steinberger](https://x.com/steipete), [Dan Shipper](https://x.com/danshipper), [Aditya Agarwal](https://x.com/adityaag), [Sam Altman](https://x.com/sama), [Claude](https://x.com/claudeai), [Dario Amodei](https://x.com/DarioAmodei), [Daniela Amodei](https://x.com/DanielaAmodei), [Yann LeCun](https://x.com/ylecun), [Jeff Dean](https://x.com/JeffDean), [Jim Fan](https://x.com/DrJimFan), [Ethan Mollick](https://x.com/emollick), [Harrison Chase](https://x.com/hwchase17), [Elvis Saravia](https://x.com/omarsar0), [Linus Lee](https://x.com/thesephist), [Simon Willison](https://x.com/simonw), [Riley Goodside](https://x.com/goodside), [Brandon Willard](https://x.com/brandonwillard), [Luke Zettlemoyer](https://x.com/luke_zettlemoyer), [Tri Dao](https://x.com/tri_dao), [Albert Gu](https://x.com/albertgu_), [Lilian Weng](https://x.com/lilianweng), [Jay Alammar](https://x.com/JayAlammar), [Fei-Fei Li](https://x.com/drfeifei), [Percy Liang](https://x.com/PercyLiang), [Scott Alexander](https://x.com/ScottAlexander), [Emad Mostaque](https://x.com/EMostaque)
-
-### Official Blogs (12)
+### 📝 Official Blogs (12)
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — technical deep-dives from the Anthropic team
 - [Claude Blog](https://claude.com/blog) — product announcements and updates from Claude
 - [OpenAI Blog](https://openai.com/blog) — official OpenAI blog
@@ -157,13 +152,27 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 - [Sebastian Raschka's Blog](https://magazine.sebastianraschka.com/) — Lightning AI founder's technical blog
 - [Chip Huyen's Blog](https://huyenchip.com/) — MLOps expert's personal blog
 
-💬you can also add other information resources according to your personal needs~
+💬 You can also add other information sources, such as followed bloggers, Xiaoyuzhou podcasts, etc.
+
+### 🔑 Data Source Configuration
+
+**News Fetching**
+- No API key required, fetched via RSS
+- Supports Hacker News, ArXiv, TechCrunch, Reddit and other major tech communities
+
+**Podcast Fetching**
+- Xiaoyuzhou podcasts: no API key required, fetched via RSS
+- English podcasts: require `POD2TXT_API_KEY` (pod2txt service), currently removed — only Xiaoyuzhou podcasts are retained
+
+**Blog Fetching**
+- No API key required, fetched via HTTP or RSS
+- Supports both HTTP scraping and RSS modes
 
 ## 🔧 How It Works
 
-1. **Central Feed Generation:** [generate-feed.yml](.github/workflows/generate-feed.yml) runs daily at 09:00 Beijing time, fetches the latest content from all sources into `feed-x.json` / `feed-podcasts.json` / `feed-blogs.json`, and tracks fetched items via `state-feed.json` (prevents re-fetching the same tweet/podcast/blog)
+1. **Central Feed Generation:** [generate-feed.yml](.github/workflows/generate-feed.yml) runs daily at 09:00 Beijing time, fetches the latest content from all sources into `feed-podcasts.json` / `feed-blogs.json` / `feed-news.json`, and tracks fetched items via `state-feed.json` (prevents re-fetching the same podcast/blog/news)
 2. **Digest Generation:** [send-digest.yml](.github/workflows/send-digest.yml) is triggered automatically after feed generation completes; it runs `auto-digest.js` to generate Chinese summaries using pure programmatic logic (original content preserved + smart annotations — no LLM API needed)
-3. **Content Dedup:** `digest-state.json` records sent content IDs (tweet IDs, podcast GUIDs, blog URLs) to ensure each item is delivered only once
+3. **Content Dedup:** `digest-state.json` records sent content IDs (news URLs, podcast GUIDs, blog URLs) to ensure each item is delivered only once
 4. **Email Delivery:** The formatted HTML digest is sent via SMTP to your inbox
 
 
