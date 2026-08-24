@@ -3,5 +3,12 @@
   "seenVideos": {
     "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c": 1787537825826
   },
-  "seenArticles": {}
+  "seenArticles": {
+    "https://www.anthropic.com/engineering/how-we-contain-claude": 1787550981697,
+    "https://www.anthropic.com/engineering/april-23-postmortem": 1787550982378,
+    "https://www.anthropic.com/engineering/managed-agents": 1787550983050,
+    "https://claude.com/blog/artifacts-in-claude-code": 1787550983738,
+    "https://claude.com/blog/claude-for-foundation-models": 1787550984303,
+    "https://claude.com/blog/claude-managed-agents-updates": 1787550984876
+  }
 }
