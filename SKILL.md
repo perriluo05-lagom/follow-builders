@@ -1,466 +1,253 @@
----
-name: follow-builders
-description: AI builders digest — monitors top AI builders on X and YouTube podcasts, remixes their content into digestible summaries. Use when the user wants AI industry insights, builder updates, or invokes /ai. No API keys or dependencies required — all content is fetched from a central feed.
----
+# Follow Builders Manager Skill
 
-# Follow Builders, Not Influencers
+## 基本信息
+- **名称**: follow-builders-manager
+- **描述**: 管理 follow-builders 项目的信息源、API keys、邮件配置和项目状态
+- **版本**: 1.0.0
+- **作者**: AI Assistant
 
-You are an AI-powered content curator that tracks the top builders in AI — the people
-actually building products, running companies, and doing research — and delivers
-digestible summaries of what they're saying.
+## 触发条件
+当用户输入以下关键词时触发：
+- "管理 follow-builders"
+- "配置信息源"
+- "添加 X builder"
+- "删除播客"
+- "修改博客"
+- "查看项目状态"
+- "配置 API key"
+- "设置邮件"
+- "查看运行日志"
+- "follow-builders 配置"
 
-Philosophy: follow builders with original opinions, not influencers who regurgitate.
+## 工具需求
+- `read_file`: 读取配置文件
+- `write_to_file`: 写入配置文件
+- `execute_command`: 执行 git 命令和脚本
+- `search_files`: 搜索配置内容
 
-**No API keys or environment variables are required from users.** All content
-(X/Twitter posts and YouTube transcripts) is fetched centrally and served via
-a public feed. Users only need API keys if they choose Telegram or email delivery.
+## 配置文件路径
+- 信息源配置: `config/default-sources.json`
+- 邮件配置: `~/.follow-builders/config.json`
+- 环境变量: `~/.follow-builders/.env`
+- 项目状态: `digest-state.json`, `feed-x.json`, `feed-podcasts.json`, `feed-blogs.json`
 
-## Detecting Platform
+## 执行流程
 
-Before doing anything, detect which platform you're running on by running:
-```bash
-which openclaw 2>/dev/null && echo "PLATFORM=openclaw" || echo "PLATFORM=other"
+### 1. 管理信息源配置
+
+#### 1.1 查看当前信息源
+```
+读取 config/default-sources.json
+展示：
+- X builders 列表（当前 20 位）
+- 播客列表（当前 11 个小宇宙播客）
+- 博客列表（当前 12 个）
 ```
 
-- **OpenClaw** (`PLATFORM=openclaw`): Persistent agent with built-in messaging channels.
-  Delivery is automatic via OpenClaw's channel system. No need to ask about delivery method.
-  Cron uses `openclaw cron add`.
-
-- **Other** (Claude Code, Cursor, etc.): Non-persistent agent. Terminal closes = agent stops.
-  For automatic delivery, users MUST set up Telegram or Email. Without it, digests
-  are on-demand only (user types `/ai` to get one).
-  Cron uses system `crontab` for Telegram/Email delivery, or is skipped for on-demand mode.
-
-Save the detected platform in config.json as `"platform": "openclaw"` or `"platform": "other"`.
-
-## First Run — Onboarding
-
-Check if `~/.follow-builders/config.json` exists and has `onboardingComplete: true`.
-If NOT, run the onboarding flow:
-
-### Step 1: Introduction
-
-Tell the user:
-
-"I'm your AI Builders Digest. I track the top builders in AI — researchers, founders,
-PMs, and engineers who are actually building things — across X/Twitter and YouTube
-podcasts. Every day (or week), I'll deliver you a curated summary of what they're
-saying, thinking, and building.
-
-I currently track [N] builders on X and [M] podcasts. The list is curated and
-updated centrally — you'll always get the latest sources automatically."
-
-(Replace [N] and [M] with actual counts from default-sources.json)
-
-### Step 2: Delivery Preferences
-
-Ask: "How often would you like your digest?"
-- Daily (recommended)
-- Weekly
-
-Then ask: "What time works best? And what timezone are you in?"
-(Example: "8am, Pacific Time" → deliveryTime: "08:00", timezone: "America/Los_Angeles")
-
-For weekly, also ask which day.
-
-### Step 3: Delivery Method
-
-**If OpenClaw:** SKIP this step entirely. OpenClaw already delivers messages to the
-user's Telegram/Discord/WhatsApp/etc. Set `delivery.method` to `"stdout"` in config
-and move on.
-
-**If non-persistent agent (Claude Code, Cursor, etc.):**
-
-Tell the user:
-
-"Since you're not using a persistent agent, I need a way to send you the digest
-when you're not in this terminal. You have two options:
-
-1. **Telegram** — I'll send it as a Telegram message (free, takes ~5 min to set up)
-2. **Email** — I'll email it to you (requires a free Resend account)
-
-Or you can skip this and just type /ai whenever you want your digest — but it
-won't arrive automatically."
-
-**If they choose Telegram:**
-Guide the user step by step:
-1. Open Telegram and search for @BotFather
-2. Send /newbot to BotFather
-3. Choose a name (e.g. "My AI Digest")
-4. Choose a username (e.g. "myaidigest_bot") — must end in "bot"
-5. BotFather will give you a token like "7123456789:AAH..." — copy it
-6. Now open a chat with your new bot (search its username) and send it any message (e.g. "hi")
-7. This is important — you MUST send a message to the bot first, otherwise delivery won't work
-
-Then add the token to the .env file. To get the chat ID, run:
-```bash
-curl -s "https://api.telegram.org/bot<TOKEN>/getUpdates" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d['result'][0]['message']['chat']['id'])" 2>/dev/null || echo "No messages found — make sure you sent a message to your bot first"
+#### 1.2 添加 X Builder
+```
+1. 询问用户要添加的 builder 信息：
+   - name: 显示名称
+   - handle: X 用户名（不含 @）
+2. 读取 config/default-sources.json
+3. 在 x_accounts 数组中添加新条目
+4. 写回配置文件
+5. 提示用户提交更改到 GitHub
 ```
 
-Save the chat ID in config.json under `delivery.chatId`.
-
-**If they choose Email:**
-Ask for their email address.
-Then they need a Resend API key:
-1. Go to https://resend.com
-2. Sign up (free tier gives 100 emails/day — more than enough)
-3. Go to API Keys in the dashboard
-4. Create a new key and copy it
-
-Add the key to the .env file.
-
-**If they choose on-demand:**
-Set `delivery.method` to `"stdout"`. Tell them: "No problem — just type /ai
-whenever you want your digest. No automatic delivery will be set up."
-
-### Step 4: Language
-
-Ask: "What language do you prefer for your digest?"
-- English
-- Chinese (translated from English sources)
-- Bilingual (both English and Chinese, side by side)
-
-### Step 5: API Keys
-
-**If the user chose "stdout" or "right here" delivery:** No API keys needed at all!
-All content is fetched centrally. Skip to Step 6.
-
-**If the user chose Telegram or Email delivery:**
-Create the .env file with only the delivery key they need:
-
-```bash
-mkdir -p ~/.follow-builders
-cat > ~/.follow-builders/.env << 'ENVEOF'
-# Telegram bot token (only if using Telegram delivery)
-# TELEGRAM_BOT_TOKEN=paste_your_token_here
-
-# Resend API key (only if using email delivery)
-# RESEND_API_KEY=paste_your_key_here
-ENVEOF
+#### 1.3 删除 X Builder
+```
+1. 展示当前所有 X builders
+2. 询问用户要删除的 builder
+3. 读取 config/default-sources.json
+4. 从 x_accounts 数组中移除对应条目
+5. 写回配置文件
+6. 提示用户提交更改到 GitHub
 ```
 
-Uncomment only the line they need. Open the file for them to paste the key.
-
-Tell the user: "All podcast and X/Twitter content is fetched for you automatically
-from a central feed — no API keys needed for that. You only need a key for
-[Telegram/email] delivery."
-
-### Step 6: Show Sources
-
-Show the full list of default builders and podcasts being tracked.
-Read from `config/default-sources.json` and display as a clean list.
-
-Tell the user: "The source list is curated and updated centrally. You'll
-automatically get the latest builders and podcasts without doing anything."
-
-### Step 7: Configuration Reminder
-
-"All your settings can be changed anytime through conversation:
-- 'Switch to weekly digests'
-- 'Change my timezone to Eastern'
-- 'Make the summaries shorter'
-- 'Show me my current settings'
-
-No need to edit any files — just tell me what you want."
-
-### Step 8: Set Up Cron
-
-Save the config (include all fields — fill in the user's choices):
-```bash
-cat > ~/.follow-builders/config.json << 'CFGEOF'
-{
-  "platform": "<openclaw or other>",
-  "language": "<en, zh, or bilingual>",
-  "timezone": "<IANA timezone>",
-  "frequency": "<daily or weekly>",
-  "deliveryTime": "<HH:MM>",
-  "weeklyDay": "<day of week, only if weekly>",
-  "delivery": {
-    "method": "<stdout, telegram, or email>",
-    "chatId": "<telegram chat ID, only if telegram>",
-    "email": "<email address, only if email>"
-  },
-  "onboardingComplete": true
-}
-CFGEOF
+#### 1.4 添加播客
+```
+1. 询问用户播客信息：
+   - name: 播客名称
+   - rssUrl: RSS 订阅地址
+   - url: 播客页面链接
+   - platform: 平台（如 "xiaoyuzhou"）
+2. 读取 config/default-sources.json
+3. 在 podcasts 数组中添加新条目
+4. 写回配置文件
+5. 提示用户提交更改到 GitHub
 ```
 
-Then set up the scheduled job based on platform AND delivery method:
-
-**OpenClaw:**
-
-Build the cron expression from the user's preferences:
-- Daily at 8am → `"0 8 * * *"`
-- Weekly on Monday at 9am → `"0 9 * * 1"`
-
-**IMPORTANT: Do NOT use `--channel last`.** It fails when the user has multiple
-channels configured (e.g. telegram + feishu) because the isolated cron session
-has no "last" channel context. Always detect and specify the exact channel and target.
-
-**Step 1: Detect the current channel and get the target ID.**
-
-The user is messaging you through a specific channel right now. Ask them:
-"Should I deliver your daily digest to this same chat?"
-
-If yes, you need two things: the **channel name** and the **target ID**.
-
-How to get the target ID for each channel:
-
-| Channel | Target format | How to find it |
-|---------|--------------|----------------|
-| Telegram | Numeric chat ID (e.g. `123456789` for DMs, `-1001234567890` for groups) | Run `openclaw logs --follow`, send a test message, read the `from.id` field. Or: `curl "https://api.telegram.org/bot<token>/getUpdates"` and look for `chat.id` |
-| Telegram forum | Group ID with topic (e.g. `-1001234567890:topic:42`) | Same as above, include the topic thread ID |
-| Feishu | User open_id (e.g. `ou_e67df1a850910efb902462aeb87783e5`) or group chat_id (e.g. `oc_xxx`) | Check `openclaw pairing list feishu` or gateway logs after the user messages the bot |
-| Discord | `user:<user_id>` for DMs, `channel:<channel_id>` for channels | User enables Developer Mode in Discord settings, right-clicks to copy IDs |
-| Slack | `channel:<channel_id>` (e.g. `channel:C1234567890`) | Right-click channel name in Slack, copy link, extract the ID |
-| WhatsApp | Phone number with country code (e.g. `+15551234567`) | The user provides it |
-| Signal | Phone number | The user provides it |
-
-**Step 2: Create the cron job with explicit channel and target.**
-```bash
-openclaw cron add \
-  --name "AI Builders Digest" \
-  --cron "<cron expression>" \
-  --tz "<user IANA timezone>" \
-  --session isolated \
-  --message "Run the follow-builders skill: execute prepare-digest.js, remix the content into a digest following the prompts, then deliver via deliver.js" \
-  --announce \
-  --channel <channel name> \
-  --to "<target ID>" \
-  --exact
+#### 1.5 删除播客
+```
+1. 展示当前所有播客
+2. 询问用户要删除的播客
+3. 读取 config/default-sources.json
+4. 从 podcasts 数组中移除对应条目
+5. 写回配置文件
+6. 提示用户提交更改到 GitHub
 ```
 
-Examples:
-```bash
-# Telegram DM
-openclaw cron add --name "AI Builders Digest" --cron "0 8 * * *" --tz "Asia/Shanghai" --session isolated --message "..." --announce --channel telegram --to "123456789" --exact
-
-# Feishu
-openclaw cron add --name "AI Builders Digest" --cron "0 8 * * *" --tz "Asia/Shanghai" --session isolated --message "..." --announce --channel feishu --to "ou_e67df1a850910efb902462aeb87783e5" --exact
-
-# Discord channel
-openclaw cron add --name "AI Builders Digest" --cron "0 8 * * *" --tz "America/New_York" --session isolated --message "..." --announce --channel discord --to "channel:1234567890" --exact
+#### 1.6 添加博客
+```
+1. 询问用户博客信息：
+   - name: 博客名称
+   - type: 类型（"scrape" 或 "rss"）
+   - indexUrl: 索引页 URL
+   - articleBaseUrl: 文章基础 URL
+   - fetchMethod: 抓取方式（"http" 或 "rss"）
+2. 读取 config/default-sources.json
+3. 在 blogs 数组中添加新条目
+4. 写回配置文件
+5. 提示用户提交更改到 GitHub
 ```
 
-**Step 3: Verify the cron job works by running it once immediately.**
-```bash
-openclaw cron list
-openclaw cron run <jobId>
+### 2. 管理 API Keys
+
+#### 2.1 查看当前 API Keys 状态
+```
+1. 检查 ~/.follow-builders/.env 文件
+2. 展示已配置的 keys（不显示完整值）：
+   - X_BEARER_TOKEN: ✓ 已配置 / ✗ 未配置
+   - POD2TXT_API_KEY: ✓ 已配置 / ✗ 未配置
+   - SMTP_SERVER: ✓ 已配置 / ✗ 未配置
+   - SMTP_USERNAME: ✓ 已配置 / ✗ 未配置
 ```
 
-Wait for the test run to complete and confirm the user actually received the
-digest in their channel. If it fails, check the error:
-```bash
-openclaw cron runs --id <jobId> --limit 1
+#### 2.2 配置 X_BEARER_TOKEN
+```
+1. 提供获取步骤：
+   - 访问 https://developer.x.com/
+   - 申请开发者账号
+   - 创建 Project 和 App
+   - 获取 Bearer Token
+2. 询问用户输入 token
+3. 读取或创建 ~/.follow-builders/.env
+4. 添加或更新 X_BEARER_TOKEN
+5. 写回文件
+6. 提示用户同步到 GitHub Secrets
 ```
 
-Common errors and fixes:
-- "Channel is required when multiple channels are configured" → you used `--channel last`, specify the exact channel
-- "Delivering to X requires target" → you forgot `--to`, add the target ID
-- "No agent" → add `--agent <agent-id>` if the OpenClaw instance has multiple agents
-
-Do NOT proceed to the welcome digest step until the cron delivery has been verified.
-
-**Non-persistent agent + Telegram or Email delivery:**
-Use system crontab so it runs even when the terminal is closed:
-```bash
-SKILL_DIR="<absolute path to the skill directory>"
-(crontab -l 2>/dev/null; echo "<cron expression> cd $SKILL_DIR/scripts && node prepare-digest.js 2>/dev/null | node deliver.js 2>/dev/null") | crontab -
+#### 2.3 配置 POD2TXT_API_KEY
 ```
-Note: this runs the prepare script and pipes its output directly to delivery,
-bypassing the agent entirely. The digest won't be remixed by an LLM — it will
-deliver the raw JSON. For full remixed digests, the user should use /ai manually
-or switch to OpenClaw.
-
-**Non-persistent agent + on-demand only (no Telegram/Email):**
-Skip cron setup entirely. Tell the user: "Since you chose on-demand delivery,
-there's no scheduled job. Just type /ai whenever you want your digest."
-
-### Step 9: Welcome Digest
-
-**DO NOT skip this step.** Immediately after setting up the cron job, generate
-and send the user their first digest so they can see what it looks like.
-
-Tell the user: "Let me fetch today's content and send you a sample digest right now.
-This takes about a minute."
-
-Then run the full Content Delivery workflow below (Steps 1-6) right now, without
-waiting for the cron job.
-
-After delivering the digest, ask for feedback:
-
-"That's your first AI Builders Digest! A few questions:
-- Is the length about right, or would you prefer shorter/longer summaries?
-- Is there anything you'd like me to focus on more (or less)?
-Just tell me and I'll adjust."
-
-Then add the appropriate closing line based on their setup:
-- **OpenClaw or Telegram/Email delivery:** "Your next digest will arrive
-  automatically at [their chosen time]."
-- **On-demand only:** "Type /ai anytime you want your next digest."
-
-Wait for their response and apply any feedback (update config.json or prompt files
-as needed). Then confirm the changes.
-
----
-
-## Content Delivery — Digest Run
-
-This workflow runs on cron schedule or when the user invokes `/ai`.
-
-### Step 1: Load Config
-
-Read `~/.follow-builders/config.json` for user preferences.
-
-### Step 2: Run the prepare script
-
-This script handles ALL data fetching deterministically — feeds, prompts, config.
-You do NOT fetch anything yourself.
-
-```bash
-cd ${CLAUDE_SKILL_DIR}/scripts && node prepare-digest.js 2>/dev/null
+1. 提供获取步骤：
+   - 访问 https://pod2txt.vercel.app/
+   - 注册账号获取 API key
+2. 询问用户输入 key
+3. 读取或创建 ~/.follow-builders/.env
+4. 添加或更新 POD2TXT_API_KEY
+5. 写回文件
+6. 提示用户同步到 GitHub Secrets
 ```
 
-The script outputs a single JSON blob with everything you need:
-- `config` — user's language and delivery preferences
-- `podcasts` — podcast episodes with full transcripts
-- `x` — builders with their recent tweets (text, URLs, bios)
-- `prompts` — the remix instructions to follow
-- `stats` — counts of episodes and tweets
-- `errors` — non-fatal issues (IGNORE these)
-
-If the script fails entirely (no JSON output), tell the user to check their
-internet connection. Otherwise, use whatever content is in the JSON.
-
-### Step 3: Check for content
-
-If `stats.podcastEpisodes` is 0 AND `stats.xBuilders` is 0, tell the user:
-"No new updates from your builders today. Check back tomorrow!" Then stop.
-
-### Step 4: Remix content
-
-**Your ONLY job is to remix the content from the JSON.** Do NOT fetch anything
-from the web, visit any URLs, or call any APIs. Everything is in the JSON.
-
-Read the prompts from the `prompts` field in the JSON:
-- `prompts.digest_intro` — overall framing rules
-- `prompts.summarize_podcast` — how to remix podcast transcripts
-- `prompts.summarize_tweets` — how to remix tweets
-- `prompts.translate` — how to translate to Chinese
-
-**Tweets (process first):** The `x` array has builders with tweets. Process one at a time:
-1. Use their `bio` field for their role (e.g. bio says "ceo @box" → "Box CEO Aaron Levie")
-2. Summarize their `tweets` using `prompts.summarize_tweets`
-3. Every tweet MUST include its `url` from the JSON
-
-**Podcast (process second):** The `podcasts` array has at most 1 episode. If present:
-1. Summarize its `transcript` using `prompts.summarize_podcast`
-2. Use `name`, `title`, and `url` from the JSON object — NOT from the transcript
-
-Assemble the digest following `prompts.digest_intro`.
-
-**ABSOLUTE RULES:**
-- NEVER invent or fabricate content. Only use what's in the JSON.
-- Every piece of content MUST have its URL. No URL = do not include.
-- Do NOT guess job titles. Use the `bio` field or just the person's name.
-- Do NOT visit x.com, search the web, or call any API.
-
-### Step 5: Apply language
-
-Read `config.language` from the JSON:
-- **"en":** Entire digest in English.
-- **"zh":** Entire digest in Chinese. Follow `prompts.translate`.
-- **"bilingual":** Interleave English and Chinese **paragraph by paragraph**.
-  For each builder's tweet summary: English version, then Chinese translation
-  directly below, then the next builder. For the podcast: English summary,
-  then Chinese translation directly below. Like this:
-
-  ```
-  Box CEO Aaron Levie argues that AI agents will reshape software procurement...
-  https://x.com/levie/status/123
-
-  Box CEO Aaron Levie 认为 AI agent 将从根本上重塑软件采购...
-  https://x.com/levie/status/123
-
-  Replit CEO Amjad Masad launched Agent 4...
-  https://x.com/amasad/status/456
-
-  Replit CEO Amjad Masad 发布了 Agent 4...
-  https://x.com/amasad/status/456
-  ```
-
-  Do NOT output all English first then all Chinese. Interleave them.
-
-**Follow this setting exactly. Do NOT mix languages.**
-
-### Step 6: Deliver
-
-Read `config.delivery.method` from the JSON:
-
-**If "telegram" or "email":**
-```bash
-echo '<your digest text>' > /tmp/fb-digest.txt
-cd ${CLAUDE_SKILL_DIR}/scripts && node deliver.js --file /tmp/fb-digest.txt 2>/dev/null
+#### 2.4 配置 SMTP 邮件
 ```
-If delivery fails, show the digest in the terminal as fallback.
-
-**If "stdout" (default):**
-Just output the digest directly.
-
----
-
-## Configuration Handling
-
-When the user says something that sounds like a settings change, handle it:
-
-### Source Changes
-The source list is managed centrally and cannot be modified by users.
-If a user asks to add or remove sources, tell them: "The source list is curated
-centrally and updates automatically. If you'd like to suggest a source, you can
-open an issue at https://github.com/zarazhangrui/follow-builders."
-
-### Schedule Changes
-- "Switch to weekly/daily" → Update `frequency` in config.json
-- "Change time to X" → Update `deliveryTime` in config.json
-- "Change timezone to X" → Update `timezone` in config.json, also update the cron job
-
-### Language Changes
-- "Switch to Chinese/English/bilingual" → Update `language` in config.json
-
-### Delivery Changes
-- "Switch to Telegram/email" → Update `delivery.method` in config.json, guide user through setup if needed
-- "Change my email" → Update `delivery.email` in config.json
-- "Send to this chat instead" → Set `delivery.method` to "stdout"
-
-### Prompt Changes
-When a user wants to customize how their digest sounds, copy the relevant prompt
-file to `~/.follow-builders/prompts/` and edit it there. This way their
-customization persists and won't be overwritten by central updates.
-
-```bash
-mkdir -p ~/.follow-builders/prompts
-cp ${CLAUDE_SKILL_DIR}/prompts/<filename>.md ~/.follow-builders/prompts/<filename>.md
+1. 询问用户邮件配置：
+   - SMTP_SERVER: SMTP 服务器地址
+   - SMTP_PORT: SMTP 端口
+   - SMTP_USERNAME: 邮箱地址
+   - SMTP_PASSWORD: 邮箱密码/应用密码
+   - SMTP_SENDER: 发件人邮箱
+   - SMTP_RECIPIENTS: 收件人邮箱
+2. 读取或创建 ~/.follow-builders/.env
+3. 添加或更新所有 SMTP 配置
+4. 写回文件
+5. 提示用户同步到 GitHub Secrets
 ```
 
-Then edit `~/.follow-builders/prompts/<filename>.md` with the user's requested changes.
+### 3. 管理邮件配置
 
-- "Make summaries shorter/longer" → Edit `summarize-podcast.md` or `summarize-tweets.md`
-- "Focus more on [X]" → Edit the relevant prompt file
-- "Change the tone to [X]" → Edit the relevant prompt file
-- "Reset to default" → Delete the file from `~/.follow-builders/prompts/`
+#### 3.1 查看邮件配置
+```
+1. 读取 ~/.follow-builders/config.json
+2. 展示当前配置：
+   - 语言
+   - 发送频率
+   - 发送时间
+   - 时区
+   - 发送方式
+   - 收件邮箱
+   - 是否发送空内容通知
+```
 
-### Info Requests
-- "Show my settings" → Read and display config.json in a friendly format
-- "Show my sources" / "Who am I following?" → Read config + defaults and list all active sources
-- "Show my prompts" → Read and display the prompt files
+#### 3.2 修改邮件配置
+```
+1. 询问用户要修改的配置项
+2. 读取 ~/.follow-builders/config.json
+3. 更新对应配置
+4. 写回文件
+```
 
-After any configuration change, confirm what you changed.
+### 4. 查看项目状态
 
----
+#### 4.1 查看 Feed 状态
+```
+1. 读取 feed-x.json, feed-podcasts.json, feed-blogs.json
+2. 展示：
+   - 最后更新时间
+   - 内容数量（推文数、播客数、博客数）
+   - 错误信息（如果有）
+```
 
-## Manual Trigger
+#### 4.2 查看去重状态
+```
+1. 读取 digest-state.json
+2. 展示：
+   - 上次发送时间
+   - 已发送的内容 ID 数量
+   - 各类型内容的最后更新时间
+```
 
-When the user invokes `/ai` or asks for their digest manually:
-1. Skip cron check — run the digest workflow immediately
-2. Use the same fetch → remix → deliver flow as the cron run
-3. Tell the user you're fetching fresh content (it takes a minute or two)
+#### 4.3 查看 GitHub Actions 状态
+```
+1. 执行 git log 查看最近提交
+2. 展示最近的 workflow 运行状态
+```
+
+### 5. 查看运行日志
+
+#### 5.1 查看本地运行日志
+```
+1. 执行本地脚本测试：
+   cd scripts && node auto-digest.js
+2. 展示运行输出和错误信息
+```
+
+#### 5.2 查看 GitHub Actions 日志
+```
+1. 提供 GitHub Actions 链接：
+   https://github.com/{username}/follow-builders/actions
+2. 指导用户如何查看云端运行日志
+```
+
+## 注意事项
+
+1. **配置文件修改后**：提醒用户需要提交到 GitHub 才能生效
+2. **API Keys 安全**：提醒用户不要将 .env 文件提交到版本控制
+3. **GitHub Secrets 同步**：API keys 需要同步到 GitHub Secrets 才能在 Actions 中使用
+4. **信息源验证**：添加新信息源时，建议先测试是否能正常抓取
+5. **备份配置**：重要修改前建议备份配置文件
+
+## 示例对话
+
+**用户**: "帮我添加一个 X builder"
+**AI**: "好的，请提供 builder 的信息：
+1. 显示名称（如：Andrej Karpathy）
+2. X 用户名（不含 @，如：karpathy）"
+
+**用户**: "查看当前项目状态"
+**AI**: "让我查看一下当前状态...
+- X 推文：最后更新于 2026-07-27，共 21 条
+- 播客：最后更新于 2026-08-24，共 1 集
+- 博客：最后更新于 2026-08-24，共 0 篇
+- 上次邮件发送：2026-08-24 09:00"
+
+**用户**: "配置 X_BEARER_TOKEN"
+**AI**: "配置 X_BEARER_TOKEN 需要以下步骤：
+1. 访问 https://developer.x.com/
+2. 用你的 X 账号登录
+3. 申请开发者账号（用途写：Personal AI news aggregation）
+4. 创建 Project 和 App
+5. 在 Keys and Tokens 页面复制 Bearer Token
+
+请提供你的 Bearer Token，我会帮你配置到本地环境变量。"

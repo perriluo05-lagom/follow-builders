@@ -628,8 +628,10 @@ async function fetchXContent(xAccounts, bearerToken, state, errors) {
 
   // Batch lookup user IDs. Smaller batches make one flaky X response less likely
   // to wipe out the whole feed.
+  // NOTE: handles and userMap are declared at module-level scope via the
+  // returned object so that main() can access them for diagnostics.
   const handles = xAccounts.map((a) => a.handle);
-  let userMap = {};
+  const userMap = {};
 
   for (let i = 0; i < handles.length; i += X_USER_LOOKUP_BATCH_SIZE) {
     const batch = handles.slice(i, i + X_USER_LOOKUP_BATCH_SIZE);
@@ -734,7 +736,7 @@ async function fetchXContent(xAccounts, bearerToken, state, errors) {
     }
   }
 
-  return results;
+  return { results, userMap, handles };
 }
 
 // -- Blog Fetching (HTML scraping) -------------------------------------------
@@ -961,6 +963,171 @@ function extractClaudeBlogArticleContent(html) {
   return { title, author, publishedAt, content };
 }
 
+// Parse RSS blog feed (for blogs like Lilian Weng, Jay Alammar, etc.)
+function parseRssBlogFeed(xml, articleBaseUrl) {
+  const articles = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+  let itemMatch;
+  
+  while ((itemMatch = itemRegex.exec(xml)) !== null) {
+    const block = itemMatch[1];
+    
+    // Extract title
+    const titleMatch = block.match(/<title>([\s\S]*?)<\/title>/);
+    const title = titleMatch ? titleMatch[1].trim() : "";
+    
+    // Extract link
+    const linkMatch = block.match(/<link>([\s\S]*?)<\/link>/);
+    let url = linkMatch ? linkMatch[1].trim() : "";
+    
+    // If URL is relative, prepend base URL
+    if (url && !url.startsWith('http')) {
+      url = articleBaseUrl.replace(/\/$/, '') + '/' + url.replace(/^\//, '');
+    }
+    
+    // Extract publication date
+    const pubDateMatch = block.match(/<pubDate>([\s\S]*?)<\/pubDate>/);
+    const publishedAt = pubDateMatch ? new Date(pubDateMatch[1].trim()).toISOString() : null;
+    
+    // Extract description
+    const descMatch = block.match(/<description>([\s\S]*?)<\/description>/);
+    const description = descMatch ? descMatch[1].trim() : "";
+    
+    if (url) {
+      articles.push({ title, url, publishedAt, description });
+    }
+  }
+  
+  return articles;
+}
+
+// Parse generic blog index page
+function parseGenericBlogIndex(html, articleBaseUrl) {
+  const articles = [];
+  
+  // Try to find article links using common patterns
+  // Pattern 1: <a href="/blog/slug"> or <a href="blog/slug">
+  const linkRegex = /<a[^>]+href=["']([^"']*\/(?:blog|posts|articles)\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  let linkMatch;
+  
+  while ((linkMatch = linkRegex.exec(html)) !== null) {
+    let url = linkMatch[1];
+    const linkText = linkMatch[2].replace(/<[^>]+>/g, '').trim();
+    
+    // If URL is relative, prepend base URL
+    if (!url.startsWith('http')) {
+      url = articleBaseUrl.replace(/\/$/, '') + '/' + url.replace(/^\//, '');
+    }
+    
+    // Extract title from link text or nearby heading
+    const title = linkText || '';
+    
+    if (url && title) {
+      articles.push({ title, url, publishedAt: null, description: '' });
+    }
+  }
+  
+  // Pattern 2: Look for structured data (JSON-LD)
+  const jsonLdRegex = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let jsonLdMatch;
+  
+  while ((jsonLdMatch = jsonLdRegex.exec(html)) !== null) {
+    try {
+      const data = JSON.parse(jsonLdMatch[1]);
+      if (data['@type'] === 'BlogPosting' || data['@type'] === 'Article') {
+        const url = data.url || '';
+        const title = data.headline || data.name || '';
+        const publishedAt = data.datePublished || null;
+        const description = data.description || '';
+        
+        if (url && title) {
+          articles.push({ title, url, publishedAt, description });
+        }
+      }
+    } catch {
+      // Invalid JSON, skip
+    }
+  }
+  
+  return articles;
+}
+
+// Extract content from generic article page
+function extractGenericArticleContent(html) {
+  let title = '';
+  let author = '';
+  let publishedAt = null;
+  let content = '';
+  
+  // Try JSON-LD structured data first
+  const jsonLdRegex = /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+  let jsonLdMatch;
+  
+  while ((jsonLdMatch = jsonLdRegex.exec(html)) !== null) {
+    try {
+      const data = JSON.parse(jsonLdMatch[1]);
+      if (data['@type'] === 'BlogPosting' || data['@type'] === 'Article') {
+        title = data.headline || data.name || '';
+        author = data.author?.name || '';
+        publishedAt = data.datePublished || null;
+        break;
+      }
+    } catch {
+      // Invalid JSON, skip
+    }
+  }
+  
+  // Extract title from <h1> if not found
+  if (!title) {
+    const h1Match = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+    if (h1Match) {
+      title = h1Match[1].replace(/<[^>]+>/g, '').trim();
+    }
+  }
+  
+  // Try to extract main content from common article containers
+  const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+  const mainMatch = html.match(/<main[^>]*>([\s\S]*?)<\/main>/i);
+  const contentMatch = html.match(/<div[^>]+class=["'][^"']*(?:content|article|post|entry)[^"']*["'][^>]*>([\s\S]*?)<\/div>/i);
+  
+  const contentHtml = articleMatch?.[1] || mainMatch?.[1] || contentMatch?.[1] || '';
+  
+  if (contentHtml) {
+    // Clean HTML tags and normalize whitespace
+    content = contentHtml
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  
+  // Fallback: extract from body if no content found
+  if (!content) {
+    content = html
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<style[\s\S]*?<\/style>/gi, '')
+      .replace(/<nav[\s\S]*?<\/nav>/gi, '')
+      .replace(/<footer[\s\S]*?<\/footer>/gi, '')
+      .replace(/<header[\s\S]*?<\/header>/gi, '')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  
+  return { title, author, publishedAt, content };
+}
+
 // Main blog fetching orchestrator.
 // For each blog source in the config, discovers new articles, deduplicates
 // against previously seen URLs, fetches full article content, and returns
@@ -974,23 +1141,42 @@ async function fetchBlogContent(blogs, state, errors) {
     let candidates = [];
 
     try {
-      // Step 1: Discover articles from the blog index page
-      const indexRes = await fetch(blog.indexUrl, {
-        headers: { "User-Agent": "FollowBuilders/1.0 (feed aggregator)" },
-      });
-      if (!indexRes.ok) {
-        errors.push(
-          `Blog: Failed to fetch index for ${blog.name}: HTTP ${indexRes.status}`,
-        );
-        continue;
-      }
-      const indexHtml = await indexRes.text();
+      // 根据 fetchMethod 选择不同的解析方式
+      if (blog.fetchMethod === "rss") {
+        // RSS 类型的博客（如 Lilian Weng、Jay Alammar 等）
+        const rssRes = await fetch(blog.indexUrl, {
+          headers: { "User-Agent": "FollowBuilders/1.0 (feed aggregator)" },
+        });
+        if (!rssRes.ok) {
+          errors.push(
+            `Blog: Failed to fetch RSS for ${blog.name}: HTTP ${rssRes.status}`,
+          );
+          continue;
+        }
+        const rssXml = await rssRes.text();
+        candidates = parseRssBlogFeed(rssXml, blog.articleBaseUrl);
+      } else {
+        // HTTP 抓取类型的博客
+        const indexRes = await fetch(blog.indexUrl, {
+          headers: { "User-Agent": "FollowBuilders/1.0 (feed aggregator)" },
+        });
+        if (!indexRes.ok) {
+          errors.push(
+            `Blog: Failed to fetch index for ${blog.name}: HTTP ${indexRes.status}`,
+          );
+          continue;
+        }
+        const indexHtml = await indexRes.text();
 
-      // Use the right parser based on which blog this is
-      if (blog.indexUrl.includes("anthropic.com")) {
-        candidates = parseAnthropicEngineeringIndex(indexHtml);
-      } else if (blog.indexUrl.includes("claude.com")) {
-        candidates = parseClaudeBlogIndex(indexHtml);
+        // Use the right parser based on which blog this is
+        if (blog.indexUrl.includes("anthropic.com")) {
+          candidates = parseAnthropicEngineeringIndex(indexHtml);
+        } else if (blog.indexUrl.includes("claude.com")) {
+          candidates = parseClaudeBlogIndex(indexHtml);
+        } else {
+          // 通用博客解析器
+          candidates = parseGenericBlogIndex(indexHtml, blog.articleBaseUrl);
+        }
       }
 
       // Step 2: Filter to unseen articles, cap at MAX_ARTICLES_PER_BLOG.
@@ -1040,6 +1226,9 @@ async function fetchBlogContent(blogs, state, errors) {
             extracted = extractAnthropicArticleContent(articleHtml);
           } else if (article.url.includes("claude.com/blog")) {
             extracted = extractClaudeBlogArticleContent(articleHtml);
+          } else {
+            // 通用内容提取器
+            extracted = extractGenericArticleContent(articleHtml);
           }
 
           if (!extracted || !extracted.content) {
@@ -1062,7 +1251,7 @@ async function fetchBlogContent(blogs, state, errors) {
           // Mark as seen
           state.seenArticles[article.url] = Date.now();
 
-          // Small delay between article fetches to be polite
+          // Small delay between article fetchs to be polite
           await new Promise((r) => setTimeout(r, 500));
         } catch (err) {
           errors.push(
@@ -1138,7 +1327,7 @@ async function main() {
   // Fetch tweets
   if (runTweets) {
     console.error("Fetching X/Twitter content...");
-    const xContent = await fetchXContent(
+    const { results: xContent, userMap, handles } = await fetchXContent(
       sources.x_accounts,
       xBearerToken,
       state,

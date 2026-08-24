@@ -27,6 +27,11 @@ on:
         default: true
         type: boolean
 
+# 并发控制：防止 workflow_run 和 schedule 同时触发导致重复发送邮件
+concurrency:
+  group: send-digest
+  cancel-in-progress: false
+
 jobs:
   send-digest:
     # 仅在 Generate Feeds 成功完成或手动触发或备用定时触发时执行

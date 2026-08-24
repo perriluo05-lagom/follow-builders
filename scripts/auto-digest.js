@@ -429,7 +429,8 @@ function extractPodcastKeyPoints(transcript, maxPoints = 6) {
       }
       buffer = { time: m[2], text: m[4] || '' };
     } else {
-      buffer.text += (buffer.text ? ' ' : '') + line.trim();
+      // 保留换行符，避免多行文本合并成一大块
+      buffer.text += (buffer.text ? '\n' : '') + line.trim();
     }
   }
   if (buffer.text.trim()) points.push({ time: buffer.time, text: buffer.text.trim() });
@@ -488,8 +489,26 @@ function renderPodcast(podcast) {
     }
     block += `\n`;
   } else if (transcript) {
-    // 兜底：直接给前 800 字符的转录摘录
-    block += `**📌 转录摘录：**\n\n> ${transcript.slice(0, 800).replace(/\n/g, ' ')}...\n\n`;
+    // 兜底：按段落分开显示转录内容，避免堆成一大块
+    block += `**📌 内容摘要：**\n\n`;
+    // 按换行符分段，过滤空行和太短的段落
+    const paragraphs = transcript
+      .split(/\n+/)
+      .map(p => p.trim())
+      .filter(p => p.length >= 20);  // 跳过太短的行
+    
+    // 取前 5 段，每段截断到 200 字符
+    const maxParagraphs = 5;
+    const maxLen = 200;
+    for (let i = 0; i < Math.min(paragraphs.length, maxParagraphs); i++) {
+      const p = paragraphs[i];
+      const excerpt = p.length > maxLen ? p.slice(0, maxLen) + '...' : p;
+      block += `> ${excerpt}\n>\n`;
+    }
+    if (paragraphs.length > maxParagraphs) {
+      block += `> *（还有 ${paragraphs.length - maxParagraphs} 段，请点击链接查看完整内容）*\n`;
+    }
+    block += `\n`;
   } else {
     // 无 transcript（如小宇宙播客），提示内容来源
     block += `*本期节目暂无转录稿，请点击下方链接收听完整内容。*\n\n`;
@@ -612,34 +631,36 @@ function markdownToHtml(markdownText) {
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif; background: #f5f5f5; -webkit-font-smoothing: antialiased; }
-    .container { max-width: 600px; margin: 0 auto; padding: 16px; }
-    .header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); border-radius: 12px 12px 0 0; padding: 24px 20px; color: white; }
-    .header h1 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
-    .header p { font-size: 12px; opacity: 0.85; }
-    .content { background: white; border-radius: 0 0 12px 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
-    .content h1 { font-size: 17px; font-weight: 700; color: #1f2937; margin: 16px 0 12px; }
-    .content h2 { font-size: 15px; font-weight: 600; color: #1f2937; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; }
+    .container { max-width: 640px; margin: 0 auto; padding: 16px; }
+    .header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); border-radius: 12px 12px 0 0; padding: 28px 24px; color: white; }
+    .header h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .header p { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .content { background: white; border-radius: 0 0 12px 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+    .content h1 { font-size: 18px; font-weight: 700; color: #1f2937; margin: 24px 0 16px; line-height: 1.4; }
+    .content h2 { font-size: 16px; font-weight: 600; color: #1f2937; margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; line-height: 1.4; }
     .content h2:first-child { margin-top: 0; }
-    .content h2::before { content: ''; width: 3px; height: 14px; background: #4f46e5; border-radius: 2px; }
-    .content h3 { font-size: 13px; font-weight: 600; color: #374151; margin: 16px 0 8px; }
-    .content p { font-size: 13px; color: #5b6678; line-height: 1.7; margin: 8px 0; }
-    .content ul, .content ol { margin: 10px 0; padding-left: 20px; }
-    .content li { font-size: 13px; color: #5b6678; line-height: 1.7; margin: 6px 0; }
+    .content h2::before { content: ''; display: inline-block; width: 3px; height: 16px; background: #4f46e5; border-radius: 2px; flex-shrink: 0; }
+    .content h3 { font-size: 14px; font-weight: 600; color: #374151; margin: 20px 0 10px; line-height: 1.4; }
+    .content p { font-size: 14px; color: #4b5563; line-height: 1.8; margin: 12px 0; }
+    .content ul, .content ol { margin: 14px 0; padding-left: 24px; }
+    .content li { font-size: 14px; color: #4b5563; line-height: 1.8; margin: 8px 0; }
     .content strong { color: #1f2937; font-weight: 600; }
     .content a { color: #4f46e5; text-decoration: none; font-weight: 500; word-break: break-all; }
     .content a:hover { text-decoration: underline; }
-    .content blockquote { border-left: 3px solid #4f46e5; padding: 10px 12px; margin: 12px 0; background: #f9fafb; border-radius: 0 6px 6px 0; }
-    .content blockquote p { margin: 0; color: #6b7280; font-size: 12px; }
-    .content hr { border: none; border-top: 1px solid #e5e7eb; margin: 16px 0; }
+    .content blockquote { border-left: 3px solid #4f46e5; padding: 12px 16px; margin: 16px 0; background: #f9fafb; border-radius: 0 8px 8px 0; }
+    .content blockquote p { margin: 4px 0; color: #6b7280; font-size: 13px; line-height: 1.7; }
+    .content hr { border: none; border-top: 1px solid #e5e7eb; margin: 24px 0; }
+    .content em { color: #6b7280; font-size: 13px; }
     .divider { height: 8px; background: #f5f5f5; margin: 16px 0; border-radius: 4px; }
-    .footer { text-align: center; padding: 16px 20px; color: #9ca3af; font-size: 11px; }
+    .footer { text-align: center; padding: 20px 24px; color: #9ca3af; font-size: 12px; line-height: 1.6; }
     .footer a { color: #4f46e5; text-decoration: none; }
     @media (max-width: 600px) {
       .container { padding: 8px; }
-      .header { padding: 18px 14px; }
-      .header h1 { font-size: 16px; }
-      .content { padding: 14px; }
-      .content h2 { font-size: 14px; }
+      .header { padding: 20px 16px; }
+      .header h1 { font-size: 17px; }
+      .content { padding: 16px; }
+      .content h2 { font-size: 15px; }
+      .content p, .content li { font-size: 13px; }
     }
   </style>
 </head>

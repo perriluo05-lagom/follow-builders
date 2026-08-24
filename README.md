@@ -27,7 +27,7 @@
 
 从海量信息中提炼核心价值，**完整保留原始内容**，绝不压缩成空话：
 
-- **X/Twitter 洞察**：47 位精选 AI 建造者的最新动态，每条推文保留原文，附带话题分类（产品发布/技术深度/商业战略/行业观点）、互动数据、Quote Tweet 标注、关键数据高亮
+- **X/Twitter 洞察**：20 位精选 AI 建造者的最新动态，每条推文保留原文，附带话题分类（产品发布/技术深度/商业战略/行业观点）、互动数据、Quote Tweet 标注、关键数据高亮
 - **播客摘要**：从转录稿中智能提取嘉宾背景介绍 + 带时间戳的核心要点段落，信息零损失
 - **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - **中文优先**：默认中文输出，无需任何 AI 模型 API key
@@ -115,7 +115,7 @@ node scripts/auto-digest.js
 
 每日摘要包含以下内容：
 
-- 💬 **X/Twitter 洞察**：47 位精选 AI 建造者的关键观点和动态，**保留推文原文**，附话题分类、互动数据、Quote Tweet 上下文标注
+- 💬 **X/Twitter 洞察**：20 位精选 AI 建造者的关键观点和动态，**保留推文原文**，附话题分类、互动数据、Quote Tweet 上下文标注
 - 📝 **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - 🎙️ **播客摘要**：顶级 AI 播客新节目的精华内容，嘉宾背景介绍 + 带时间戳的核心要点段落
 - 🔗 **原始链接**：所有内容都附带原文链接，方便深入阅读
@@ -153,20 +153,7 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 ## 📝 默认信息源
 
-### 播客（15个）
-- [Latent Space](https://www.youtube.com/@LatentSpacePod)
-- [Training Data](https://www.youtube.com/playlist?list=PLOhHNjZItNnMm5tdW61JpnyxeYH5NDDx8)
-- [No Priors](https://www.youtube.com/@NoPriorsPodcast)
-- [Unsupervised Learning](https://www.youtube.com/@RedpointAI)
-- [The MAD Podcast with Matt Turck](https://www.youtube.com/@DataDrivenNYC)
-- [AI & I by Every](https://www.youtube.com/playlist?list=PLuMcoKK9mKgHtW_o9h5sGO2vXrffKHwJL)
-- [Lex Fridman Podcast](https://www.youtube.com/@lexfridman)
-- [Gradient Dissent](https://www.youtube.com/@WeightsBiases)
-- [Machine Learning Street Talk](https://www.youtube.com/@MachineLearningStreetTalk)
-- [Practical AI](https://www.youtube.com/@changelogdotcom)
-- [TWIML AI Podcast](https://twimlai.com/podcast/)
-- [AI in Business](https://www.youtube.com/@DanielFaggella)
-- [The AI Podcast (NVIDIA)](https://www.youtube.com/@NVIDIAAI)
+### 播客（11个 - 小宇宙）
 - [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)
 - [Web3 101](https://www.xiaoyuzhoufm.com/podcast/62c2b6b3a61b9fd92a401b39)
 - [硬地骇客](https://www.xiaoyuzhoufm.com/podcast/640ee2438be5d40013fe4a87)
@@ -174,9 +161,13 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 - [半拿铁](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c00)
 - [OnBoard!](https://www.xiaoyuzhoufm.com/podcast/65a4a7e04e4b3d837f4e3a5c)
 - [硅谷早知道](https://www.xiaoyuzhoufm.com/podcast/62382c1103bea1ebfffa1c01)
+- [张小珺Jùn｜商业访谈录](https://www.xiaoyuzhoufm.com/podcast/626b46ea9cbbf0451cf5a962)
+- [商业就是这样](https://www.xiaoyuzhoufm.com/podcast/6022a180ef5fdaddc30bb101)
+- [声东击西](https://www.xiaoyuzhoufm.com/podcast/5e2831ed418a84a046231c00)
+- [忽左忽右](https://www.xiaoyuzhoufm.com/podcast/5e4ee557418a84a0466737b7)
 
-### X 上的 AI 建造者（47位）
-[Andrej Karpathy](https://x.com/karpathy), [Swyx](https://x.com/swyx), [Josh Woodward](https://x.com/joshwoodward), [Boris Cherny](https://x.com/bcherny), [Thibault Sottiaux](https://x.com/thsottiaux), [Peter Yang](https://x.com/petergyang), [Nan Yu](https://x.com/thenanyu), [Madhu Guru](https://x.com/realmadhuguru), [Amanda Askell](https://x.com/AmandaAskell), [Cat Wu](https://x.com/_catwu), [Thariq](https://x.com/trq212), [Google Labs](https://x.com/GoogleLabs), [Amjad Masad](https://x.com/amasad), [Guillermo Rauch](https://x.com/rauchg), [Alex Albert](https://x.com/alexalbert__), [Aaron Levie](https://x.com/levie), [Ryo Lu](https://x.com/ryolu_), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Zara Zhang](https://x.com/zarazhangrui), [Nikunj Kothari](https://x.com/nikunj), [Peter Steinberger](https://x.com/steipete), [Dan Shipper](https://x.com/danshipper), [Aditya Agarwal](https://x.com/adityaag), [Sam Altman](https://x.com/sama), [Claude](https://x.com/claudeai), [Dario Amodei](https://x.com/DarioAmodei), [Daniela Amodei](https://x.com/DanielaAmodei), [Yann LeCun](https://x.com/ylecun), [Jeff Dean](https://x.com/JeffDean), [Jim Fan](https://x.com/DrJimFan), [Ethan Mollick](https://x.com/emollick), [Harrison Chase](https://x.com/hwchase17), [Elvis Saravia](https://x.com/omarsar0), [Linus Lee](https://x.com/thesephist), [Simon Willison](https://x.com/simonw), [Riley Goodside](https://x.com/goodside), [Brandon Willard](https://x.com/brandonwillard), [Luke Zettlemoyer](https://x.com/luke_zettlemoyer), [Tri Dao](https://x.com/tri_dao), [Albert Gu](https://x.com/albertgu_), [Lilian Weng](https://x.com/lilianweng), [Jay Alammar](https://x.com/JayAlammar), [Fei-Fei Li](https://x.com/drfeifei), [Percy Liang](https://x.com/PercyLiang), [Scott Alexander](https://x.com/ScottAlexander), [Emad Mostaque](https://x.com/EMostaque)
+### X 上的 AI 建造者（20位）
+[Sam Altman](https://x.com/sama), [Dario Amodei](https://x.com/DarioAmodei), [Andrej Karpathy](https://x.com/karpathy), [Yann LeCun](https://x.com/ylecun), [Jim Fan](https://x.com/DrJimFan), [Thibault Sottiaux](https://x.com/thsottiaux), [Alex Albert](https://x.com/alexalbert__), [Amanda Askell](https://x.com/AmandaAskell), [Swyx](https://x.com/swyx), [Harrison Chase](https://x.com/hwchase17), [Garry Tan](https://x.com/garrytan), [Matt Turck](https://x.com/mattturck), [Ethan Mollick](https://x.com/emollick), [Lilian Weng](https://x.com/lilianweng), [Jay Alammar](https://x.com/JayAlammar), [Simon Willison](https://x.com/simonw), [Fei-Fei Li](https://x.com/drfeifei), [Zara Zhang](https://x.com/zarazhangrui), [Guillermo Rauch](https://x.com/rauchg), [Jeff Dean](https://x.com/JeffDean)
 
 ### 官方博客（12个）
 - [Anthropic Engineering](https://www.anthropic.com/engineering) — Anthropic 团队的技术深度文章
@@ -193,6 +184,21 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 - [Chip Huyen's Blog](https://huyenchip.com/) — MLOps 专家的个人博客
 
 💬可以自行添加其他信息源，如增添关注的博主、小宇宙上的播客等等
+
+### 🔑 数据源配置说明
+
+**X/Twitter 推文抓取**
+- 需要配置 `X_BEARER_TOKEN`（X API v2 Bearer Token）
+- 获取方式：访问 [X Developer Portal](https://developer.x.com/) → 申请开发者账号 → 创建 Project 和 App → 获取 Bearer Token
+- Free 计划每月可读取 1500 条推文，足够个人使用
+
+**播客抓取**
+- 小宇宙播客：无需 API key，直接通过 RSS 获取
+- 英文播客：需要 `POD2TXT_API_KEY`（pod2txt 服务），当前版本已暂时移除英文播客，仅保留小宇宙播客
+
+**博客抓取**
+- 无需 API key，直接抓取网页或 RSS
+- 支持 HTTP 抓取和 RSS 两种模式
 ---
 
 ## 🔧 工作原理
