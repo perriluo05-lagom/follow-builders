@@ -27,11 +27,11 @@ const RSS_USER_AGENT =
   "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 const TWEET_LOOKBACK_HOURS = 24;
 const PODCAST_LOOKBACK_HOURS = 336; // 14 days — podcasts publish weekly/biweekly, not daily
-const BLOG_LOOKBACK_HOURS = 24; // 24 hours to avoid flooding on first run
+const BLOG_LOOKBACK_HOURS = 72;
 const NEWS_LOOKBACK_HOURS = 24; // News: last 24 hours
 const MAX_TWEETS_PER_USER = 3;
-const MAX_ARTICLES_PER_BLOG = 2; // Max 2 articles per blog source
-const MAX_NEWS_PER_SOURCE = 3; // Top 3 items per news source
+const MAX_ARTICLES_PER_BLOG = 3;
+const MAX_NEWS_PER_SOURCE = 5; // Top 5 items per news source
 const X_USER_LOOKUP_BATCH_SIZE = 5;
 const X_RETRY_STATUSES = new Set([500, 502, 503, 504]);
 const X_RETRY_ATTEMPTS = 3;
