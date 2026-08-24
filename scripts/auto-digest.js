@@ -676,6 +676,39 @@ const CATEGORY_LABELS = {
   community: ' 社区',
 };
 
+// 清理不同来源的 RSS description 中的元数据垃圾
+function cleanNewsDescription(description, sourceName) {
+  if (!description) return '';
+  
+  // 移除 HTML 标签
+  let clean = description.replace(/<[^>]+>/g, '').trim();
+  
+  // Hacker News (hnrss): 移除 "Article URL: ... Comments URL: ... Points: ... Comments: ..." 等元数据
+  if (sourceName.includes('Hacker News') || sourceName.includes('hnrss')) {
+    clean = clean.replace(/Article URL:\s*https?:\/\/\S+/gi, '');
+    clean = clean.replace(/Comments URL:\s*https?:\/\/\S+/gi, '');
+    clean = clean.replace(/Points:\s*\d+/gi, '');
+    clean = clean.replace(/Comments:\s*\d+/gi, '');
+    clean = clean.replace(/\]\]>/g, '');
+    clean = clean.replace(/\[\[/g, '');
+  }
+  
+  // ArXiv: 移除 "arXiv:xxx Announce Type: new Abstract:" 前缀
+  if (sourceName.includes('ArXiv') || sourceName.includes('arxiv')) {
+    clean = clean.replace(/^arXiv:\d+\.\d+v\d+\s*/i, '');
+    clean = clean.replace(/^Announce Type:\s*\w+\s*/i, '');
+    clean = clean.replace(/^Abstract:\s*/i, '');
+  }
+  
+  // 清理多余空白和换行
+  clean = clean.replace(/\s+/g, ' ').trim();
+  
+  // 如果清理后太短或为空，返回空
+  if (clean.length < 20) return '';
+  
+  return clean;
+}
+
 function renderNewsItem(item) {
   const title = item.title || '';
   const url = item.url || '';
@@ -686,11 +719,14 @@ function renderNewsItem(item) {
 
   let block = `### ${label} ${title}\n\n`;
   block += `**来源：** ${name}\n\n`;
-  if (description) {
-    const cleanDesc = description.replace(/<[^>]+>/g, '').trim();
-    const excerpt = cleanDesc.length > 200 ? cleanDesc.slice(0, 200) + '...' : cleanDesc;
-    if (excerpt) block += `> ${excerpt}\n\n`;
+  
+  // 清理并显示描述
+  const cleanDesc = cleanNewsDescription(description, name);
+  if (cleanDesc) {
+    const excerpt = cleanDesc.length > 250 ? cleanDesc.slice(0, 250) + '...' : cleanDesc;
+    block += `> ${excerpt}\n\n`;
   }
+  
   block += `🔗 原文链接：${url}\n\n`;
   block += '---\n\n';
   return block;
