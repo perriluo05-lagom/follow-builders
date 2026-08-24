@@ -493,23 +493,32 @@ function extractGuestIntro(transcript) {
   return '';
 }
 
-// 解析小宇宙 shownotes 的结构化内容
+// 解析小宇宙 shownotes（用 ———— 分隔段落）
 function parseXiaoyuzhouShownotes(transcript) {
-  const lines = transcript.split('\n').map(l => l.trim()).filter(Boolean);
+  const parts = transcript.split(/—{3,}/).map(p => p.trim()).filter(Boolean);
   const sections = {};
-  let currentSection = 'intro';
-  let currentLines = [];
-  for (const line of lines) {
-    const sectionMatch = line.match(/^\|\s*(.+?)\s*\|$/);
-    if (sectionMatch) {
-      if (currentLines.length > 0) sections[currentSection] = currentLines.join('\n');
-      currentSection = sectionMatch[1].trim();
-      currentLines = [];
-    } else {
-      currentLines.push(line);
+  let intro = '';
+  for (const part of parts) {
+    const hostMatch = part.match(/^主播\s*\|\s*(.+)$/m);
+    if (hostMatch) {
+      sections['hosts'] = hostMatch[1].trim();
+      const remaining = part.replace(/^主播\s*\|.+$\n?/m, '').trim();
+      if (remaining && !intro) intro = remaining;
+      continue;
+    }
+    if (part.includes('时间轴') || /^\d{2}:\d{2}/.test(part)) {
+      sections['timeline'] = part;
+      continue;
+    }
+    if (part.includes('参考资料') || part.includes('主要参考')) {
+      sections['references'] = part;
+      continue;
+    }
+    if (!intro && part.length > 50) {
+      intro = part;
     }
   }
-  if (currentLines.length > 0) sections[currentSection] = currentLines.join('\n');
+  if (intro) sections['intro'] = intro;
   return sections;
 }
 
