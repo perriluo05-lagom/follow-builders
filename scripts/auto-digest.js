@@ -493,6 +493,26 @@ function extractGuestIntro(transcript) {
   return '';
 }
 
+// 解析小宇宙 shownotes 的结构化内容
+function parseXiaoyuzhouShownotes(transcript) {
+  const lines = transcript.split('\n').map(l => l.trim()).filter(Boolean);
+  const sections = {};
+  let currentSection = 'intro';
+  let currentLines = [];
+  for (const line of lines) {
+    const sectionMatch = line.match(/^\|\s*(.+?)\s*\|$/);
+    if (sectionMatch) {
+      if (currentLines.length > 0) sections[currentSection] = currentLines.join('\n');
+      currentSection = sectionMatch[1].trim();
+      currentLines = [];
+    } else {
+      currentLines.push(line);
+    }
+  }
+  if (currentLines.length > 0) sections[currentSection] = currentLines.join('\n');
+  return sections;
+}
+
 function renderPodcast(podcast) {
   const title = podcast.title || '';
   const url = podcast.url || '';
@@ -516,28 +536,30 @@ function renderPodcast(podcast) {
     }
     block += `\n`;
   } else if (transcript) {
-    // 兜底：按段落分开显示转录内容，避免堆成一大块
-    block += `**📌 内容摘要：**\n\n`;
-    // 按换行符分段，过滤空行和太短的段落
-    const paragraphs = transcript
-      .split(/\n+/)
-      .map(p => p.trim())
-      .filter(p => p.length >= 20);  // 跳过太短的行
-    
-    // 取前 5 段，每段截断到 200 字符
-    const maxParagraphs = 5;
-    const maxLen = 200;
-    for (let i = 0; i < Math.min(paragraphs.length, maxParagraphs); i++) {
-      const p = paragraphs[i];
-      const excerpt = p.length > maxLen ? p.slice(0, maxLen) + '...' : p;
-      block += `> ${excerpt}\n>\n`;
+    // 解析小宇宙 shownotes 结构
+    const sections = parseXiaoyuzhouShownotes(transcript);
+    const introText = sections['intro'] || '';
+    if (introText) {
+      const cleanIntro = decodeHtmlEntities(introText).replace(/\s+/g, ' ').trim();
+      const excerpt = cleanIntro.length > 250 ? cleanIntro.slice(0, 250) + '...' : cleanIntro;
+      block += `**📌 节目简介：**\n\n> ${excerpt}\n\n`;
     }
-    if (paragraphs.length > maxParagraphs) {
-      block += `> *（还有 ${paragraphs.length - maxParagraphs} 段，请点击链接查看完整内容）*\n`;
+    // 延伸资料
+    const references = sections['延伸资料'] || '';
+    if (references) {
+      const refLines = references.split('\n').filter(l => l.trim().length > 5).slice(0, 5);
+      if (refLines.length > 0) {
+        block += `**📚 延伸资料：**\n\n`;
+        for (const ref of refLines) block += `- ${ref.trim()}\n`;
+        block += `\n`;
+      }
     }
-    block += `\n`;
+    // 主播
+    const hosts = sections['主播'] || '';
+    if (hosts && hosts.trim().length > 0) {
+      block += `**🎤 主播：** ${hosts.trim()}\n\n`;
+    }
   } else {
-    // 无 transcript（如小宇宙播客），提示内容来源
     block += `*本期节目暂无转录稿，请点击下方链接收听完整内容。*\n\n`;
   }
 
@@ -550,6 +572,47 @@ function renderPodcast(podcast) {
 // 程序化摘要 —— 博客
 // ============================================================================
 
+// 解码 HTML 实体（博客内容中常见 &#x27; 等）
+function decodeHtmlEntities(text) {
+  return text
+    .replace(/&#x27;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#39;/g, "'");
+}
+
+// 将大块文字按句子边界智能分段
+function splitContentIntoParagraphs(text, maxLen = 300) {
+  // 先解码 HTML 实体
+  text = decodeHtmlEntities(text);
+  // 清理多余空白
+  text = text.replace(/\s+/g, ' ').trim();
+  
+  // 按句子边界分割（句号、问号、感叹号 + 空格/大写字母）
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+  
+  const paragraphs = [];
+  let current = '';
+  
+  for (const sentence of sentences) {
+    const trimmed = sentence.trim();
+    if (trimmed.length < 10) continue; // 跳过太短的句子
+    
+    if ((current + trimmed).length > maxLen && current.length > 50) {
+      paragraphs.push(current.trim());
+      current = trimmed;
+    } else {
+      current += (current ? ' ' : '') + trimmed;
+    }
+  }
+  if (current.trim()) paragraphs.push(current.trim());
+  
+  return paragraphs;
+}
+
 function renderBlog(blog) {
   const title = blog.title || '';
   const url = blog.url || '';
@@ -560,22 +623,19 @@ function renderBlog(blog) {
 
   let block = `### 📝 ${name}：${title}\n\n`;
   if (author) block += `**作者：** ${author}\n\n`;
-  if (description) block += `**摘要：** ${description}\n\n`;
 
-  // 正文摘录（取最有信息量的段落，跳过导航/页脚噪音）
+  // 正文摘录：智能分段，取前 3 段
   if (content) {
-    // 按双换行分段，挑前 3 段有实质内容的
-    const paragraphs = content.split(/\n\n+/)
-      .map(p => p.trim())
-      .filter(p => p.length >= 60)  // 跳过太短的
-      .slice(0, 3);
+    const paragraphs = splitContentIntoParagraphs(content, 350);
     if (paragraphs.length > 0) {
-      block += `**正文摘录：**\n\n`;
-      for (const p of paragraphs) {
-        // 每段截断到 400 字符
-        const excerpt = p.length > 400 ? p.slice(0, 400) + '...' : p;
-        block += `> ${excerpt}\n\n`;
+      block += `**核心内容：**\n\n`;
+      for (const p of paragraphs.slice(0, 3)) {
+        block += `> ${p}\n>\n`;
       }
+      if (paragraphs.length > 3) {
+        block += `> *（全文共 ${paragraphs.length} 段，点击链接阅读全文）*\n`;
+      }
+      block += `\n`;
     }
   }
 
@@ -615,6 +675,25 @@ function renderNewsItem(item) {
   return block;
 }
 
+// 生成板块概述
+function generateSectionOverview(items, type) {
+  if (!items || items.length === 0) return '';
+  if (type === 'news') {
+    const sources = [...new Set(items.map(i => i.name))];
+    const categories = [...new Set(items.map(i => i.category))];
+    return `本期共 ${items.length} 条资讯，来自 ${sources.join('、')} 等 ${sources.length} 个社区，涵盖 ${categories.join('、')} 等领域。`;
+  }
+  if (type === 'blogs') {
+    const sources = [...new Set(items.map(i => i.name))];
+    return `本期共 ${items.length} 篇深度文章，来自 ${sources.join('、')} 等 ${sources.length} 个官方博客。`;
+  }
+  if (type === 'podcasts') {
+    const sources = [...new Set(items.map(i => i.name))];
+    return `本期共 ${items.length} 集播客，来自 ${sources.join('、')} 等 ${sources.length} 个节目。`;
+  }
+  return '';
+}
+
 // ============================================================================
 // 主摘要生成
 // ============================================================================
@@ -629,7 +708,8 @@ function generateDigest(feedData, config) {
   // —— NEWS 板块 ——
   if (feedData.news && feedData.news.length > 0) {
     digest += `## 📰 AI 行业动态\n\n`;
-    digest += `*来自 Hacker News、ArXiv、TechCrunch、Reddit 等社区的 AI 相关资讯*\n\n`;
+    const newsOverview = generateSectionOverview(feedData.news, 'news');
+    if (newsOverview) digest += `*${newsOverview}*\n\n`;
     for (const item of feedData.news) {
       digest += renderNewsItem(item);
     }
@@ -638,7 +718,8 @@ function generateDigest(feedData, config) {
   // —— OFFICIAL BLOGS 板块 ——
   if (feedData.blogs && feedData.blogs.length > 0) {
     digest += `## 📝 OFFICIAL BLOGS 官方博客\n\n`;
-    digest += `*AI 公司官方博客深度文章（含作者、摘要、正文摘录）*\n\n`;
+    const blogOverview = generateSectionOverview(feedData.blogs, 'blogs');
+    if (blogOverview) digest += `*${blogOverview}*\n\n`;
     for (const blog of feedData.blogs) {
       digest += renderBlog(blog);
     }
@@ -646,8 +727,9 @@ function generateDigest(feedData, config) {
 
   // —— PODCASTS 板块 ——
   if (feedData.podcasts && feedData.podcasts.length > 0) {
-    digest += `## ️ PODCASTS 播客\n\n`;
-    digest += `*顶级 AI 播客最新一期（嘉宾背景 + 带时间戳的核心要点）*\n\n`;
+    digest += `## 🎙️ PODCASTS 播客\n\n`;
+    const podcastOverview = generateSectionOverview(feedData.podcasts, 'podcasts');
+    if (podcastOverview) digest += `*${podcastOverview}*\n\n`;
     for (const podcast of feedData.podcasts) {
       digest += renderPodcast(podcast);
     }
