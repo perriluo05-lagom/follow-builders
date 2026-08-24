@@ -624,13 +624,25 @@ function renderBlog(blog) {
   let block = `### 📝 ${name}：${title}\n\n`;
   if (author) block += `**作者：** ${author}\n\n`;
 
-  // 正文摘录：智能分段，取前 3 段
+  // 正文摘录：优先按换行分段，其次按句子分段
   if (content) {
-    const paragraphs = splitContentIntoParagraphs(content, 350);
+    let paragraphs;
+    // 如果内容中有换行（说明提取器保留了段落结构），按换行分段
+    if (content.includes('\n')) {
+      paragraphs = content
+        .split(/\n\n+/)
+        .map(p => p.replace(/\s+/g, ' ').trim())
+        .filter(p => p.length >= 40);
+    } else {
+      // 否则按句子边界智能分段
+      paragraphs = splitContentIntoParagraphs(content, 350);
+    }
+    
     if (paragraphs.length > 0) {
       block += `**核心内容：**\n\n`;
       for (const p of paragraphs.slice(0, 3)) {
-        block += `> ${p}\n>\n`;
+        const excerpt = p.length > 400 ? p.slice(0, 400) + '...' : p;
+        block += `> ${excerpt}\n>\n`;
       }
       if (paragraphs.length > 3) {
         block += `> *（全文共 ${paragraphs.length} 段，点击链接阅读全文）*\n`;

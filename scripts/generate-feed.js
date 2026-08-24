@@ -1099,35 +1099,74 @@ function extractGenericArticleContent(html) {
   const contentHtml = articleMatch?.[1] || mainMatch?.[1] || contentMatch?.[1] || '';
   
   if (contentHtml) {
-    // Clean HTML tags and normalize whitespace
-    content = contentHtml
+    // Remove script/style first
+    let cleaned = contentHtml
       .replace(/<script[\s\S]*?<\/script>/gi, '')
-      .replace(/<style[\s\S]*?<\/style>/gi, '')
-      .replace(/<[^>]+>/g, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, '');
+    
+    // Replace block-level elements with newlines to preserve paragraph structure
+    cleaned = cleaned
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<\/div>/gi, '\n\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/h[1-6]>/gi, '\n\n')
+      .replace(/<\/li>/gi, '\n')
+      .replace(/<\/tr>/gi, '\n');
+    
+    // Remove remaining inline tags
+    cleaned = cleaned.replace(/<[^>]+>/g, '');
+    
+    // Decode HTML entities
+    cleaned = cleaned
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"')
-      .replace(/\s+/g, ' ')
+      .replace(/&#39;/g, "'")
+      .replace(/&#x27;/g, "'")
+      .replace(/&mdash;/g, '—')
+      .replace(/&ndash;/g, '–')
+      .replace(/&hellip;/g, '...');
+    
+    // Normalize whitespace within lines but preserve paragraph breaks
+    content = cleaned
+      .split('\n')
+      .map(line => line.replace(/[ \t]+/g, ' ').trim())
+      .filter(line => line.length > 0)
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
       .trim();
   }
   
   // Fallback: extract from body if no content found
   if (!content) {
-    content = html
+    let cleaned = html
       .replace(/<script[\s\S]*?<\/script>/gi, '')
       .replace(/<style[\s\S]*?<\/style>/gi, '')
       .replace(/<nav[\s\S]*?<\/nav>/gi, '')
       .replace(/<footer[\s\S]*?<\/footer>/gi, '')
-      .replace(/<header[\s\S]*?<\/header>/gi, '')
-      .replace(/<[^>]+>/g, ' ')
+      .replace(/<header[\s\S]*?<\/header>/gi, '');
+    
+    cleaned = cleaned
+      .replace(/<\/p>/gi, '\n\n')
+      .replace(/<\/div>/gi, '\n\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '');
+    
+    cleaned = cleaned
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&')
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
-      .replace(/&quot;/g, '"')
-      .replace(/\s+/g, ' ')
+      .replace(/&quot;/g, '"');
+    
+    content = cleaned
+      .split('\n')
+      .map(line => line.replace(/[ \t]+/g, ' ').trim())
+      .filter(line => line.length > 0)
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
       .trim();
   }
   
