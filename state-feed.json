@@ -2,7 +2,8 @@
   "seenTweets": {},
   "seenVideos": {
     "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c": 1787573217465,
-    "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e": 1787624064020
+    "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e": 1787624064020,
+    "https://www.xiaoyuzhoufm.com/episode/6a87b8021352af56ff398ff8": 1787645774755
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -44,6 +45,7 @@
     "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/": 1787624068476,
     "https://techcrunch.com/2026/08/24/amjad-masad-ceo-and-co-founder-of-replit-joins-the-disrupt-stage-at-techcrunch-disrupt-2026/": 1787624068476,
     "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/": 1787624068476,
-    "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/": 1787624068476
+    "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/": 1787624068476,
+    "https://jack-clark.net/2026/08/24/import-ai-470-no-rights-for-machines-automating-environment-generation-with-spade-and-building-better-gpu-kernels-with-hawkeye/": 1787645779583
   }
 }

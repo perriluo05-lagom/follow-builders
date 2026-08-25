@@ -1,102 +1,22 @@
 {
-  "generatedAt": "2026-08-25T02:14:29.052Z",
+  "generatedAt": "2026-08-25T08:16:19.693Z",
   "lookbackHours": 24,
   "news": [
     {
       "source": "news",
-      "name": "Hacker News",
-      "category": "tech",
-      "title": "<![CDATA[How Universities Should Prepare Founders]]>",
-      "url": "https://paulgraham.com/prepare.html",
-      "publishedAt": "2026-08-25T01:40:39.000Z",
-      "description": "Article URL: https://paulgraham.com/prepare.html\nComments URL: https://news.ycombinator.com/item?id=49428121\nPoints: 16\n# Comments: 5\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "Hacker News",
-      "category": "tech",
-      "title": "<![CDATA[What languages are agent skills written in?]]>",
-      "url": "https://plicara.ai/research/agent-skill-languages/",
-      "publishedAt": "2026-08-25T00:52:27.000Z",
-      "description": "Article URL: https://plicara.ai/research/agent-skill-languages/\nComments URL: https://news.ycombinator.com/item?id=49427825\nPoints: 10\n# Comments: 2\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "Hacker News",
-      "category": "tech",
-      "title": "<![CDATA[Bookshelf – Self-hosted eBook library that runs on object storage]]>",
-      "url": "https://github.com/murerkinn/bookshelf",
-      "publishedAt": "2026-08-24T23:00:37.000Z",
-      "description": "Article URL: https://github.com/murerkinn/bookshelf\nComments URL: https://news.ycombinator.com/item?id=49427001\nPoints: 35\n# Comments: 12\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "Hacker News",
-      "category": "tech",
-      "title": "<![CDATA[iCloud+ Hide My Email addresses will remain on icloud.com]]>",
-      "url": "https://developer.apple.com/news/?id=1ptvdtcm",
-      "publishedAt": "2026-08-24T22:13:40.000Z",
-      "description": "Article URL: https://developer.apple.com/news/?id=1ptvdtcm\nComments URL: https://news.ycombinator.com/item?id=49426564\nPoints: 235\n# Comments: 55\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "Hacker News",
-      "category": "tech",
-      "title": "<![CDATA[Moon (2024)]]>",
-      "url": "https://ciechanow.ski/moon/",
-      "publishedAt": "2026-08-24T22:06:02.000Z",
-      "description": "Article URL: https://ciechanow.ski/moon/\nComments URL: https://news.ycombinator.com/item?id=49426466\nPoints: 104\n# Comments: 19\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "TechCrunch AI",
-      "category": "industry",
-      "title": "Situational Awareness, star AI hedge fund that nearly imploded, now being probed by the SEC",
-      "url": "https://techcrunch.com/2026/08/24/situational-awareness-star-ai-hedge-fund-that-nearly-imploded-now-being-probed-by-the-sec/",
-      "publishedAt": "2026-08-25T00:23:12.000Z",
-      "description": ""
-    },
-    {
-      "source": "news",
-      "name": "TechCrunch AI",
-      "category": "industry",
-      "title": "Trump bought SpaceX shares two weeks after blockbuster IPO",
-      "url": "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/",
-      "publishedAt": "2026-08-24T21:24:17.000Z",
-      "description": ""
-    },
-    {
-      "source": "news",
-      "name": "TechCrunch AI",
-      "category": "industry",
-      "title": "Amjad Masad, CEO and co-founder of Replit, joins the Disrupt Stage at TechCrunch Disrupt 2026",
-      "url": "https://techcrunch.com/2026/08/24/amjad-masad-ceo-and-co-founder-of-replit-joins-the-disrupt-stage-at-techcrunch-disrupt-2026/",
-      "publishedAt": "2026-08-24T19:54:19.000Z",
-      "description": ""
-    },
-    {
-      "source": "news",
-      "name": "TechCrunch AI",
-      "category": "industry",
-      "title": "Instinct’s powerful AI assistant is raising privacy and security concerns",
-      "url": "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/",
-      "publishedAt": "2026-08-24T18:03:55.000Z",
-      "description": ""
-    },
-    {
-      "source": "news",
-      "name": "TechCrunch AI",
-      "category": "industry",
-      "title": "Valor, Point72 back General Intuition at $6B valuation as AI startup pushes into robotics",
-      "url": "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/",
-      "publishedAt": "2026-08-24T15:24:18.000Z",
-      "description": ""
+      "name": "Import AI",
+      "category": "newsletter",
+      "title": "Import AI 470: No rights for machines; automating environment generation with SPADE; and building better GPU kernels with Hawkeye",
+      "url": "https://jack-clark.net/2026/08/24/import-ai-470-no-rights-for-machines-automating-environment-generation-with-spade-and-building-better-gpu-kernels-with-hawkeye/",
+      "publishedAt": "2026-08-24T13:12:40.000Z",
+      "description": "Welcome to Import AI, a newsletter about AI research. Import AI runs on arXiv, cappuccinos, and feedback from readers. If you’d like to support this, please subscribe. Subscribe now AI is accelerating some types of progress but not others:…A nice METR study lays out where acceleration is showing up…Here’s a little analysis from METR which [&#8230;]]]>"
     }
   ],
   "stats": {
-    "newsItems": 10
+    "newsItems": 1
   },
   "errors": [
-    "News: Failed to fetch RSS for Reddit r/LocalLLaMA: HTTP 429"
+    "News: Failed to fetch RSS for Ben's Bites: HTTP 404",
+    "News: Failed to fetch RSS for The Batch: HTTP 403"
   ]
 }
