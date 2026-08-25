@@ -809,23 +809,26 @@ function renderGitHubRepo(repo) {
   const stars = repo.stars || '';
   const todayStars = repo.todayStars || '';
 
+  // 标题行：项目名 + 简介
   let block = `### 🔥 ${name}\n\n`;
   
+  // 项目描述（如果有）
   if (description) {
-    block += `> ${description}\n\n`;
+    block += `**项目简介：** ${description}\n\n`;
   }
   
-  // 元数据行
+  // 元数据信息（语言、Star 数、今日增长）
   const meta = [];
-  if (language) meta.push(`**语言：** ${language}`);
-  if (stars) meta.push(`**Stars：** ${stars}`);
-  if (todayStars) meta.push(`**今日：** +${todayStars} ⭐`);
+  if (language) meta.push(`**编程语言：** ${language}`);
+  if (stars) meta.push(`**总 Star 数：** ${stars}`);
+  if (todayStars) meta.push(`**今日增长：** +${todayStars} ⭐`);
   
   if (meta.length > 0) {
-    block += `${meta.join(' | ')}\n\n`;
+    block += `**项目数据：** ${meta.join(' | ')}\n\n`;
   }
   
-  block += `🔗 仓库链接：${url}\n\n`;
+  // 链接
+  block += `🔗 **仓库地址：** ${url}\n\n`;
   block += '---\n\n';
   return block;
 }
