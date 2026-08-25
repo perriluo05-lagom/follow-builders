@@ -497,13 +497,13 @@ function extractGuestIntro(transcript) {
 function parseXiaoyuzhouShownotes(transcript) {
   const parts = transcript.split(/—{3,}/).map(p => p.trim()).filter(Boolean);
   const sections = {};
-  let intro = '';
+  const introParts = [];
   for (const part of parts) {
     const hostMatch = part.match(/^主播\s*\|\s*(.+)$/m);
     if (hostMatch) {
       sections['hosts'] = hostMatch[1].trim();
       const remaining = part.replace(/^主播\s*\|.+$\n?/m, '').trim();
-      if (remaining && !intro) intro = remaining;
+      if (remaining) introParts.push(remaining);
       continue;
     }
     if (part.includes('时间轴') || /^\d{2}:\d{2}/.test(part)) {
@@ -514,12 +514,23 @@ function parseXiaoyuzhouShownotes(transcript) {
       sections['references'] = part;
       continue;
     }
-    if (!intro && part.length > 50) {
-      intro = part;
+    // 跳过太短的段落（如联系方式、广告等）
+    if (part.length > 30) {
+      introParts.push(part);
     }
   }
-  if (intro) sections['intro'] = intro;
+  if (introParts.length > 0) sections['introParts'] = introParts;
   return sections;
+}
+
+// 清理单段 shownotes 文本（保留内部换行，只清理行内多余空白）
+function cleanShownotesText(text) {
+  return decodeHtmlEntities(text)
+    .split('\n')
+    .map(line => line.replace(/[ \t]+/g, ' ').trim())
+    .filter(line => line.length > 0)
+    .join('\n')
+    .trim();
 }
 
 function renderPodcast(podcast) {
@@ -545,28 +556,55 @@ function renderPodcast(podcast) {
     }
     block += `\n`;
   } else if (transcript) {
-    // 解析小宇宙 shownotes 结构
     const sections = parseXiaoyuzhouShownotes(transcript);
-    const introText = sections['intro'] || '';
-    if (introText) {
-      const cleanIntro = decodeHtmlEntities(introText).replace(/\s+/g, ' ').trim();
-      const excerpt = cleanIntro.length > 250 ? cleanIntro.slice(0, 250) + '...' : cleanIntro;
-      block += `**📌 节目简介：**\n\n> ${excerpt}\n\n`;
+
+    // 节目简介：按段落分开显示，每段作为独立引用块
+    const introParts = sections['introParts'] || [];
+    if (introParts.length > 0) {
+      block += `**📌 节目简介：**\n\n`;
+      for (const part of introParts.slice(0, 4)) {
+        const clean = cleanShownotesText(part);
+        if (clean.length > 20) {
+          block += `> ${clean}\n>\n`;
+        }
+      }
+      block += `\n`;
     }
-    // 延伸资料
-    const references = sections['延伸资料'] || '';
-    if (references) {
-      const refLines = references.split('\n').filter(l => l.trim().length > 5).slice(0, 5);
-      if (refLines.length > 0) {
-        block += `**📚 延伸资料：**\n\n`;
-        for (const ref of refLines) block += `- ${ref.trim()}\n`;
+
+    // 主播
+    const hosts = sections['hosts'] || '';
+    if (hosts) {
+      block += `**🎤 主播：** ${hosts}\n\n`;
+    }
+
+    // 时间轴（取前 5 个）
+    const timeline = sections['timeline'] || '';
+    if (timeline) {
+      const timeLines = timeline.split('\n')
+        .filter(l => /^\d{2}:\d{2}/.test(l.trim()))
+        .slice(0, 5);
+      if (timeLines.length > 0) {
+        block += `**⏱️ 时间轴：**\n\n`;
+        for (const tl of timeLines) {
+          block += `- ${tl.trim()}\n`;
+        }
         block += `\n`;
       }
     }
-    // 主播
-    const hosts = sections['主播'] || '';
-    if (hosts && hosts.trim().length > 0) {
-      block += `**🎤 主播：** ${hosts.trim()}\n\n`;
+
+    // 参考资料（取前 5 个）
+    const references = sections['references'] || '';
+    if (references) {
+      const refLines = references.split('\n')
+        .filter(l => l.trim().length > 10 && !l.includes('————'))
+        .slice(0, 5);
+      if (refLines.length > 0) {
+        block += `**📚 参考资料：**\n\n`;
+        for (const ref of refLines) {
+          block += `- ${ref.trim()}\n`;
+        }
+        block += `\n`;
+      }
     }
   } else {
     block += `*本期节目暂无转录稿，请点击下方链接收听完整内容。*\n\n`;
