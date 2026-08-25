@@ -1325,27 +1325,39 @@ function parseGitHubTrending(html) {
   while ((articleMatch = articleRegex.exec(html)) !== null) {
     const block = articleMatch[1];
     
-    // Extract repo name (owner/repo)
+    // Extract repo name (owner/repo) - look for the h2 with the repo link
     const nameMatch = block.match(/<h2[^>]*>[\s\S]*?<a[^>]*href="\/([^"]+)"[^>]*>[\s\S]*?<\/a>[\s\S]*?<\/h2>/i);
     const fullName = nameMatch ? nameMatch[1].trim() : '';
     
-    // Extract description
+    // Extract description - look for <p> tag that contains the actual description
+    // GitHub Trending has a specific structure where the description is in a <p> tag
+    // We need to clean it thoroughly
     const descMatch = block.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-    const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+    let description = '';
+    if (descMatch) {
+      // Remove all HTML tags and clean up
+      description = descMatch[1]
+        .replace(/<[^>]+>/g, ' ')  // Remove all HTML tags
+        .replace(/\s+/g, ' ')       // Normalize whitespace
+        .replace(/Star\s+/gi, '')   // Remove "Star" button text
+        .replace(/Sponsor\s+/gi, '') // Remove "Sponsor" button text
+        .replace(/Built by[\s\S]*/i, '') // Remove "Built by" section
+        .trim();
+    }
     
     // Extract language
     const langMatch = block.match(/<span[^>]*itemprop="programmingLanguage"[^>]*>([\s\S]*?)<\/span>/i);
     const language = langMatch ? langMatch[1].trim() : '';
     
-    // Extract stars (total)
+    // Extract stars (total) - look for the stargazers link
     const starsMatch = block.match(/<a[^>]*href="\/[^"]+\/stargazers"[^>]*>[\s\S]*?([\d,]+)[\s\S]*?<\/a>/i);
     const stars = starsMatch ? starsMatch[1].replace(/,/g, '') : '';
     
-    // Extract today's stars
-    const todayStarsMatch = block.match(/<span[^>]*>([\d,]+)\s*stars\s*today<\/span>/i);
+    // Extract today's stars - look for "X stars today" pattern
+    const todayStarsMatch = block.match(/(\d[\d,]*)\s+stars\s+today/i);
     const todayStars = todayStarsMatch ? todayStarsMatch[1].replace(/,/g, '') : '';
     
-    if (fullName) {
+    if (fullName && description.length > 10) {
       repos.push({
         name: fullName,
         url: `https://github.com/${fullName}`,

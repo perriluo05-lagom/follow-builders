@@ -525,6 +525,16 @@ function parseXiaoyuzhouShownotes(transcript) {
   const parts = transcript.split(/—{3,}/).map(p => p.trim()).filter(Boolean);
   const sections = {};
   const introParts = [];
+  
+  // 需要过滤的无效信息关键词
+  const skipKeywords = [
+    '后期制作', '声音设计', '收听方式', '认识我们', '联系我们',
+    '微信公众号', '投稿邮箱', '周边购买', '纸质书', '淘宝店',
+    '特调', '品尝地', '商店', '音频平台', '苹果播客', 'Spotify',
+    '喜马拉雅', '网易云音乐', 'QQ 音乐', '荔枝', '豆瓣',
+    '授权给', 'AI 内容', '音色生成', '字节系产品'
+  ];
+  
   for (const part of parts) {
     const hostMatch = part.match(/^主播\s*\|\s*(.+)$/m);
     if (hostMatch) {
@@ -541,6 +551,11 @@ function parseXiaoyuzhouShownotes(transcript) {
       sections['references'] = part;
       continue;
     }
+    
+    // 检查是否包含无效信息关键词
+    const shouldSkip = skipKeywords.some(keyword => part.includes(keyword));
+    if (shouldSkip) continue;
+    
     // 跳过太短的段落（如联系方式、广告等）
     if (part.length > 30) {
       introParts.push(part);
