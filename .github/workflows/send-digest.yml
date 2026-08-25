@@ -6,9 +6,6 @@ on:
     workflows: ["Generate Feeds"]
     types:
       - completed
-  # 备用触发：比 Generate Feeds (01:00 UTC) 晚 20 分钟启动，防止 workflow_run 未触发
-  schedule:
-    - cron: '20 1 * * *'
   workflow_dispatch:
     inputs:
       test_mode:

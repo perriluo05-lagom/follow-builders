@@ -19,7 +19,7 @@ Receive well-formatted digests with:
 - Professional typography optimized for reading
 
 ### 🤖 High-Quality Summaries (Pure Programmatic, No LLM API Required)
-- **AI Industry News:** Curated news from Hacker News, ArXiv, TechCrunch, Reddit and more — categorized by tech/research/industry/community
+- **AI Industry News:** Curated deep-dive content from Substack Newsletters — Ben's Bites, The Batch, Import AI, AI News
 - **Podcast Summaries:** Guest background + timestamped key-point segments extracted from transcripts — zero information loss
 - **Blog Articles:** Full articles from 12 curated AI tech blogs with author, summary, and body excerpts
 - **Chinese-first:** Defaults to Chinese output — no AI model API key required
@@ -118,12 +118,11 @@ The email template is defined in `scripts/auto-digest.js` in the `markdownToHtml
 
 ## 📝 Default Sources
 
-### 📰 AI Industry News (5)
-- [Hacker News](https://news.ycombinator.com/) — top tech community with extensive AI content
-- [ArXiv cs.AI](https://arxiv.org/list/cs.AI/recent) — latest AI/ML research papers
-- [TechCrunch AI](https://techcrunch.com/category/artificial-intelligence/) — AI industry news, funding, product launches
-- [Reddit r/MachineLearning](https://www.reddit.com/r/MachineLearning/) — ML community discussions
-- [Reddit r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/) — local LLM community
+### 📰 AI Industry News (4 Substack Newsletters)
+- [Ben's Bites](https://bensbites.beehiiv.com/) — Ben Tossell's daily AI news + tools
+- [The Batch](https://www.deeplearning.ai/the-batch/) — Andrew Ng's weekly AI deep analysis
+- [Import AI](https://jack-clark.net/) — Jack Clark's weekly AI research + policy
+- [AI News](https://www.ainews.co/) — Rob Toews' AI industry deep reporting
 
 ### 🎙️ Podcasts (11 - Xiaoyuzhou)
 - [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)

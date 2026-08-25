@@ -115,7 +115,7 @@ node scripts/auto-digest.js
 
 每日摘要包含以下内容：
 
--  **AI 行业动态**：来自 Hacker News、ArXiv、TechCrunch、Reddit 等社区的 AI 相关资讯，按技术/研究/行业/社区分类
+- 📰 **AI 行业动态**：来自 Ben's Bites、The Batch、Import AI、AI News 等 Substack Newsletter 的深度 AI 资讯
 - 📝 **博客文章**：12 个精选 AI 技术博客的深度文章，含作者、摘要、正文摘录
 - 🎙️ **播客摘要**：顶级 AI 播客新节目的精华内容，嘉宾背景介绍 + 带时间戳的核心要点段落
 - 🔗 **原始链接**：所有内容都附带原文链接，方便深入阅读
@@ -153,12 +153,11 @@ cron: '0 1 * * *'  # 分钟 小时 日期 月份 星期（UTC时间1:00 = 北京
 
 ##  默认信息源
 
-### 📰 AI 行业动态（5个）
-- [Hacker News](https://news.ycombinator.com/) — 全球顶级技术社区，AI 相关内容极多
-- [ArXiv cs.AI](https://arxiv.org/list/cs.AI/recent) — 最新 AI/ML 研究论文
-- [TechCrunch AI](https://techcrunch.com/category/artificial-intelligence/) — AI 行业新闻、融资、产品发布
-- [Reddit r/MachineLearning](https://www.reddit.com/r/MachineLearning/) — 机器学习社区讨论
-- [Reddit r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/) — 本地 LLM 社区
+###  AI 行业动态（4个 Substack Newsletter）
+- [Ben's Bites](https://bensbites.beehiiv.com/) — Ben Tossell 的每日 AI 新闻 + 工具
+- [The Batch](https://www.deeplearning.ai/the-batch/) — Andrew Ng 的每周 AI 深度分析
+- [Import AI](https://jack-clark.net/) — Jack Clark 的每周 AI 研究 + 政策
+- [AI News](https://www.ainews.co/) — Rob Toews 的 AI 行业深度报道
 
 ### 🎙️ 播客（11个 - 小宇宙）
 - [三点下班](https://www.xiaoyuzhoufm.com/podcast/62bd91adf288fd4eae3606ff)
