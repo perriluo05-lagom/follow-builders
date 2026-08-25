@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-08-24T12:06:57.465Z",
+  "generatedAt": "2026-08-25T02:14:24.021Z",
   "lookbackHours": 336,
   "podcasts": [
     {
       "source": "podcast",
-      "name": "商业就是这样",
-      "title": "商业小样47 | “健身做题家”的新欢HYROX，到底有什么护城河？",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c",
-      "publishedAt": "2026-08-23T23:00:00.000Z",
-      "transcript": "在大城市的运动人群里，HYROX如今的热度完全不亚于前两年的飞盘。令人在意的是，HYROX的创始人没有发明任何新Game，它只是把健身房里已有的训练动作组合在一起，出了一套“考题”，结果受到“健身做题家”的追捧。问题是，这样一套诞生不到十年、毫无原创、十分容易复制的游戏规则，凭什么变成一个年收入上亿欧元的赛事品牌？为什么没有模仿者与其竞争？HYROX的护城河究竟是什么？\n| 主播 |\n肖文杰、约小亚\n| 延伸资料 |\nHYROX - HYROX Single Rulebook（Season 26/27）\n《OMR Podcast》- Fitness-Races in über 40 Ländern: Hyrox-Gründer Moritz Fürste und Christian Toetzke (#857)\n《第一财经》杂志 - HYROX的生意经，给你的健身定个KPI\nLawInSport - How to use intellectual property rights to protect a new sports format\nInfront Sports & Media - Infront bolsters fitness portfolio through further HYROX investment\nBloomberg - Wanda Sports to Sell Ironman to Advance for $730 Million\nBarBend - CrossFit's Affiliate Fee Increase One Year Later: How Are Gyms Adapting?\nForbes Australia - How Hyrox turned everyday gym training into a $130 million juggernaut\n| 后期制作 |\nkk\n| 声音设计 |\n刘三菜\n| 收听方式 |\n你可以通过小宇宙、苹果播客、Spotify、喜马拉雅、网易云音乐、QQ音乐、荔枝、豆瓣等平台收听节目。\n| 认识我们 |\n微信公众号：第一财经YiMagazine\n联系我们：thatisbiz@yicai.com"
+      "name": "难得正经｜商业版今夜不设防",
+      "title": "医美的水有多深？博主机构老板对对碰",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e",
+      "publishedAt": "2026-08-23T14:30:00.000Z",
+      "transcript": "🎙️主播CK：独立咨询师，零售老司机，WX可以搜CK商业逻辑研究，有超多干货行业观察研究\n🎙️主播Iris：独立咨询师，曾任宝洁品牌运营部总经理/CMO/创业， 个人播客 ，更多视频看小红书/视频号\n🎙️嘉宾小鱼：医美爱好者&博主，对这条鱼有用\n🎙️嘉宾译文：久未医美创始人\n本期主要是对于行业的探讨、商业模式的研究，以及一些科普，并不推荐任何机构和项目，大家一定要理性消费哦～～\n00:01:23 ｜ 医美大扫盲，很多人护肤还是医美都傻傻分不清\n00:03:24 ｜ 内行人眼中的坑：双C、9块9脱毛、99光子、换头\n00:10:30 ｜ 如何避免踩雷？让你花出去的钱能听个响？\n00:15:18 ｜ 小红书功课怎么做：别只看最热，线下面诊才是真\n00:22:07 ｜医美的钱到底谁赚了：上游很肥，机构未必暴利\n00:27:52 ｜ 医生 IP 和推广：你刷到的“种草”，最后谁买单\n00:30:32 ｜为什么同一个产品价格可以差这么多？价格透明一定是好事吗？\n00:40:12 ｜ 三甲医院、莆田系诊所、新氧、精品诊所，拆解不同模式的医美机构\n00:51:12 ｜ 去韩国Do脸还香吗？\n00:58:34 ｜ 光电会不会透支皮肤？\n01:01:18 ｜ 如果亲闺蜜第一次去do脸，给什么建议？\n01:04:01 ｜ 换头的代价\n欢迎一键三连，加入交流群和更多小伙伴一起讨论商业与内容行业的新变化 👇\n大家如果觉得有帮助，欢迎一键三连，也欢迎加小助理入群iriswang042♥️\n如果喜欢小鱼，也欢迎加小助理帮你们拉群哈～\n再次强调一下，入坑有风险，入坑需谨慎！"
     }
   ],
   "stats": {
@@ -17,6 +17,7 @@
   },
   "errors": [
     "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
-    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
+    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503",
+    "Podcast: Error processing 声东击西: The operation was aborted due to timeout"
   ]
 }

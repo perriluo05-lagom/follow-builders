@@ -1,139 +1,102 @@
 {
-  "generatedAt": "2026-08-24T12:07:15.399Z",
+  "generatedAt": "2026-08-25T02:14:29.052Z",
   "lookbackHours": 24,
   "news": [
     {
       "source": "news",
       "name": "Hacker News",
       "category": "tech",
-      "title": "<![CDATA[Slovakia finds Russian backdoor in traffic speed cameras]]>",
-      "url": "https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/",
-      "publishedAt": "2026-08-23T14:38:25.000Z",
-      "description": "Article URL: https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/\nComments URL: https://news.ycombinator.com/item?id=49409200\nPoints: 21\n# Comments: 2\n]]>"
+      "title": "<![CDATA[How Universities Should Prepare Founders]]>",
+      "url": "https://paulgraham.com/prepare.html",
+      "publishedAt": "2026-08-25T01:40:39.000Z",
+      "description": "Article URL: https://paulgraham.com/prepare.html\nComments URL: https://news.ycombinator.com/item?id=49428121\nPoints: 16\n# Comments: 5\n]]>"
     },
     {
       "source": "news",
       "name": "Hacker News",
       "category": "tech",
-      "title": "<![CDATA[Authoritarianism of Code]]>",
-      "url": "https://zedshaw.com/blog/2020-10-07-authoritarianism-of-code/",
-      "publishedAt": "2026-08-23T14:36:38.000Z",
-      "description": "Article URL: https://zedshaw.com/blog/2020-10-07-authoritarianism-of-code/\nComments URL: https://news.ycombinator.com/item?id=49409184\nPoints: 5\n# Comments: 3\n]]>"
+      "title": "<![CDATA[What languages are agent skills written in?]]>",
+      "url": "https://plicara.ai/research/agent-skill-languages/",
+      "publishedAt": "2026-08-25T00:52:27.000Z",
+      "description": "Article URL: https://plicara.ai/research/agent-skill-languages/\nComments URL: https://news.ycombinator.com/item?id=49427825\nPoints: 10\n# Comments: 2\n]]>"
     },
     {
       "source": "news",
       "name": "Hacker News",
       "category": "tech",
-      "title": "<![CDATA[What Is a Harness?]]>",
-      "url": "https://earendil.com/posts/what-is-a-harness/",
-      "publishedAt": "2026-08-23T14:24:21.000Z",
-      "description": "Article URL: https://earendil.com/posts/what-is-a-harness/\nComments URL: https://news.ycombinator.com/item?id=49409092\nPoints: 27\n# Comments: 15\n]]>"
+      "title": "<![CDATA[Bookshelf – Self-hosted eBook library that runs on object storage]]>",
+      "url": "https://github.com/murerkinn/bookshelf",
+      "publishedAt": "2026-08-24T23:00:37.000Z",
+      "description": "Article URL: https://github.com/murerkinn/bookshelf\nComments URL: https://news.ycombinator.com/item?id=49427001\nPoints: 35\n# Comments: 12\n]]>"
     },
     {
       "source": "news",
       "name": "Hacker News",
       "category": "tech",
-      "title": "<![CDATA[Death to px, long live ch]]>",
-      "url": "https://shkspr.mobi/blog/2026/08/death-to-px-long-live-ch/",
-      "publishedAt": "2026-08-23T13:56:27.000Z",
-      "description": "Article URL: https://shkspr.mobi/blog/2026/08/death-to-px-long-live-ch/\nComments URL: https://news.ycombinator.com/item?id=49408889\nPoints: 20\n# Comments: 10\n]]>"
+      "title": "<![CDATA[iCloud+ Hide My Email addresses will remain on icloud.com]]>",
+      "url": "https://developer.apple.com/news/?id=1ptvdtcm",
+      "publishedAt": "2026-08-24T22:13:40.000Z",
+      "description": "Article URL: https://developer.apple.com/news/?id=1ptvdtcm\nComments URL: https://news.ycombinator.com/item?id=49426564\nPoints: 235\n# Comments: 55\n]]>"
     },
     {
       "source": "news",
       "name": "Hacker News",
       "category": "tech",
-      "title": "<![CDATA[My favorite nonfiction books about cults, scams, and schemes]]>",
-      "url": "https://bookdna.com/best-books/nonfiction-about-cults-scams-and-schemes",
-      "publishedAt": "2026-08-23T13:51:10.000Z",
-      "description": "Article URL: https://bookdna.com/best-books/nonfiction-about-cults-scams-and-schemes\nComments URL: https://news.ycombinator.com/item?id=49408858\nPoints: 48\n# Comments: 13\n]]>"
-    },
-    {
-      "source": "news",
-      "name": "ArXiv cs.AI",
-      "category": "research",
-      "title": "SDAD: Spec-Driven Agentic Development for the AI-Native SDLC",
-      "url": "https://arxiv.org/abs/2608.20341",
-      "publishedAt": "2026-08-24T04:00:00.000Z",
-      "description": "arXiv:2608.20341v1 Announce Type: new \nAbstract: Frontier coding agents backed by large language models with context windows from hundreds of thousands to millions of tokens are restructuring the Software Development Life Cycle (SDLC). Rich context handling and multi-step reasoning now allow substantial Functional Requirement Documents (FRDs) and repository context to be ingested in a single workflow, making specification quality the execution fuel for autonomous delivery. This report formalises Spec-Driven Agentic Development (SDAD) as a synthesis of disciplined up-front formalisation and high-velocity implementation: intent capture, machine-readable specification, agentic synthesis, and independent multi-agent verification under human sign-off. We revisit the historical pendulum between Waterfall and Agile, introduce AI-code as a fourth production paradigm, and compare Human-Agile (circa 2020) with Agentic-SDAD (circa 2026) across artefacts, cadence, accountability, and security posture. Beyond process description, we extend the model to team role metamorphosis (engineer, QA, platform, and product functions), quantitative governance (Ambiguity Tax, Spec Fidelity, SER, and TCI_agentic with repair multiplier phi), and pragmatic adoption via hybrid estimation and a staged migration blueprint. Industrial and research evidence on AI-augmented testing and verification is integrated to motivate separation between synthesis and release authority. Overall, the paper argues that agentic speed does not eliminate engineering discipline; it relocates discipline upstream into specification precision, explicit gates, and auditable provenance."
-    },
-    {
-      "source": "news",
-      "name": "ArXiv cs.AI",
-      "category": "research",
-      "title": "PrimeAgentOrchestrator: Memory-Primed Agent Spawning for Personal AI Infrastructure",
-      "url": "https://arxiv.org/abs/2608.20342",
-      "publishedAt": "2026-08-24T04:00:00.000Z",
-      "description": "arXiv:2608.20342v1 Announce Type: new \nAbstract: Large language model (LLM) coding agents start each session with an empty context window, discarding accumulated knowledge from prior work. We present PrimeAgentOrchestrator (PAO), a system that spawns new instances of Claude Code -- Anthropic's terminal-based coding agent -- pre-loaded with relevant memories compiled from the user's existing personal databases. At spawn time, PAO queries two independently-operated memory backends in parallel (a PostgreSQL entity-observation database and a Cloudflare Worker semantic search index), fuses results using backend-specific retrieval strategies, and delivers the compiled briefing via filesystem injection that exploits the host agent's configuration auto-read behavior. PAO manages the full agent lifecycle including trust pre-seeding, readiness polling with error detection, and adaptive terminal text injection. We report on four months of regular deployment (December 2025 through March 2026) as an experience report, documenting three generations of context delivery mechanisms, the failure modes that motivated each redesign, and the engineering tradeoffs of bridging heterogeneous memory systems rather than building a unified one."
-    },
-    {
-      "source": "news",
-      "name": "ArXiv cs.AI",
-      "category": "research",
-      "title": "Truth Lies Deep: Countering Semantic Camouflage via Latent Intent Verification",
-      "url": "https://arxiv.org/abs/2608.20378",
-      "publishedAt": "2026-08-24T04:00:00.000Z",
-      "description": "arXiv:2608.20378v1 Announce Type: new \nAbstract: Safety alignment in Large Language Models (LLMs) is often superficial, relying on refusal mechanisms that trigger only at the final stages of generation without erasing the foundational knowledge of harmful concepts acquired during pretraining. This study demonstrates that this architectural disconnect leaves models vulnerable to Semantic Camouflage -- adversarial attacks that wrap harmful intent in benign narrative contexts (e.g., creative writing), effectively bypassing standard input and output guardrails. By analyzing the latent activation trajectories of three distinct Small Language Model (SLM) families (Phi-3, Qwen2.5, and Gemma-2b) under adversarial stress, this research identifies a universal ``Intent Horizon'' -- a critical depth (typically 15--20\\% of total layers) where the model's distinct, pre-trained representation of harmful intent collapses as it contextualizes the query into a ``safe'' narrative. Results indicate that while late-layer representations of camouflaged attacks are mathematically indistinguishable from safe queries (Detection Rate $&lt; 20\\%$), early-layer representations retain a distinct, detectable ``harm signature.'' Leveraging this insight, this paper proposes Latent Intent Verification (LIV), a lightweight probing defense. Experiments on the PKU-SafeRLHF dataset demonstrate that LIV outperforms standard guardrails by a margin of 20--50\\% across all tested architectures, effectively neutralizing zero-day semantic attacks without requiring model retraining."
-    },
-    {
-      "source": "news",
-      "name": "ArXiv cs.AI",
-      "category": "research",
-      "title": "A Survey on Foundations and Frontiers of Multimodal Agentic Frameworks: Techniques and Applications",
-      "url": "https://arxiv.org/abs/2608.20379",
-      "publishedAt": "2026-08-24T04:00:00.000Z",
-      "description": "arXiv:2608.20379v1 Announce Type: new \nAbstract: Advances in large language models (LLMs) have fueled a wave of research into agency: the ability to reason, plan, and act. This effort has produced agentic frameworks that orchestrate perception, memory, and decision-making around powerful LLM backbones. With the advent of large multimodal models (LMMs), these systems can process and integrate diverse modalities, including images, audio, and video, thereby improving their real-world applicability. Yet, while surveys of LLM-based agents exist, the role of multimodality in shaping agency has not been systematically examined in recent years. This survey fills the gap by analyzing the impact of multimodality across the core functional modules of the agentic framework: perception, reasoning, planning, memory, and action. Using this lens, we trace the evolution from text-centric agents to multimodal frameworks, examine how modalities are integrated through delegated, late-fusion, and early-fusion architectures, and assess the emergence of agentic behaviors enabled by grounded perception and multimodal reasoning. We organize existing work through a modality-centric taxonomy that links architectural design choices to agent capabilities. Moreover, we review multimodal agentic systems across various application domains, including Robotics, GUI &amp; Web Navigation, Multimedia Content Generation &amp; Editing, and Long-form Video Understanding &amp; Retrieval. Beyond capabilities, we analyze performance across these settings and discuss efficiency-scalability trade-offs, including training and inference costs, latency, and deployment constraints. By focusing on the impact of multimodality in agentic design, we aim to identify key gaps and chart a roadmap toward robust and general-purpose intelligent systems."
-    },
-    {
-      "source": "news",
-      "name": "ArXiv cs.AI",
-      "category": "research",
-      "title": "Interpretable Multimodal Classification with Linear Discriminant Tree Ensembles",
-      "url": "https://arxiv.org/abs/2608.20384",
-      "publishedAt": "2026-08-24T04:00:00.000Z",
-      "description": "arXiv:2608.20384v1 Announce Type: new \nAbstract: Multimodal affect and behaviour classifiers that fuse heterogeneous text, audio, and visual streams must simultaneously achieve competitive accuracy and produce human-understandable explanations of the cues driving their decisions -- a dual objective that current high-capacity models, notably Transformers, only partially address. While Transformers attain strong predictive performance, their distributed representations and deep nonlinearity make it difficult to assign meaningful importance weights to individual multimodal features, limiting their use in trust-sensitive applications such as clinical affect monitoring and educational assessment. We address this gap by developing a framework based on tree-based ensembles that balances accuracy and interpretability. The framework encodes each modality into tokens, extracts and clusters concepts to reduce dimensionality, routes the fused modalities through tree-based ensemble classifiers, and interprets trends using a novel modified feature importance metric. The modified importance reduces the influence of the negative class in binary classification tasks, thereby improving indicator or marker detection. The proposed tree-based ensembles -- Linear Discriminant Tree (LDT), Linear Discriminant Forest (LDF), and Linear Discriminant AdaBoost (LDAB) -- achieve F1-mod gains of 4.3\\% over the Multimodal Transformer and accuracy gains of 3.0\\% over the primary interpretable multimodal baseline, Interpretable Multimodal Routing (IMR). The proposed multimodal feature importance extracts salient inter-modal concepts with substantially higher human-annotator agreement scores than default feature importance (62.2\\% vs.\\ 43.2\\% on IEMOCAP; 46.7\\% vs.\\ 32.1\\% on CMU-MOSI)."
+      "title": "<![CDATA[Moon (2024)]]>",
+      "url": "https://ciechanow.ski/moon/",
+      "publishedAt": "2026-08-24T22:06:02.000Z",
+      "description": "Article URL: https://ciechanow.ski/moon/\nComments URL: https://news.ycombinator.com/item?id=49426466\nPoints: 104\n# Comments: 19\n]]>"
     },
     {
       "source": "news",
       "name": "TechCrunch AI",
       "category": "industry",
-      "title": "Who&#8217;s behind the new ‘stealth model’ Ox Alpha?",
-      "url": "https://techcrunch.com/2026/08/23/whos-behind-the-new-stealth-model-ox-alpha/",
-      "publishedAt": "2026-08-23T20:01:36.000Z",
+      "title": "Situational Awareness, star AI hedge fund that nearly imploded, now being probed by the SEC",
+      "url": "https://techcrunch.com/2026/08/24/situational-awareness-star-ai-hedge-fund-that-nearly-imploded-now-being-probed-by-the-sec/",
+      "publishedAt": "2026-08-25T00:23:12.000Z",
       "description": ""
     },
     {
       "source": "news",
       "name": "TechCrunch AI",
       "category": "industry",
-      "title": "Linkdaze’s smart calendar is built to run a household, not just track a schedule",
-      "url": "https://techcrunch.com/2026/08/23/linkdazes-smart-calendar-is-built-to-run-a-household-not-just-track-a-schedule/",
-      "publishedAt": "2026-08-23T19:14:08.000Z",
+      "title": "Trump bought SpaceX shares two weeks after blockbuster IPO",
+      "url": "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/",
+      "publishedAt": "2026-08-24T21:24:17.000Z",
       "description": ""
     },
     {
       "source": "news",
       "name": "TechCrunch AI",
       "category": "industry",
-      "title": "Flock CEO calls for ‘compromise’ as surveillance company faces growing backlash",
-      "url": "https://techcrunch.com/2026/08/23/flock-ceo-calls-for-compromise-as-surveillance-company-faces-growing-backlash/",
-      "publishedAt": "2026-08-23T15:30:00.000Z",
+      "title": "Amjad Masad, CEO and co-founder of Replit, joins the Disrupt Stage at TechCrunch Disrupt 2026",
+      "url": "https://techcrunch.com/2026/08/24/amjad-masad-ceo-and-co-founder-of-replit-joins-the-disrupt-stage-at-techcrunch-disrupt-2026/",
+      "publishedAt": "2026-08-24T19:54:19.000Z",
       "description": ""
     },
     {
       "source": "news",
       "name": "TechCrunch AI",
       "category": "industry",
-      "title": "Is it legal to train AI models on copyrighted books? It’s complicated",
-      "url": "https://techcrunch.com/2026/08/23/is-it-legal-to-train-ai-models-on-copyrighted-books-its-complicated/",
-      "publishedAt": "2026-08-23T15:00:00.000Z",
+      "title": "Instinct’s powerful AI assistant is raising privacy and security concerns",
+      "url": "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/",
+      "publishedAt": "2026-08-24T18:03:55.000Z",
+      "description": ""
+    },
+    {
+      "source": "news",
+      "name": "TechCrunch AI",
+      "category": "industry",
+      "title": "Valor, Point72 back General Intuition at $6B valuation as AI startup pushes into robotics",
+      "url": "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/",
+      "publishedAt": "2026-08-24T15:24:18.000Z",
       "description": ""
     }
   ],
   "stats": {
-    "newsItems": 14
+    "newsItems": 10
   },
   "errors": [
-    "News: Failed to fetch RSS for Reddit r/MachineLearning: HTTP 403",
     "News: Failed to fetch RSS for Reddit r/LocalLLaMA: HTTP 429"
   ]
 }

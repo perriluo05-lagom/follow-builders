@@ -1,7 +1,8 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c": 1787573217465
+    "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c": 1787573217465,
+    "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e": 1787624064020
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -33,6 +34,16 @@
     "https://techcrunch.com/2026/08/23/whos-behind-the-new-stealth-model-ox-alpha/": 1787573235216,
     "https://techcrunch.com/2026/08/23/linkdazes-smart-calendar-is-built-to-run-a-household-not-just-track-a-schedule/": 1787573235216,
     "https://techcrunch.com/2026/08/23/flock-ceo-calls-for-compromise-as-surveillance-company-faces-growing-backlash/": 1787573235216,
-    "https://techcrunch.com/2026/08/23/is-it-legal-to-train-ai-models-on-copyrighted-books-its-complicated/": 1787573235216
+    "https://techcrunch.com/2026/08/23/is-it-legal-to-train-ai-models-on-copyrighted-books-its-complicated/": 1787573235216,
+    "https://paulgraham.com/prepare.html": 1787624068335,
+    "https://plicara.ai/research/agent-skill-languages/": 1787624068335,
+    "https://github.com/murerkinn/bookshelf": 1787624068335,
+    "https://developer.apple.com/news/?id=1ptvdtcm": 1787624068335,
+    "https://ciechanow.ski/moon/": 1787624068335,
+    "https://techcrunch.com/2026/08/24/situational-awareness-star-ai-hedge-fund-that-nearly-imploded-now-being-probed-by-the-sec/": 1787624068476,
+    "https://techcrunch.com/2026/08/24/trump-bought-spacex-shares-two-weeks-after-blockbuster-ipo/": 1787624068476,
+    "https://techcrunch.com/2026/08/24/amjad-masad-ceo-and-co-founder-of-replit-joins-the-disrupt-stage-at-techcrunch-disrupt-2026/": 1787624068476,
+    "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/": 1787624068476,
+    "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/": 1787624068476
   }
 }
