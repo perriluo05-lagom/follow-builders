@@ -801,6 +801,41 @@ function renderNewsItem(item) {
 // 程序化摘要 —— GitHub Trending
 // ============================================================================
 
+// 根据项目信息生成更有价值的说明
+function generateRepoInsight(repo) {
+  const name = repo.name || '';
+  const description = repo.description || '';
+  const language = repo.language || '';
+  const stars = parseInt(repo.stars || '0');
+  const todayStars = parseInt(repo.todayStars || '0');
+  
+  // 提取项目类型标签
+  const tags = [];
+  const lowerDesc = description.toLowerCase();
+  const lowerName = name.toLowerCase();
+  
+  if (lowerDesc.includes('llm') || lowerDesc.includes('language model') || lowerDesc.includes('gpt')) tags.push('LLM');
+  if (lowerDesc.includes('machine learning') || lowerDesc.includes('ml')) tags.push('机器学习');
+  if (lowerDesc.includes('deep learning') || lowerDesc.includes('neural')) tags.push('深度学习');
+  if (lowerDesc.includes('computer vision') || lowerDesc.includes('image')) tags.push('计算机视觉');
+  if (lowerDesc.includes('nlp') || lowerDesc.includes('natural language')) tags.push('NLP');
+  if (lowerDesc.includes('agent') || lowerDesc.includes('autonomous')) tags.push('AI Agent');
+  if (lowerDesc.includes('rag') || lowerDesc.includes('retrieval')) tags.push('RAG');
+  if (lowerDesc.includes('fine-tun') || lowerDesc.includes('training')) tags.push('模型训练');
+  if (lowerDesc.includes('tool') || lowerDesc.includes('framework')) tags.push('开发工具');
+  if (lowerDesc.includes('dataset') || lowerDesc.includes('data')) tags.push('数据集');
+  
+  // 生成热度评价
+  let popularity = '';
+  if (todayStars >= 100) popularity = '🔥 极度热门';
+  else if (todayStars >= 50) popularity = '🔥🔥 非常热门';
+  else if (todayStars >= 20) popularity = ' 热门';
+  else if (todayStars >= 10) popularity = '⭐ 受关注';
+  else popularity = '📈 新兴项目';
+  
+  return { tags, popularity };
+}
+
 function renderGitHubRepo(repo) {
   const name = repo.name || '';
   const url = repo.url || '';
@@ -808,23 +843,27 @@ function renderGitHubRepo(repo) {
   const language = repo.language || '';
   const stars = repo.stars || '';
   const todayStars = repo.todayStars || '';
+  
+  const { tags, popularity } = generateRepoInsight(repo);
 
-  // 标题行：项目名 + 简介
+  // 标题行
   let block = `### 🔥 ${name}\n\n`;
   
-  // 项目描述（如果有）
+  // 项目描述
   if (description) {
-    block += `**项目简介：** ${description}\n\n`;
+    block += `**📝 项目说明：** ${description}\n\n`;
   }
   
-  // 元数据信息（语言、Star 数、今日增长）
+  // 标签和热度
   const meta = [];
-  if (language) meta.push(`**编程语言：** ${language}`);
-  if (stars) meta.push(`**总 Star 数：** ${stars}`);
-  if (todayStars) meta.push(`**今日增长：** +${todayStars} ⭐`);
+  if (tags.length > 0) meta.push(`**标签：** ${tags.join(' / ')}`);
+  if (language) meta.push(`**语言：** ${language}`);
+  if (stars) meta.push(`**Stars：** ${stars}`);
+  if (todayStars) meta.push(`**今日：** +${todayStars} ⭐`);
+  if (popularity) meta.push(`**热度：** ${popularity}`);
   
   if (meta.length > 0) {
-    block += `**项目数据：** ${meta.join(' | ')}\n\n`;
+    block += `**📊 项目信息：** ${meta.join(' | ')}\n\n`;
   }
   
   // 链接
