@@ -3,7 +3,8 @@
   "seenVideos": {
     "https://www.xiaoyuzhoufm.com/episode/6a8b157def65145dfcc41c6c": 1787573217465,
     "https://www.xiaoyuzhoufm.com/episode/6a8572c1ef65145dfcc2032e": 1787624064020,
-    "https://www.xiaoyuzhoufm.com/episode/6a87b8021352af56ff398ff8": 1787645774755
+    "https://www.xiaoyuzhoufm.com/episode/6a87b8021352af56ff398ff8": 1787645774755,
+    "https://www.xiaoyuzhoufm.com/episode/6a8d2078ef65145dfcc4f6d5": 1787658437753
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -47,5 +48,17 @@
     "https://techcrunch.com/2026/08/24/instincts-powerful-ai-assistant-is-raising-privacy-and-security-concerns/": 1787624068476,
     "https://techcrunch.com/2026/08/24/valor-point72-back-general-intuition-at-6b-valuation-as-ai-startup-pushes-into-robotics/": 1787624068476,
     "https://jack-clark.net/2026/08/24/import-ai-470-no-rights-for-machines-automating-environment-generation-with-spade-and-building-better-gpu-kernels-with-hawkeye/": 1787645779583
+  },
+  "seenGitHub": {
+    "https://github.com/anthropics/claude-plugins-community": 1787658445402,
+    "https://github.com/MadsLorentzen/ai-job-search": 1787658445402,
+    "https://github.com/TauricResearch/TradingAgents": 1787658445402,
+    "https://github.com/AgriciDaniel/claude-obsidian": 1787658445402,
+    "https://github.com/rohitg00/ai-engineering-from-scratch": 1787658445402,
+    "https://github.com/Shubhamsaboo/awesome-llm-apps": 1787658445402,
+    "https://github.com/marin-community/marin": 1787658445402,
+    "https://github.com/anthropics/claude-plugins-official": 1787658445402,
+    "https://github.com/NousResearch/hermes-agent": 1787658445402,
+    "https://github.com/virgiliojr94/book-to-skill": 1787658445402
   }
 }

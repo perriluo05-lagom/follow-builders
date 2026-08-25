@@ -1,19 +1,9 @@
 {
-  "generatedAt": "2026-08-25T08:16:19.693Z",
+  "generatedAt": "2026-08-25T11:47:24.050Z",
   "lookbackHours": 24,
-  "news": [
-    {
-      "source": "news",
-      "name": "Import AI",
-      "category": "newsletter",
-      "title": "Import AI 470: No rights for machines; automating environment generation with SPADE; and building better GPU kernels with Hawkeye",
-      "url": "https://jack-clark.net/2026/08/24/import-ai-470-no-rights-for-machines-automating-environment-generation-with-spade-and-building-better-gpu-kernels-with-hawkeye/",
-      "publishedAt": "2026-08-24T13:12:40.000Z",
-      "description": "Welcome to Import AI, a newsletter about AI research. Import AI runs on arXiv, cappuccinos, and feedback from readers. If you’d like to support this, please subscribe. Subscribe now AI is accelerating some types of progress but not others:…A nice METR study lays out where acceleration is showing up…Here’s a little analysis from METR which [&#8230;]]]>"
-    }
-  ],
+  "news": [],
   "stats": {
-    "newsItems": 1
+    "newsItems": 0
   },
   "errors": [
     "News: Failed to fetch RSS for Ben's Bites: HTTP 404",
