@@ -32,6 +32,7 @@ const NEWS_LOOKBACK_HOURS = 24; // News: last 24 hours
 const MAX_TWEETS_PER_USER = 3;
 const MAX_ARTICLES_PER_BLOG = 3;
 const MAX_NEWS_PER_SOURCE = 5; // Top 5 items per news source
+const MAX_GITHUB_TRENDING = 10; // Top 10 trending repos
 const X_USER_LOOKUP_BATCH_SIZE = 5;
 const X_RETRY_STATUSES = new Set([500, 502, 503, 504]);
 const X_RETRY_ATTEMPTS = 3;
@@ -1263,6 +1264,102 @@ function parseRssNewsFeed(xml) {
   return items;
 }
 
+// -- GitHub Trending Fetching ------------------------------------------------
+
+// Fetches trending repositories from GitHub Trending page
+async function fetchGitHubTrending(config, state, errors) {
+  if (!config || !config.enabled) return [];
+  
+  const url = config.url || 'https://github.com/trending';
+  const language = config.language || '';
+  const since = config.since || 'daily';
+  const maxItems = config.maxItems || MAX_GITHUB_TRENDING;
+  
+  try {
+    console.error(`  Fetching GitHub Trending (${language || 'all languages'}, ${since})...`);
+    
+    // Build URL with filters
+    let trendingUrl = url;
+    if (language) trendingUrl += `/${language}`;
+    trendingUrl += `?since=${since}`;
+    
+    const res = await fetch(trendingUrl, {
+      headers: { "User-Agent": RSS_USER_AGENT },
+      signal: AbortSignal.timeout(15000),
+    });
+    
+    if (!res.ok) {
+      errors.push(`GitHub Trending: Failed to fetch: HTTP ${res.status}`);
+      return [];
+    }
+    
+    const html = await res.text();
+    const repos = parseGitHubTrending(html);
+    
+    console.error(`  GitHub Trending: found ${repos.length} repos`);
+    
+    // Filter by dedup and limit
+    const newRepos = [];
+    for (const repo of repos.slice(0, maxItems)) {
+      if (state.seenGitHub?.[repo.url]) continue;
+      newRepos.push(repo);
+      if (newRepos.length >= maxItems) break;
+    }
+    
+    console.error(`  GitHub Trending: ${newRepos.length} new repos`);
+    return newRepos;
+  } catch (err) {
+    errors.push(`GitHub Trending: Error: ${err.message}`);
+    return [];
+  }
+}
+
+// Parses GitHub Trending HTML to extract repo information
+function parseGitHubTrending(html) {
+  const repos = [];
+  
+  // Match each repo article block
+  const articleRegex = /<article[^>]*>([\s\S]*?)<\/article>/gi;
+  let articleMatch;
+  
+  while ((articleMatch = articleRegex.exec(html)) !== null) {
+    const block = articleMatch[1];
+    
+    // Extract repo name (owner/repo)
+    const nameMatch = block.match(/<h2[^>]*>[\s\S]*?<a[^>]*href="\/([^"]+)"[^>]*>[\s\S]*?<\/a>[\s\S]*?<\/h2>/i);
+    const fullName = nameMatch ? nameMatch[1].trim() : '';
+    
+    // Extract description
+    const descMatch = block.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+    const description = descMatch ? descMatch[1].replace(/<[^>]+>/g, '').trim() : '';
+    
+    // Extract language
+    const langMatch = block.match(/<span[^>]*itemprop="programmingLanguage"[^>]*>([\s\S]*?)<\/span>/i);
+    const language = langMatch ? langMatch[1].trim() : '';
+    
+    // Extract stars (total)
+    const starsMatch = block.match(/<a[^>]*href="\/[^"]+\/stargazers"[^>]*>[\s\S]*?([\d,]+)[\s\S]*?<\/a>/i);
+    const stars = starsMatch ? starsMatch[1].replace(/,/g, '') : '';
+    
+    // Extract today's stars
+    const todayStarsMatch = block.match(/<span[^>]*>([\d,]+)\s*stars\s*today<\/span>/i);
+    const todayStars = todayStarsMatch ? todayStarsMatch[1].replace(/,/g, '') : '';
+    
+    if (fullName) {
+      repos.push({
+        name: fullName,
+        url: `https://github.com/${fullName}`,
+        description,
+        language,
+        stars,
+        todayStars,
+      });
+    }
+  }
+  
+  return repos;
+}
+
 // Main blog fetching orchestrator.
 // For each blog source in the config, discovers new articles, deduplicates
 // against previously seen URLs, fetches full article content, and returns
@@ -1409,12 +1506,14 @@ async function main() {
   const podcastsOnly = args.includes("--podcasts-only");
   const blogsOnly = args.includes("--blogs-only");
   const newsOnly = args.includes("--news-only");
+  const githubOnly = args.includes("--github-only");
 
   // If a specific --*-only flag is set, only that feed type runs.
-  // If no flag is set, all three run.
-  let runPodcasts = podcastsOnly || (!blogsOnly && !newsOnly);
-  let runBlogs = blogsOnly || (!podcastsOnly && !newsOnly);
-  let runNews = newsOnly || (!podcastsOnly && !blogsOnly);
+  // If no flag is set, all four run.
+  let runPodcasts = podcastsOnly || (!blogsOnly && !newsOnly && !githubOnly);
+  let runBlogs = blogsOnly || (!podcastsOnly && !newsOnly && !githubOnly);
+  let runNews = newsOnly || (!podcastsOnly && !blogsOnly && !githubOnly);
+  let runGitHub = githubOnly || (!podcastsOnly && !blogsOnly && !newsOnly);
 
   const pod2txtKey = process.env.POD2TXT_API_KEY;
   const sources = await loadSources();
@@ -1439,6 +1538,7 @@ async function main() {
   }
 
   const state = await loadState();
+  if (!state.seenGitHub) state.seenGitHub = {};
   const errors = [];
 
   // Fetch podcasts
@@ -1513,6 +1613,33 @@ async function main() {
       JSON.stringify(newsFeed, null, 2),
     );
     console.error(`  feed-news.json: ${newsContent.length} items`);
+  }
+
+  // Fetch GitHub Trending
+  if (runGitHub && sources.github_trending?.enabled) {
+    console.error("Fetching GitHub Trending...");
+    const githubRepos = await fetchGitHubTrending(sources.github_trending, state, errors);
+    console.error(`  Found ${githubRepos.length} new trending repo(s)`);
+
+    // Mark as seen
+    for (const repo of githubRepos) {
+      state.seenGitHub[repo.url] = Date.now();
+    }
+
+    const githubFeed = {
+      generatedAt: new Date().toISOString(),
+      repos: githubRepos,
+      stats: { trendingRepos: githubRepos.length },
+      errors:
+        errors.filter((e) => e.startsWith("GitHub")).length > 0
+          ? errors.filter((e) => e.startsWith("GitHub"))
+          : undefined,
+    };
+    await writeFile(
+      join(SCRIPT_DIR, "..", "feed-github.json"),
+      JSON.stringify(githubFeed, null, 2),
+    );
+    console.error(`  feed-github.json: ${githubRepos.length} repos`);
   }
 
   // Save dedup state

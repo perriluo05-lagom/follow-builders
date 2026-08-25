@@ -36,6 +36,7 @@ const FEED_X_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-bu
 const FEED_PODCASTS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-podcasts.json';
 const FEED_BLOGS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-blogs.json';
 const FEED_NEWS_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-news.json';
+const FEED_GITHUB_URL = 'https://raw.githubusercontent.com/perriluo05-lagom/follow-builders/main/feed-github.json';
 
 // feed 文件超过这个时间视为过旧——说明 Generate Feeds 很可能连续失败了
 const STALE_FEED_HOURS = 30;
@@ -103,8 +104,8 @@ async function saveDigestState(state) {
   }
 }
 
-// 从 feed 数据中提取所有内容 ID（推文 ID、播客 GUID、博客 URL、新闻 URL）
-function extractContentIds(feedX, feedPodcasts, feedBlogs, feedNews) {
+// 从 feed 数据中提取所有内容 ID（推文 ID、播客 GUID、博客 URL、新闻 URL、GitHub 仓库 URL）
+function extractContentIds(feedX, feedPodcasts, feedBlogs, feedNews, feedGitHub) {
   const ids = [];
   // 推文 ID
   if (feedX?.x) {
@@ -134,11 +135,17 @@ function extractContentIds(feedX, feedPodcasts, feedBlogs, feedNews) {
       if (item.url) ids.push(`news:${item.url}`);
     }
   }
+  // GitHub 仓库 URL
+  if (feedGitHub?.repos) {
+    for (const repo of feedGitHub.repos) {
+      if (repo.url) ids.push(`github:${repo.url}`);
+    }
+  }
   return ids;
 }
 
 // 基于内容 ID 过滤掉已推送过的项目，返回仅包含新内容的 feed 数据
-function filterNewContent(feedX, feedPodcasts, feedBlogs, feedNews, sentItemIds) {
+function filterNewContent(feedX, feedPodcasts, feedBlogs, feedNews, feedGitHub, sentItemIds) {
   const sentSet = new Set(sentItemIds.map(e => e.id));
 
   // 过滤推文：移除已发送的推文
@@ -173,26 +180,35 @@ function filterNewContent(feedX, feedPodcasts, feedBlogs, feedNews, sentItemIds)
     filteredNews = { ...feedNews, news: newNews };
   }
 
-  return { filteredX, filteredPodcasts, filteredBlogs, filteredNews };
+  // 过滤 GitHub：移除已发送的仓库
+  let filteredGitHub = feedGitHub;
+  if (feedGitHub?.repos) {
+    const newRepos = feedGitHub.repos.filter(r => !sentSet.has(`github:${r.url}`));
+    filteredGitHub = { ...feedGitHub, repos: newRepos };
+  }
+
+  return { filteredX, filteredPodcasts, filteredBlogs, filteredNews, filteredGitHub };
 }
 
 // 检查过滤后是否还有任何新内容
-function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews) {
+function hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews, filteredGitHub) {
   const tweetCount = (filteredX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
   const podcastCount = (filteredPodcasts?.podcasts || []).length;
   const blogCount = (filteredBlogs?.blogs || []).length;
   const newsCount = (filteredNews?.news || []).length;
-  return tweetCount + podcastCount + blogCount + newsCount > 0;
+  const githubCount = (filteredGitHub?.repos || []).length;
+  return tweetCount + podcastCount + blogCount + newsCount + githubCount > 0;
 }
 
 // -- Feed 读取 ---------------------------------------------------------------
 
-function countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews) {
+function countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews, feedGitHub) {
   const tweets = (feedX?.x || []).reduce((s, b) => s + (b.tweets?.length || 0), 0);
   const podcasts = (feedPodcasts?.podcasts || []).length;
   const blogs = (feedBlogs?.blogs || []).length;
   const news = (feedNews?.news || []).length;
-  return { tweets, podcasts, blogs, news, total: tweets + podcasts + blogs + news };
+  const github = (feedGitHub?.repos || []).length;
+  return { tweets, podcasts, blogs, news, github, total: tweets + podcasts + blogs + news + github };
 }
 
 async function getFeedData() {
@@ -202,21 +218,24 @@ async function getFeedData() {
   const feedPodcastsPath = join(SKILL_DIR, 'feed-podcasts.json');
   const feedBlogsPath = join(SKILL_DIR, 'feed-blogs.json');
   const feedNewsPath = join(SKILL_DIR, 'feed-news.json');
+  const feedGitHubPath = join(SKILL_DIR, 'feed-github.json');
 
   // 1) 读取本地
-  let localX = null, localPod = null, localBlog = null, localNews = null;
+  let localX = null, localPod = null, localBlog = null, localNews = null, localGitHub = null;
   if (existsSync(feedXPath)) try { localX = JSON.parse(await readFile(feedXPath, 'utf-8')); } catch {}
   if (existsSync(feedPodcastsPath)) try { localPod = JSON.parse(await readFile(feedPodcastsPath, 'utf-8')); } catch {}
   if (existsSync(feedBlogsPath)) try { localBlog = JSON.parse(await readFile(feedBlogsPath, 'utf-8')); } catch {}
   if (existsSync(feedNewsPath)) try { localNews = JSON.parse(await readFile(feedNewsPath, 'utf-8')); } catch {}
+  if (existsSync(feedGitHubPath)) try { localGitHub = JSON.parse(await readFile(feedGitHubPath, 'utf-8')); } catch {}
 
   // 2) 并发拉远程（每次都拉；forceRemote 时忽略本地，只采用远程）
-  console.error(`[feed] 正在并行获取 GitHub raw 上的 4 份 feed（forceRemote=${forceRemote}）...`);
-  const [remoteX, remotePodcasts, remoteBlogs, remoteNews] = await Promise.all([
+  console.error(`[feed] 正在并行获取 GitHub raw 上的 5 份 feed（forceRemote=${forceRemote}）...`);
+  const [remoteX, remotePodcasts, remoteBlogs, remoteNews, remoteGitHub] = await Promise.all([
     fetchJSON(FEED_X_URL, 'feed-x (remote)'),
     fetchJSON(FEED_PODCASTS_URL, 'feed-podcasts (remote)'),
     fetchJSON(FEED_BLOGS_URL, 'feed-blogs (remote)'),
     fetchJSON(FEED_NEWS_URL, 'feed-news (remote)'),
+    fetchJSON(FEED_GITHUB_URL, 'feed-github (remote)'),
   ]);
 
   // 3) 比较新鲜度，择优选用
@@ -232,11 +251,15 @@ async function getFeedData() {
   const chosenNews = forceRemote
     ? { feed: remoteNews ?? localNews, source: remoteNews ? 'remote(force)' : 'local(fallback)' }
     : pickFresherFeed(localNews, remoteNews, 'feed-news');
+  const chosenGitHub = forceRemote
+    ? { feed: remoteGitHub ?? localGitHub, source: remoteGitHub ? 'remote(force)' : 'local(fallback)' }
+    : pickFresherFeed(localGitHub, remoteGitHub, 'feed-github');
 
   const feedX = chosenX.feed;
   const feedPodcasts = chosenPod.feed;
   const feedBlogs = chosenBlog.feed;
   const feedNews = chosenNews.feed;
+  const feedGitHub = chosenGitHub.feed;
 
   // 4) 新鲜度 / 过旧诊断
   const nowTs = Date.now();
@@ -245,38 +268,41 @@ async function getFeedData() {
     podcasts: feedPodcasts?.generatedAt ? (nowTs - new Date(feedPodcasts.generatedAt).getTime()) / 3_600_000 : Infinity,
     blogs: feedBlogs?.generatedAt ? (nowTs - new Date(feedBlogs.generatedAt).getTime()) / 3_600_000 : Infinity,
     news: feedNews?.generatedAt ? (nowTs - new Date(feedNews.generatedAt).getTime()) / 3_600_000 : Infinity,
+    github: feedGitHub?.generatedAt ? (nowTs - new Date(feedGitHub.generatedAt).getTime()) / 3_600_000 : Infinity,
   };
   const staleFeeds = Object.entries(ages)
     .filter(([, h]) => h > STALE_FEED_HOURS)
     .map(([k, h]) => `${k}(${h.toFixed(1)}h 前)`);
 
-  const rawCounts = countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews);
-  console.error(`[feed] 原始抓取量: 推文 ${rawCounts.tweets} / 播客 ${rawCounts.podcasts} / 博客 ${rawCounts.blogs} / 新闻 ${rawCounts.news}`);
+  const rawCounts = countFeedItems(feedX, feedPodcasts, feedBlogs, feedNews, feedGitHub);
+  console.error(`[feed] 原始抓取量: 推文 ${rawCounts.tweets} / 播客 ${rawCounts.podcasts} / 博客 ${rawCounts.blogs} / 新闻 ${rawCounts.news} / GitHub ${rawCounts.github}`);
   if (staleFeeds.length > 0) {
     console.error(`[feed] ⚠️  存在过旧 feed (阈值 ${STALE_FEED_HOURS}h): ${staleFeeds.join(', ')}，Generate Feeds 可能连续失败！`);
   }
 
   // 5) 基于内容 ID 去重：过滤掉已推送过的项目
   const digestState = await loadDigestState();
-  const { filteredX, filteredPodcasts, filteredBlogs, filteredNews } = filterNewContent(
-    feedX, feedPodcasts, feedBlogs, feedNews, digestState.sentItemIds || [],
+  const { filteredX, filteredPodcasts, filteredBlogs, filteredNews, filteredGitHub } = filterNewContent(
+    feedX, feedPodcasts, feedBlogs, feedNews, feedGitHub, digestState.sentItemIds || [],
   );
-  const newCounts = countFeedItems(filteredX, filteredPodcasts, filteredBlogs, filteredNews);
-  console.error(`[feed] 去重后新量: 推文 ${newCounts.tweets} / 播客 ${newCounts.podcasts} / 博客 ${newCounts.blogs} / 新闻 ${newCounts.news}`);
+  const newCounts = countFeedItems(filteredX, filteredPodcasts, filteredBlogs, filteredNews, filteredGitHub);
+  console.error(`[feed] 去重后新量: 推文 ${newCounts.tweets} / 播客 ${newCounts.podcasts} / 博客 ${newCounts.blogs} / 新闻 ${newCounts.news} / GitHub ${newCounts.github}`);
 
   const diagnosis = {
-    sources: { x: chosenX.source, podcasts: chosenPod.source, blogs: chosenBlog.source, news: chosenNews.source },
+    sources: { x: chosenX.source, podcasts: chosenPod.source, blogs: chosenBlog.source, news: chosenNews.source, github: chosenGitHub.source },
     generatedAt: {
       x: feedX?.generatedAt || null,
       podcasts: feedPodcasts?.generatedAt || null,
       blogs: feedBlogs?.generatedAt || null,
       news: feedNews?.generatedAt || null,
+      github: feedGitHub?.generatedAt || null,
     },
     ageHours: {
       x: Number(ages.x.toFixed(1)),
       podcasts: Number(ages.podcasts.toFixed(1)),
       blogs: Number(ages.blogs.toFixed(1)),
       news: Number(ages.news.toFixed(1)),
+      github: Number(ages.github.toFixed(1)),
     },
     staleFeeds,
     rawCounts,
@@ -286,16 +312,16 @@ async function getFeedData() {
     forceRemote,
   };
 
-  if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews)) {
+  if (!hasAnyNewContent(filteredX, filteredPodcasts, filteredBlogs, filteredNews, filteredGitHub)) {
     const why = rawCounts.total === 0
       ? '上游 feed 本身为空（Generate Feeds 抓取后未收录任何条目）'
       : (staleFeeds.length > 0 ? `feed 过旧：${staleFeeds.join(', ')}；内容全部已在之前推送过` : '所有内容均在之前推送过（去重后为 0）');
     console.log(`[feed] 无新内容可发送 → 原因：${why}`);
     return {
       alreadySent: true,
-      podcasts: [], x: [], blogs: [], news: [],
+      podcasts: [], x: [], blogs: [], news: [], github: [],
       _digestState: digestState,
-      _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews,
+      _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews, _feedGitHub: feedGitHub,
       _diagnosis: diagnosis,
       _emptyReason: why,
     };
@@ -306,8 +332,9 @@ async function getFeedData() {
     x: filteredX?.x || [],
     blogs: filteredBlogs?.blogs || [],
     news: filteredNews?.news || [],
+    github: filteredGitHub?.repos || [],
     _digestState: digestState,
-    _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews,
+    _feedX: feedX, _feedPod: feedPodcasts, _feedBlog: feedBlogs, _feedNews: feedNews, _feedGitHub: feedGitHub,
     _diagnosis: diagnosis,
   };
 }
@@ -765,7 +792,40 @@ function renderNewsItem(item) {
     block += `> ${excerpt}\n\n`;
   }
   
-  block += `🔗 原文链接：${url}\n\n`;
+  block += ` 原文链接：${url}\n\n`;
+  block += '---\n\n';
+  return block;
+}
+
+// ============================================================================
+// 程序化摘要 —— GitHub Trending
+// ============================================================================
+
+function renderGitHubRepo(repo) {
+  const name = repo.name || '';
+  const url = repo.url || '';
+  const description = repo.description || '';
+  const language = repo.language || '';
+  const stars = repo.stars || '';
+  const todayStars = repo.todayStars || '';
+
+  let block = `### 🔥 ${name}\n\n`;
+  
+  if (description) {
+    block += `> ${description}\n\n`;
+  }
+  
+  // 元数据行
+  const meta = [];
+  if (language) meta.push(`**语言：** ${language}`);
+  if (stars) meta.push(`**Stars：** ${stars}`);
+  if (todayStars) meta.push(`**今日：** +${todayStars} ⭐`);
+  
+  if (meta.length > 0) {
+    block += `${meta.join(' | ')}\n\n`;
+  }
+  
+  block += `🔗 仓库链接：${url}\n\n`;
   block += '---\n\n';
   return block;
 }
@@ -830,15 +890,26 @@ function generateDigest(feedData, config) {
     }
   }
 
+  // —— GITHUB TRENDING 板块 ——
+  if (feedData.github && feedData.github.length > 0) {
+    digest += `## 🔥 GitHub Trending\n\n`;
+    digest += `*今日热门 AI/ML 开源项目*\n\n`;
+    for (const repo of feedData.github) {
+      digest += renderGitHubRepo(repo);
+    }
+  }
+
   // —— 今日数据统计 ——
   const newsCount = feedData.news?.length || 0;
   const blogCount = feedData.blogs?.length || 0;
   const podcastCount = feedData.podcasts?.length || 0;
+  const githubCount = feedData.github?.length || 0;
 
-  digest += `##  今日数据\n\n`;
+  digest += `## 📊 今日数据\n\n`;
   digest += `- **行业动态：** ${newsCount} 条\n`;
   digest += `- **博客文章：** ${blogCount} 篇\n`;
-  digest += `- **播客内容：** ${podcastCount} 集\n\n`;
+  digest += `- **播客内容：** ${podcastCount} 集\n`;
+  digest += `- **GitHub Trending：** ${githubCount} 个项目\n\n`;
 
   digest += `---\n\n`;
   digest += `Generated through the Follow Builders skill: https://github.com/zarazhangrui/follow-builders\n\n`;

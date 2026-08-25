@@ -182,5 +182,12 @@
       "category": "newsletter",
       "author": "Rob Toews"
     }
-  ]
+  ],
+  "github_trending": {
+    "enabled": true,
+    "url": "https://github.com/trending",
+    "language": "python",
+    "since": "daily",
+    "maxItems": 10
+  }
 }
