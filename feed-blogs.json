@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T12:19:59.502Z",
+  "generatedAt": "2026-08-26T02:19:24.716Z",
   "lookbackHours": 72,
   "blogs": [],
   "stats": {
@@ -9,6 +9,6 @@
     "Blog: Failed to fetch index for OpenAI Blog: HTTP 403",
     "Blog: Failed to fetch article https://huggingface.co/blog/blog/community: HTTP 404",
     "Blog: Failed to fetch article https://huggingface.co/blog/blog/LiquidAI/qad: HTTP 404",
-    "Blog: Failed to fetch article https://huggingface.co/blog/blog/Michael-E/bedrock-rl: HTTP 404"
+    "Blog: Failed to fetch article https://huggingface.co/blog/blog/ibm-granite/granite-speech-5-0-470m-turboctc: HTTP 404"
   ]
 }
