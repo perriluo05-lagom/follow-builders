@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-08-26T02:19:19.736Z",
+  "generatedAt": "2026-08-27T10:45:14.668Z",
   "lookbackHours": 336,
   "podcasts": [
     {
       "source": "podcast",
-      "name": "Web3 101",
-      "title": "E84｜用钱表达观点并交易一切：聊聊Hyperliquid生态进展及现实资产永续合约的未来",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f",
-      "publishedAt": "2026-08-26T00:00:00.000Z",
-      "transcript": "永续合约为什么会成为加密市场最重要的交易工具和最独特的金融创新？它又为什么能从BTC、ETH，扩展到黄金、原油、美股，甚至尚未上市公司的股权交易？\n“我们这一代人，希望在任何时候用钱来表达对事物的观点，万事万物都可以被大宗商品化。”\n本期节目我们邀请正在交易赛道创业的Mable，从Hyperliquid生态中现实资产放量崛起的现象讲起，讨论永续合约如何成为“交易一切”的基础设施，解释背后资金费率、预言机、价格护栏和Pre-IPO价格发现的运行逻辑。我们进一步探讨：这类产品未来机会何在，尤其是，当所有平台都能上线相似资产时，真正的护城河究竟是什么？答案可能不是交易对，而是用户入口、流动性和独立订单流。\n【主播】\n刘锋，BODL Ventures合伙人，前链闻总编辑\n熊浩珺Jack，律动BlockBeats副主编，《Web3无名说》主播\n【嘉宾】\nMable Jiang，Trasia联合创始人，播客《后浪》主理人\n【你将听到】\n00:25 北极旅行、海上Starlink与新的创业项目Trasia\n01:47 Trasia是什么？\n02:34 HIP-3如何把Hyperliquid变成“可以交易一切”的平台\n05:30 拆解Hyperliquid三层生态结构\n08:16 HIP-3的阶段性成绩：现实资产交易开始反客为主\n09:11 从meme和资产发射台转向Perpetual的心路历程\n16:42 是时候好好了解一下永续合约啦！\n18:07 永续合约的基础机制：没有到期日的方向表达工具\n24:09 Crypto重要的金融创新，但是传统金融市场却一直缺失，为什么？\n30:43 用钱表达观点，这是Meme、预测市场和永续合约的共同逻辑\n35:19 Pre-IPO永续合约如何完成价格发现？\n40:06 没有预言机怎么办？于是发明了Discovery Bound价格护栏\n46:10 上什么资产不是护城河，订单流才是\n51:16 HIP-3生态残酷现实：资本成本、流动性和价格战\n55:56 链上的订单流护城河真的存在吗\n58:48 拆解一下在Hyperliquid上开一家交易所的成本\n01:04:07 谁可能挑战Hyperliquid？\n01:07:13 Crypto正在告别宏大叙事，回到满足具体需求\n【词汇表】\n本期播客提及的Web3产品、公司与协议\nHIP-3：Hyperliquid协议提案体系中的3号提案，允许部署者无许可创建永续合约市场\nHyperCore：Hyperliquid底层交易系统\nBuilder Code：前端或钱包向Hyperliquid导流，会根据该机制获得收益\nHLP：Hyperliquid的做市和流动性金库\nPerpetual/Perps：永续合约\nCBOT 芝加哥期货交易所\nFunding rate：资金费率\nOpen interest：未平仓合约量，指尚未平仓的合约或仓位规模\nTrade[XYZ]\nParagon\nPump.fun\nMeteora\nOndo\nxStocks\nAster\nVariational\nVentuals\nKinetiq\nLighter\nGRVT\nRFQ（Request for Quote）\n【后期】\nAMEI\n【运营】\n朱婕\n【BGM】\nMumbai - Ooyy\n【在这里找到我们】\n收听渠道：苹果｜小宇宙\n海外用户：Apple Podcast｜Spotify｜Google Podcast｜Amazon Music\n联系我们： podcast@sv101.net\nSpecial Guest: Mable Ji"
+      "name": "商业就是这样",
+      "title": "Vol.272 2026年了，怎么还有人要做中国版Airbnb？",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9",
+      "publishedAt": "2026-08-26T23:00:00.000Z",
+      "transcript": "在衣食住行这些最基本的需求中，“行”实际上是一个自由度极高、但讨论度偏低的大方向。比如旅游，它能支撑起携程这样规模极大的OTA（在线旅行社）平台，但途中大量的吃喝玩乐仍要按需深入研究。再比如酒店，即使全世界已经有了很多成功的连锁化酒店品牌，还是能出现Airbnb这样的跨国民宿平台。\n但所谓的“民宿”究竟是什么？当我们在旅途中选择“民宿”的时候，我们所期待的一系列体验会是什么样？这两个问题放在如今的中国，其实并不适合由诞生于美国的Airbnb来回答。\n所以本期节目，我们邀请了正在中国做“怀旧服Airbnb”的创业者坦丁，来解答我们对于非标准化住宿需求的一系列问题。 欢迎在小宇宙、小红书、哔哩哔哩、视频号、抖音等平台搜索账号“商业就是这样”，收看本期的【视频版】。\n| 嘉宾 |\n坦丁，民宿平台“一间次卧”创始人\n| 主播 |\n约小亚\n| 时间轴 |\n01:10 商酱视频播客迎来了首位赚到钱的嘉宾！\n03:20 为什么一个中国人要去瑞士学酒店管理？\n08:00 Airbnb的诞生背景是美国的金融危机\n15:38 阿那亚的民宿是房地产业务的自然延伸\n21:11 经济越不太好，人口的流动会越频繁\n23:32 启动怀旧服Airbnb所需要的宏观经济背景\n38:40 从大平台流量最低的1%供给中找到第一批房东\n41:08 什么样的收入才叫“可支配收入”？\n51:16 新一代的房东和房客都不了解Airbnb\n55:46 民宿背后的合规要求因地区而异\n58:49 如何为自己的一间次卧定价？\n01:02:24 房客与房东规模的动态平衡+相互转化\n01:05:33 借新消费品牌的痛点，实现自己的规模增长\n01:17:31 作为OPC成功了，但不建议新手做OPC\n01:23:44 十个好的住宿体验中，最好的那个可能不在酒店\n| 延伸资料 |\nVol.3 | 睡过200个次卧后，他做出了中国版Airbnb - 对话李坦丁\n坦丁自己的播客《联名关系》中关于品牌合作增长飞轮的详细解释\n| 后期制作 |\n刘大哭\n| 声音设计 |\n刘三菜\n| 收听方式 |\n你可以通过小宇宙、苹果播客、Spotify、喜马拉雅、网易云音乐、QQ音乐、荔枝、豆瓣等平台收听节目。\n| 认识我们 |\n微信公众号：第一财经YiMagazine\n联系我们：thatisbiz@yicai.com"
     }
   ],
   "stats": {

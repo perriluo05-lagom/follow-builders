@@ -1,7 +1,40 @@
 {
-  "generatedAt": "2026-08-26T02:19:26.891Z",
-  "repos": [],
+  "generatedAt": "2026-08-27T10:45:27.771Z",
+  "repos": [
+    {
+      "name": "Alishahryar1/free-claude-code",
+      "url": "https://github.com/Alishahryar1/free-claude-code",
+      "description": "Alishahryar1 / free-claude-code Use Claude Code, Codex, Pi, and OpenCode and more for free (1.3B+ free tokens) from your terminal, app, IDE, or phone like OpenClaw (voice supported + ToS friendly)",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "536"
+    },
+    {
+      "name": "browser-use/browser-use",
+      "url": "https://github.com/browser-use/browser-use",
+      "description": "browser-use / browser-use 🌐 Make websites accessible for AI agents. Automate tasks online with ease.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "149"
+    },
+    {
+      "name": "K-Dense-AI/scientific-agent-skills",
+      "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
+      "description": "K-Dense-AI / scientific-agent-skills Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 175,000+ scientists worldwide. 163 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "138"
+    },
+    {
+      "name": "netbox-community/netbox",
+      "url": "https://github.com/netbox-community/netbox",
+      "description": "netbox-community / netbox The premier source of truth powering network automation. Open source under Apache 2. Try NetBox Cloud free: https://netboxlabs.com/products/free-netbox-cloud/",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "37"
+    }
+  ],
   "stats": {
-    "trendingRepos": 0
+    "trendingRepos": 4
   }
 }

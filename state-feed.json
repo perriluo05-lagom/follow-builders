@@ -6,7 +6,8 @@
     "https://www.xiaoyuzhoufm.com/episode/6a87b8021352af56ff398ff8": 1787645774755,
     "https://www.xiaoyuzhoufm.com/episode/6a8d2078ef65145dfcc4f6d5": 1787658437753,
     "https://www.xiaoyuzhoufm.com/episode/6a881352ef65145dfcc323d4": 1787660394301,
-    "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f": 1787710759736
+    "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f": 1787710759736,
+    "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9": 1787827514667
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -22,7 +23,9 @@
     "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/": 1787573232001,
     "https://blogs.nvidia.com/blog/leading-models-nvidia/": 1787573232570,
     "https://blogs.nvidia.com/blog/isambard-ai/": 1787573233092,
-    "https://magazine.sebastianraschka.com/p/claude-watermarking": 1787573233738
+    "https://magazine.sebastianraschka.com/p/claude-watermarking": 1787573233738,
+    "https://claude.com/blog/claude-in-chrome-generally-available": 1787827515227,
+    "https://claude.com/blog/cowork-built-in-browser": 1787827515861
   },
   "seenNews": {
     "https://risky.biz/risky-bulletin-slovakia-finds-russian-backdoor-in-traffic-speed-cameras/": 1787573235089,
@@ -61,6 +64,10 @@
     "https://github.com/marin-community/marin": 1787658445402,
     "https://github.com/anthropics/claude-plugins-official": 1787658445402,
     "https://github.com/NousResearch/hermes-agent": 1787658445402,
-    "https://github.com/virgiliojr94/book-to-skill": 1787658445402
+    "https://github.com/virgiliojr94/book-to-skill": 1787658445402,
+    "https://github.com/Alishahryar1/free-claude-code": 1787827527771,
+    "https://github.com/browser-use/browser-use": 1787827527771,
+    "https://github.com/K-Dense-AI/scientific-agent-skills": 1787827527771,
+    "https://github.com/netbox-community/netbox": 1787827527771
   }
 }
