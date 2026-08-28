@@ -1,40 +1,56 @@
 {
-  "generatedAt": "2026-08-27T10:45:27.771Z",
+  "generatedAt": "2026-08-28T12:28:00.907Z",
   "repos": [
     {
-      "name": "Alishahryar1/free-claude-code",
-      "url": "https://github.com/Alishahryar1/free-claude-code",
-      "description": "Alishahryar1 / free-claude-code Use Claude Code, Codex, Pi, and OpenCode and more for free (1.3B+ free tokens) from your terminal, app, IDE, or phone like OpenClaw (voice supported + ToS friendly)",
+      "name": "calesthio/OpenMontage",
+      "url": "https://github.com/calesthio/OpenMontage",
+      "description": "calesthio / OpenMontage World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assistant into a full video production studio.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "536"
+      "todayStars": "1144"
     },
     {
-      "name": "browser-use/browser-use",
-      "url": "https://github.com/browser-use/browser-use",
-      "description": "browser-use / browser-use 🌐 Make websites accessible for AI agents. Automate tasks online with ease.",
+      "name": "abi/screenshot-to-code",
+      "url": "https://github.com/abi/screenshot-to-code",
+      "description": "abi / screenshot-to-code Drop in a screenshot and convert it to clean code (HTML/Tailwind/React/Vue)",
       "language": "Python",
       "stars": "16",
-      "todayStars": "149"
+      "todayStars": "309"
     },
     {
-      "name": "K-Dense-AI/scientific-agent-skills",
-      "url": "https://github.com/K-Dense-AI/scientific-agent-skills",
-      "description": "K-Dense-AI / scientific-agent-skills Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 175,000+ scientists worldwide. 163 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard.",
+      "name": "livekit/agents",
+      "url": "https://github.com/livekit/agents",
+      "description": "livekit / agents A framework for building realtime voice AI agents 🤖🎙️📹",
       "language": "Python",
       "stars": "16",
-      "todayStars": "138"
+      "todayStars": "14"
     },
     {
-      "name": "netbox-community/netbox",
-      "url": "https://github.com/netbox-community/netbox",
-      "description": "netbox-community / netbox The premier source of truth powering network automation. Open source under Apache 2. Try NetBox Cloud free: https://netboxlabs.com/products/free-netbox-cloud/",
+      "name": "HKUDS/AI-Trader",
+      "url": "https://github.com/HKUDS/AI-Trader",
+      "description": "HKUDS / AI-Trader \"AI-Trader: 100% Fully-Automated Agent-Native Trading\"",
       "language": "Python",
       "stars": "16",
-      "todayStars": "37"
+      "todayStars": "155"
+    },
+    {
+      "name": "Graphify-Labs/graphify",
+      "url": "https://github.com/Graphify-Labs/graphify",
+      "description": "Graphify-Labs / graphify Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "543"
+    },
+    {
+      "name": "goldmansachs/gs-quant",
+      "url": "https://github.com/goldmansachs/gs-quant",
+      "description": "goldmansachs / gs-quant Python toolkit for quantitative finance",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "25"
     }
   ],
   "stats": {
-    "trendingRepos": 4
+    "trendingRepos": 6
   }
 }

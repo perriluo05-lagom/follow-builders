@@ -1,22 +1,21 @@
 {
-  "generatedAt": "2026-08-27T10:45:14.668Z",
+  "generatedAt": "2026-08-28T12:27:53.945Z",
   "lookbackHours": 336,
-  "podcasts": [
-    {
-      "source": "podcast",
-      "name": "商业就是这样",
-      "title": "Vol.272 2026年了，怎么还有人要做中国版Airbnb？",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9",
-      "publishedAt": "2026-08-26T23:00:00.000Z",
-      "transcript": "在衣食住行这些最基本的需求中，“行”实际上是一个自由度极高、但讨论度偏低的大方向。比如旅游，它能支撑起携程这样规模极大的OTA（在线旅行社）平台，但途中大量的吃喝玩乐仍要按需深入研究。再比如酒店，即使全世界已经有了很多成功的连锁化酒店品牌，还是能出现Airbnb这样的跨国民宿平台。\n但所谓的“民宿”究竟是什么？当我们在旅途中选择“民宿”的时候，我们所期待的一系列体验会是什么样？这两个问题放在如今的中国，其实并不适合由诞生于美国的Airbnb来回答。\n所以本期节目，我们邀请了正在中国做“怀旧服Airbnb”的创业者坦丁，来解答我们对于非标准化住宿需求的一系列问题。 欢迎在小宇宙、小红书、哔哩哔哩、视频号、抖音等平台搜索账号“商业就是这样”，收看本期的【视频版】。\n| 嘉宾 |\n坦丁，民宿平台“一间次卧”创始人\n| 主播 |\n约小亚\n| 时间轴 |\n01:10 商酱视频播客迎来了首位赚到钱的嘉宾！\n03:20 为什么一个中国人要去瑞士学酒店管理？\n08:00 Airbnb的诞生背景是美国的金融危机\n15:38 阿那亚的民宿是房地产业务的自然延伸\n21:11 经济越不太好，人口的流动会越频繁\n23:32 启动怀旧服Airbnb所需要的宏观经济背景\n38:40 从大平台流量最低的1%供给中找到第一批房东\n41:08 什么样的收入才叫“可支配收入”？\n51:16 新一代的房东和房客都不了解Airbnb\n55:46 民宿背后的合规要求因地区而异\n58:49 如何为自己的一间次卧定价？\n01:02:24 房客与房东规模的动态平衡+相互转化\n01:05:33 借新消费品牌的痛点，实现自己的规模增长\n01:17:31 作为OPC成功了，但不建议新手做OPC\n01:23:44 十个好的住宿体验中，最好的那个可能不在酒店\n| 延伸资料 |\nVol.3 | 睡过200个次卧后，他做出了中国版Airbnb - 对话李坦丁\n坦丁自己的播客《联名关系》中关于品牌合作增长飞轮的详细解释\n| 后期制作 |\n刘大哭\n| 声音设计 |\n刘三菜\n| 收听方式 |\n你可以通过小宇宙、苹果播客、Spotify、喜马拉雅、网易云音乐、QQ音乐、荔枝、豆瓣等平台收听节目。\n| 认识我们 |\n微信公众号：第一财经YiMagazine\n联系我们：thatisbiz@yicai.com"
-    }
-  ],
+  "podcasts": [],
   "stats": {
-    "podcastEpisodes": 1
+    "podcastEpisodes": 0
   },
   "errors": [
-    "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
-    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
+    "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
+    "Podcast: Error processing Web3 101: The operation was aborted due to timeout",
+    "Podcast: Error processing 硬地骇客: The operation was aborted due to timeout",
+    "Podcast: Error processing 难得正经｜商业版今夜不设防: The operation was aborted due to timeout",
+    "Podcast: Error processing 半拿铁 | 商业沉浮录: The operation was aborted due to timeout",
+    "Podcast: Error processing OnBoard!: The operation was aborted due to timeout",
+    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
+    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout",
+    "Podcast: Error processing 商业就是这样: The operation was aborted due to timeout",
+    "Podcast: Error processing 声东击西: The operation was aborted due to timeout",
+    "Podcast: Error processing 忽左忽右: The operation was aborted due to timeout"
   ]
 }
