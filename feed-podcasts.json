@@ -1,21 +1,26 @@
 {
-  "generatedAt": "2026-08-28T12:27:53.945Z",
+  "generatedAt": "2026-08-29T07:35:09.841Z",
   "lookbackHours": 336,
-  "podcasts": [],
+  "podcasts": [
+    {
+      "source": "podcast",
+      "name": "忽左忽右",
+      "title": "496 移民潮背后的休达：从古典时代蛮族渡海、伊比利亚「收复失地运动」到葡萄牙大航海",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a",
+      "publishedAt": "2026-08-28T09:25:55.000Z",
+      "transcript": "- 导语 -\n休达扼守直布罗陀海峡南岸，是西班牙在北非的飞地，自古便是战略要地。1415年，葡萄牙跨海攻占休达，通常被视为大航海时代的开端。葡萄牙人为什么选择远征休达而不是伊比利亚半岛的穆斯林政权格拉纳达？这座北非商港后来又为何从葡萄牙领地转归西班牙？近年的移民问题，又与西班牙和摩洛哥围绕休达的领土争议有何关联？请听本期嘉宾陆大鹏带来的精彩分享！\n特别感谢科沃斯对本期节目的大力支持！\n这一期，我们从休达聊到大航海。很多改变世界的探索，其实都始于对具体问题的执着，一点点寻找解决办法。\n科沃斯过去28年的迭代，很像伊德里斯画地图的过程：不是一开始就知道答案，而是年复一年，近乎吹毛求疵地在用户家里发现问题，并不断勇敢驶向未知的海域。伊德里斯当年探索的是更大的世界，而科沃斯面对的是我们每天生活的、更精细的家。课题不同，但背后的探索精神很相似——凡是人类觉得\"繁琐、枯燥、重复\"的场景，都是他们想攻克的方向。\n新款旗舰机型科沃斯 X12S PRO 洗地机器人，就是科沃斯多年持续进化后的最新一代成果。把所有复杂藏进底层技术，只为让你每次打开家门，都能拥有一个干净可靠的家。\n感兴趣的朋友，欢迎 点击链接 ，了解更多科沃斯 X12S PRO洗地机器人的产品详情。\n- 本期话题成员 -\n程衍樑（微博@GrenadierGuard2）\n陆大鹏，世界史学者，英德译者。著有《德意志贵族》《巴比伦怪物：魏玛共和国犯罪鉴证实录》等，译有《阿拉伯的劳伦斯》等。《怪东西Weird History》播客主播。\n- 时间轴 -\n05:23 直布罗陀海峡两端的「赫拉克勒斯双柱」\n10:12 北非征服史：从腓尼基、迦太基到罗马人\n15:48 来自东欧的蛮族汪达尔人为何渡海进入北非\n24:44 阿拉伯征服浪潮：王国林立的北非与伊比利亚半岛\n33:44 三个哈里发同时出现：伊斯兰大分裂\n39:30 大航海前夜的休达：围绕粮食与羊毛的地中海贸易\n41:24 《罗杰之书》：一位中世纪休达人写就的地理学巨著\n47:21 收复失地运动的尾声：葡萄牙为何选择跨海攻打休达而非格拉纳达？\n56:30 法兰克的传奇骑士罗兰并非死于穆斯林之手\n01:04:32 西葡合并，休达归属西班牙\n01:09:46 19世纪法国与西班牙对摩洛哥的殖民瓜分史\n01:13:02 执法人员为何默许摩洛哥人偷渡休达？\n- 制作团队 -\n声音设计 hotair\n节目统筹 禾放\n节目运营 小米粒\n节目制作 思钊 Yo\nlogo设计 杨文骥\n- 音乐 -\nDanse Macabre - Busy Strings - Kevin MacLeod\n- 本节目由JustPod出品 © 2026 上海斛律网络科技有限公司 -\n- 互动方式 -\n商务合作：ad@justpod.fm\n微博：@忽左忽右leftright @播客一下 @JustPod\n微信公众号：忽左忽右Leftright / JustPod / 播客一下\n小红书：JustPod气氛组 / 忽左忽右\nB站：忽左忽右leftright\n抖音：忽左忽右"
+    }
+  ],
   "stats": {
-    "podcastEpisodes": 0
+    "podcastEpisodes": 1
   },
   "errors": [
     "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
     "Podcast: Error processing Web3 101: The operation was aborted due to timeout",
     "Podcast: Error processing 硬地骇客: The operation was aborted due to timeout",
     "Podcast: Error processing 难得正经｜商业版今夜不设防: The operation was aborted due to timeout",
-    "Podcast: Error processing 半拿铁 | 商业沉浮录: The operation was aborted due to timeout",
-    "Podcast: Error processing OnBoard!: The operation was aborted due to timeout",
-    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
-    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout",
-    "Podcast: Error processing 商业就是这样: The operation was aborted due to timeout",
-    "Podcast: Error processing 声东击西: The operation was aborted due to timeout",
-    "Podcast: Error processing 忽左忽右: The operation was aborted due to timeout"
+    "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
+    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
   ]
 }

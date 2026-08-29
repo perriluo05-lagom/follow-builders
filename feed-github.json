@@ -1,56 +1,7 @@
 {
-  "generatedAt": "2026-08-28T12:28:00.907Z",
-  "repos": [
-    {
-      "name": "calesthio/OpenMontage",
-      "url": "https://github.com/calesthio/OpenMontage",
-      "description": "calesthio / OpenMontage World's first open-source, agentic video production system. 12 production pipelines, 100+ tools, 700+ agent skill and production-knowledge files. Turn your AI coding assistant into a full video production studio.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "1144"
-    },
-    {
-      "name": "abi/screenshot-to-code",
-      "url": "https://github.com/abi/screenshot-to-code",
-      "description": "abi / screenshot-to-code Drop in a screenshot and convert it to clean code (HTML/Tailwind/React/Vue)",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "309"
-    },
-    {
-      "name": "livekit/agents",
-      "url": "https://github.com/livekit/agents",
-      "description": "livekit / agents A framework for building realtime voice AI agents 🤖🎙️📹",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "14"
-    },
-    {
-      "name": "HKUDS/AI-Trader",
-      "url": "https://github.com/HKUDS/AI-Trader",
-      "description": "HKUDS / AI-Trader \"AI-Trader: 100% Fully-Automated Agent-Native Trading\"",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "155"
-    },
-    {
-      "name": "Graphify-Labs/graphify",
-      "url": "https://github.com/Graphify-Labs/graphify",
-      "description": "Graphify-Labs / graphify Turn any codebase, with its docs, SQL schemas, configs, and PDFs, into a queryable knowledge graph. A /graphify skill for Claude Code, Cursor, Codex, and Gemini CLI: local deterministic AST parsing, every edge explained, no vector store.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "543"
-    },
-    {
-      "name": "goldmansachs/gs-quant",
-      "url": "https://github.com/goldmansachs/gs-quant",
-      "description": "goldmansachs / gs-quant Python toolkit for quantitative finance",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "25"
-    }
-  ],
+  "generatedAt": "2026-08-29T07:35:16.998Z",
+  "repos": [],
   "stats": {
-    "trendingRepos": 6
+    "trendingRepos": 0
   }
 }
