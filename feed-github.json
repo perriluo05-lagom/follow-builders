@@ -1,7 +1,56 @@
 {
-  "generatedAt": "2026-08-29T07:35:16.998Z",
-  "repos": [],
+  "generatedAt": "2026-08-30T06:07:06.294Z",
+  "repos": [
+    {
+      "name": "p-e-w/heretic",
+      "url": "https://github.com/p-e-w/heretic",
+      "description": "p-e-w / heretic Fully automatic censorship removal for language models",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "150"
+    },
+    {
+      "name": "ComposioHQ/awesome-claude-skills",
+      "url": "https://github.com/ComposioHQ/awesome-claude-skills",
+      "description": "ComposioHQ / awesome-claude-skills A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "73"
+    },
+    {
+      "name": "Osmantic/ODS",
+      "url": "https://github.com/Osmantic/ODS",
+      "description": "Osmantic / ODS Turn your PC, Mac, or Linux box into an AI server. LLM inference, chat UI, voice, agents, workflows, RAG, and image generation.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "35"
+    },
+    {
+      "name": "kaifcodec/user-scanner",
+      "url": "https://github.com/kaifcodec/user-scanner",
+      "description": "kaifcodec / user-scanner 🕵️‍♂️ (2-in-1) Email &amp; Username OSINT suite for deep data extraction just from a single Email/Username. Analyzes 455+ actively maintained scan vectors (175+ email / 280+ username) for security research, investigations, and digital footprinting.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "39"
+    },
+    {
+      "name": "google/skills",
+      "url": "https://github.com/google/skills",
+      "description": "google / skills Agent Skills for Google products and technologies",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "57"
+    },
+    {
+      "name": "yifanfeng97/Hyper-Extract",
+      "url": "https://github.com/yifanfeng97/Hyper-Extract",
+      "description": "yifanfeng97 / Hyper-Extract Hypergraph is more powerful. Transform unstructured text into structured knowledge with LLMs. Graphs, hypergraphs, and spatio-temporal extractions — with one command.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "118"
+    }
+  ],
   "stats": {
-    "trendingRepos": 0
+    "trendingRepos": 6
   }
 }

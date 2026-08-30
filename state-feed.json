@@ -8,7 +8,8 @@
     "https://www.xiaoyuzhoufm.com/episode/6a881352ef65145dfcc323d4": 1787660394301,
     "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f": 1787710759736,
     "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9": 1787827514667,
-    "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840
+    "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840,
+    "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -75,6 +76,12 @@
     "https://github.com/livekit/agents": 1787920080907,
     "https://github.com/HKUDS/AI-Trader": 1787920080907,
     "https://github.com/Graphify-Labs/graphify": 1787920080907,
-    "https://github.com/goldmansachs/gs-quant": 1787920080907
+    "https://github.com/goldmansachs/gs-quant": 1787920080907,
+    "https://github.com/p-e-w/heretic": 1788070026294,
+    "https://github.com/ComposioHQ/awesome-claude-skills": 1788070026294,
+    "https://github.com/Osmantic/ODS": 1788070026294,
+    "https://github.com/kaifcodec/user-scanner": 1788070026294,
+    "https://github.com/google/skills": 1788070026294,
+    "https://github.com/yifanfeng97/Hyper-Extract": 1788070026294
   }
 }
