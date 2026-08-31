@@ -1,53 +1,53 @@
 {
-  "generatedAt": "2026-08-30T06:07:06.294Z",
+  "generatedAt": "2026-08-31T06:26:41.590Z",
   "repos": [
     {
-      "name": "p-e-w/heretic",
-      "url": "https://github.com/p-e-w/heretic",
-      "description": "p-e-w / heretic Fully automatic censorship removal for language models",
+      "name": "unclecode/crawl4ai",
+      "url": "https://github.com/unclecode/crawl4ai",
+      "description": "unclecode / crawl4ai 🚀🤖 Crawl4AI: Open-source LLM Friendly Web Crawler &amp; Scraper. Don't be shy, join here: https://discord.gg/jP8KfhDhyN",
       "language": "Python",
       "stars": "16",
-      "todayStars": "150"
+      "todayStars": "221"
     },
     {
-      "name": "ComposioHQ/awesome-claude-skills",
-      "url": "https://github.com/ComposioHQ/awesome-claude-skills",
-      "description": "ComposioHQ / awesome-claude-skills A curated list of awesome Claude Skills, resources, and tools for customizing Claude AI workflows",
+      "name": "mvanhorn/last30days-skill",
+      "url": "https://github.com/mvanhorn/last30days-skill",
+      "description": "mvanhorn / last30days-skill AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
       "language": "Python",
       "stars": "16",
-      "todayStars": "73"
+      "todayStars": "230"
     },
     {
-      "name": "Osmantic/ODS",
-      "url": "https://github.com/Osmantic/ODS",
-      "description": "Osmantic / ODS Turn your PC, Mac, or Linux box into an AI server. LLM inference, chat UI, voice, agents, workflows, RAG, and image generation.",
+      "name": "pollen-robotics/microduck_rl",
+      "url": "https://github.com/pollen-robotics/microduck_rl",
+      "description": "pollen-robotics / microduck_rl RL training environments for Microduck (mjlab)",
       "language": "Python",
       "stars": "16",
-      "todayStars": "35"
+      "todayStars": "168"
     },
     {
-      "name": "kaifcodec/user-scanner",
-      "url": "https://github.com/kaifcodec/user-scanner",
-      "description": "kaifcodec / user-scanner 🕵️‍♂️ (2-in-1) Email &amp; Username OSINT suite for deep data extraction just from a single Email/Username. Analyzes 455+ actively maintained scan vectors (175+ email / 280+ username) for security research, investigations, and digital footprinting.",
+      "name": "handsomestWei/patent-disclosure-skill",
+      "url": "https://github.com/handsomestWei/patent-disclosure-skill",
+      "description": "handsomestWei / patent-disclosure-skill 中国专利.skill：专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。",
       "language": "Python",
       "stars": "16",
-      "todayStars": "39"
+      "todayStars": "62"
     },
     {
-      "name": "google/skills",
-      "url": "https://github.com/google/skills",
-      "description": "google / skills Agent Skills for Google products and technologies",
+      "name": "666ghj/MiroFish",
+      "url": "https://github.com/666ghj/MiroFish",
+      "description": "666ghj / MiroFish A Simple and Universal Swarm Intelligence Engine, Predicting Anything. 简洁通用的群体智能引擎，预测万物",
       "language": "Python",
       "stars": "16",
-      "todayStars": "57"
+      "todayStars": "53"
     },
     {
-      "name": "yifanfeng97/Hyper-Extract",
-      "url": "https://github.com/yifanfeng97/Hyper-Extract",
-      "description": "yifanfeng97 / Hyper-Extract Hypergraph is more powerful. Transform unstructured text into structured knowledge with LLMs. Graphs, hypergraphs, and spatio-temporal extractions — with one command.",
+      "name": "taoufik123-collab/claude-watch",
+      "url": "https://github.com/taoufik123-collab/claude-watch",
+      "description": "taoufik123-collab / claude-watch Give Claude the ability to watch any video — scene-change frames + transcript + a structured report, with a 0-10s hook microscope and optional Obsidian auto-save.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "118"
+      "todayStars": "15"
     }
   ],
   "stats": {

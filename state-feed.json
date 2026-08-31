@@ -9,7 +9,8 @@
     "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f": 1787710759736,
     "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9": 1787827514667,
     "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840,
-    "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510
+    "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510,
+    "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca": 1788157595143
   },
   "seenArticles": {
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1787573217828,
@@ -82,6 +83,12 @@
     "https://github.com/Osmantic/ODS": 1788070026294,
     "https://github.com/kaifcodec/user-scanner": 1788070026294,
     "https://github.com/google/skills": 1788070026294,
-    "https://github.com/yifanfeng97/Hyper-Extract": 1788070026294
+    "https://github.com/yifanfeng97/Hyper-Extract": 1788070026294,
+    "https://github.com/unclecode/crawl4ai": 1788157601590,
+    "https://github.com/mvanhorn/last30days-skill": 1788157601590,
+    "https://github.com/pollen-robotics/microduck_rl": 1788157601590,
+    "https://github.com/handsomestWei/patent-disclosure-skill": 1788157601590,
+    "https://github.com/666ghj/MiroFish": 1788157601590,
+    "https://github.com/taoufik123-collab/claude-watch": 1788157601590
   }
 }

@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-08-30T06:07:00.511Z",
+  "generatedAt": "2026-08-31T06:26:35.144Z",
   "lookbackHours": 336,
   "podcasts": [
     {
       "source": "podcast",
-      "name": "三点下班",
-      "title": "空仓--用AI，从“上头”拉回“理性”",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc",
-      "publishedAt": "2026-08-29T00:00:00.000Z",
-      "transcript": "⏱ Shownotes： 一、开场：忍不住嘚瑟的中年人，学会了看信号减仓（ 00:00 ） 二、为什么空仓：两个真实原因（ 03:00 ） 三、核心干货：用大模型构筑三个看板（ 08:34 ） 看板一：收敛聚焦，打磨投资体系总纲\n看板二：个股投决会（评级打分表）\n看板三：能力圈行业的动态看板\n四、千问使用反馈：从投研到打工人场景（ 19:21 ） 千问最近升级了工作助理、思考研究等多项AI功能，是会思考更会行动的好帮手。对于金融投研这类需要深度分析的场景，千问支持多轮次搜索与交叉验证，能自我反思校对，分析结论还会附带权威来源；日常办公，工作助理能一次处理100+文件，支持Excel、PPT等多种格式，报销整理、周报撰写这些重复性工作，几分钟就能搞定。现在上官网（ www.qianwen.com）下载最新版本千问即可体验，手机和电脑都能用。\n【以下是本期节目案例分享】\n● 定时任务：泛周期看板里的黄金、石油、航运指数、铜等指标，设成每天早上八点自动搜集最新价格、行业新闻、重点公司动态，汇总成简报推送——\"像秘书把整理好的文件递到办公桌前\"。例如，通过千问建立了综合周期看板以及定期推更新的模式：\n五、热点讨论：创新药、物理 AI 与 AI 应用（ 23:42 ） 创新药给 AI 续了一条命\n物理 AI：一级市场的夏天\nAI 应用：token 价格下降之后\n六、周期板块：一劳永逸的研究复利（ 39:51 ） 七、叙事翻转，休假去（ 45:00 ） ⚠️ 免责声明 本期节目是两位个人投资者之间的闲聊与个人记录，不构成任何投资建议。节目中提及的股票、行业、公司与市场观点，仅代表主播个人的研究过程和思考，不构成买入或卖出推荐。市场有风险，投资需谨慎，请独立判断，并对自己的账户负责。"
+      "name": "商业就是这样",
+      "title": "商业小样48 | 不要在财报中创造指标",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca",
+      "publishedAt": "2026-08-30T23:00:00.000Z",
+      "transcript": "基于老铺黄金的中报聊聊这个问题。\n| 主播 |\n肖文杰、约小亚\n| 延伸资料 |\n老铺黄金的历年财报及招股书\n| 后期制作 |\n秋秋\n| 声音设计 |\n刘三菜\n| 收听方式 |\n你可以通过小宇宙、苹果播客、Spotify、喜马拉雅、网易云音乐、QQ音乐、荔枝、豆瓣等平台收听节目。\n| 认识我们 |\n微信公众号：第一财经YiMagazine\n联系我们：thatisbiz@yicai.com"
     }
   ],
   "stats": {
@@ -17,7 +17,6 @@
   },
   "errors": [
     "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
-    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
-    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout"
+    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
   ]
 }
