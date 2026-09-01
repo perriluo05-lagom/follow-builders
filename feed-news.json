@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-08-31T06:26:40.390Z",
+  "generatedAt": "2026-09-01T05:52:49.868Z",
   "lookbackHours": 24,
-  "news": [],
+  "news": [
+    {
+      "source": "news",
+      "name": "Import AI",
+      "category": "newsletter",
+      "title": "Import AI 471: Why Hugging Face worries me; space mining; FIve Eyes on AI",
+      "url": "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/",
+      "publishedAt": "2026-08-31T13:31:06.000Z",
+      "description": "Welcome to Import AI, a newsletter about AI research. Import AI runs on arXiv, cappuccinos, and feedback from readers. If you’d like to support this, please subscribe. Subscribe now Import AI reader giveaway! Upcoming event: Fiction and the Future with Robin SloanI’ll be chatting with my chum Robin Sloan on the evening of Monday September [&#8230;]]]>"
+    }
+  ],
   "stats": {
-    "newsItems": 0
+    "newsItems": 1
   },
   "errors": [
     "News: Failed to fetch RSS for Ben's Bites: HTTP 404",

@@ -1,56 +1,32 @@
 {
-  "generatedAt": "2026-08-31T06:26:41.590Z",
+  "generatedAt": "2026-09-01T05:52:51.075Z",
   "repos": [
     {
-      "name": "unclecode/crawl4ai",
-      "url": "https://github.com/unclecode/crawl4ai",
-      "description": "unclecode / crawl4ai 🚀🤖 Crawl4AI: Open-source LLM Friendly Web Crawler &amp; Scraper. Don't be shy, join here: https://discord.gg/jP8KfhDhyN",
+      "name": "jingyaogong/minimind",
+      "url": "https://github.com/jingyaogong/minimind",
+      "description": "jingyaogong / minimind 🧠 Train a 64M-parameter LLM from scratch in just 2h!",
       "language": "Python",
       "stars": "16",
-      "todayStars": "221"
+      "todayStars": "495"
     },
     {
-      "name": "mvanhorn/last30days-skill",
-      "url": "https://github.com/mvanhorn/last30days-skill",
-      "description": "mvanhorn / last30days-skill AI agent skill that researches any topic across Reddit, X, YouTube, HN, Polymarket, and the web - then synthesizes a grounded summary",
+      "name": "browser-use/video-use",
+      "url": "https://github.com/browser-use/video-use",
+      "description": "browser-use / video-use Edit videos with coding agents",
       "language": "Python",
       "stars": "16",
-      "todayStars": "230"
+      "todayStars": "591"
     },
     {
-      "name": "pollen-robotics/microduck_rl",
-      "url": "https://github.com/pollen-robotics/microduck_rl",
-      "description": "pollen-robotics / microduck_rl RL training environments for Microduck (mjlab)",
+      "name": "smicallef/spiderfoot",
+      "url": "https://github.com/smicallef/spiderfoot",
+      "description": "smicallef / spiderfoot SpiderFoot automates OSINT for threat intelligence and mapping your attack surface.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "168"
-    },
-    {
-      "name": "handsomestWei/patent-disclosure-skill",
-      "url": "https://github.com/handsomestWei/patent-disclosure-skill",
-      "description": "handsomestWei / patent-disclosure-skill 中国专利.skill：专利点挖掘与交底书（发明/实用/外观）编写，通俗解读专利，嗅探政策动向，辅助审查答复。",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "62"
-    },
-    {
-      "name": "666ghj/MiroFish",
-      "url": "https://github.com/666ghj/MiroFish",
-      "description": "666ghj / MiroFish A Simple and Universal Swarm Intelligence Engine, Predicting Anything. 简洁通用的群体智能引擎，预测万物",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "53"
-    },
-    {
-      "name": "taoufik123-collab/claude-watch",
-      "url": "https://github.com/taoufik123-collab/claude-watch",
-      "description": "taoufik123-collab / claude-watch Give Claude the ability to watch any video — scene-change frames + transcript + a structured report, with a 0-10s hook microscope and optional Obsidian auto-save.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "15"
+      "todayStars": "77"
     }
   ],
   "stats": {
-    "trendingRepos": 6
+    "trendingRepos": 3
   }
 }

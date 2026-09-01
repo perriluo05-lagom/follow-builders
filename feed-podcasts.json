@@ -1,21 +1,22 @@
 {
-  "generatedAt": "2026-08-31T06:26:35.144Z",
+  "generatedAt": "2026-09-01T05:52:42.741Z",
   "lookbackHours": 336,
   "podcasts": [
     {
       "source": "podcast",
-      "name": "商业就是这样",
-      "title": "商业小样48 | 不要在财报中创造指标",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca",
-      "publishedAt": "2026-08-30T23:00:00.000Z",
-      "transcript": "基于老铺黄金的中报聊聊这个问题。\n| 主播 |\n肖文杰、约小亚\n| 延伸资料 |\n老铺黄金的历年财报及招股书\n| 后期制作 |\n秋秋\n| 声音设计 |\n刘三菜\n| 收听方式 |\n你可以通过小宇宙、苹果播客、Spotify、喜马拉雅、网易云音乐、QQ音乐、荔枝、豆瓣等平台收听节目。\n| 认识我们 |\n微信公众号：第一财经YiMagazine\n联系我们：thatisbiz@yicai.com"
+      "name": "难得正经｜商业版今夜不设防",
+      "title": "对话潇掌柜：T97咖啡从爆火到败局的超完整复盘",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a",
+      "publishedAt": "2026-08-30T07:09:03.000Z",
+      "transcript": "🎙️主播CK：独立咨询师，零售老司机，WX可以搜CK商业逻辑研究，有超多干货行业观察研究\n🎙️主播Iris：独立咨询师，曾任宝洁品牌运营部总经理/CMO/创业， 个人播客 ，更多视频看小红书/视频号\n🎙️嘉宾李潇（潇掌柜）：T97咖啡创始人\n提到T97咖啡，很多人的第一反应是大嘴妹直播间的“咖啡你冲不冲”，从百亿流量神话到败走市场，中间到底发生了什么？本期我们邀请到了T97咖啡创始人李潇（潇掌柜），完整复盘他从电商转型咖啡连锁的5年实战经历。\nPart01 | 嘉宾自我介绍\n00:00 潇掌柜：淘宝卖家→独立APP→T97\nPart02 | 从电商到咖啡：一次被迫的转型\n01:05 上市受阻与转型咖啡\n06:14 团队搭建与首店落地\nPart03 | 大嘴妹直播间：百亿流量的诞生\n11:23 半年打磨后的爆火\n18:24 加盟申请激增 VS 严苛的选址筛选\n25:05 加盟商兜底政策的讨论\n32:12 便利+咖啡模式的探索\nPart04 | 未来市场预判及创业复盘\n40:09 三年后的咖啡市场\n44:28 深度复盘：一个亿的代价\n50:28 给咖啡新创业者的入局建议\nPart05 | 下一站：印尼出海\n52:46 在印尼做点什么？\n场地支持：\n杭州钱江新城毅风酒店-声音实验室\nCPA中文播客会客厅\n欢迎一键三连，加入交流群和更多小伙伴一起讨论商业与内容行业的新变化 👇\n大家如果觉得有帮助，欢迎一键三连，也欢迎加小助理入群iriswang042♥️"
     }
   ],
   "stats": {
     "podcastEpisodes": 1
   },
   "errors": [
+    "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
     "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
     "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
   ]
