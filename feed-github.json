@@ -1,32 +1,40 @@
 {
-  "generatedAt": "2026-09-01T05:52:51.075Z",
+  "generatedAt": "2026-09-02T05:20:46.449Z",
   "repos": [
     {
-      "name": "jingyaogong/minimind",
-      "url": "https://github.com/jingyaogong/minimind",
-      "description": "jingyaogong / minimind 🧠 Train a 64M-parameter LLM from scratch in just 2h!",
+      "name": "Imbad0202/academic-research-skills",
+      "url": "https://github.com/Imbad0202/academic-research-skills",
+      "description": "Imbad0202 / academic-research-skills Academic Research Skills for Claude Code: research → write → review → revise → finalize",
       "language": "Python",
       "stars": "16",
-      "todayStars": "495"
+      "todayStars": "193"
     },
     {
-      "name": "browser-use/video-use",
-      "url": "https://github.com/browser-use/video-use",
-      "description": "browser-use / video-use Edit videos with coding agents",
+      "name": "3b1b/manim",
+      "url": "https://github.com/3b1b/manim",
+      "description": "3b1b / manim Animation engine for explanatory math videos",
       "language": "Python",
       "stars": "16",
-      "todayStars": "591"
+      "todayStars": "86"
     },
     {
-      "name": "smicallef/spiderfoot",
-      "url": "https://github.com/smicallef/spiderfoot",
-      "description": "smicallef / spiderfoot SpiderFoot automates OSINT for threat intelligence and mapping your attack surface.",
+      "name": "MakazhanAlpamys/Soup",
+      "url": "https://github.com/MakazhanAlpamys/Soup",
+      "description": "MakazhanAlpamys / Soup Fine-tune LLMs from one YAML. Layer streaming trains an 8B model on a 4 GB laptop GPU.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "77"
+      "todayStars": "280"
+    },
+    {
+      "name": "anthropics/claude-code",
+      "url": "https://github.com/anthropics/claude-code",
+      "description": "anthropics / claude-code Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "130"
     }
   ],
   "stats": {
-    "trendingRepos": 3
+    "trendingRepos": 4
   }
 }

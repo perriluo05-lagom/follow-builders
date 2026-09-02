@@ -1,10 +1,6 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a87b8021352af56ff398ff8": 1787645774755,
-    "https://www.xiaoyuzhoufm.com/episode/6a8d2078ef65145dfcc4f6d5": 1787658437753,
-    "https://www.xiaoyuzhoufm.com/episode/6a881352ef65145dfcc323d4": 1787660394301,
-    "https://www.xiaoyuzhoufm.com/episode/6a8e2df5da8836b7d64d3d6f": 1787710759736,
     "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9": 1787827514667,
     "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840,
     "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510,
@@ -14,10 +10,19 @@
   "seenArticles": {
     "https://claude.com/blog/claude-in-chrome-generally-available": 1787827515227,
     "https://claude.com/blog/cowork-built-in-browser": 1787827515861,
-    "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1788241967582
+    "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1788241967582,
+    "https://www.anthropic.com/engineering/how-we-contain-claude": 1788326431509,
+    "https://www.anthropic.com/engineering/april-23-postmortem": 1788326432134,
+    "https://www.anthropic.com/engineering/managed-agents": 1788326432810,
+    "https://claude.com/blog/artifacts-in-claude-code": 1788326433471,
+    "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/": 1788326437339,
+    "https://ai.meta.com/blog/assistive-robotics-university-of-pittsburgh-sam-dino/": 1788326438169,
+    "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/": 1788326440608,
+    "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/": 1788326441412,
+    "https://blogs.nvidia.com/blog/leading-models-nvidia/": 1788326442016,
+    "https://blogs.nvidia.com/blog/isambard-ai/": 1788326442568
   },
   "seenNews": {
-    "https://jack-clark.net/2026/08/24/import-ai-470-no-rights-for-machines-automating-environment-generation-with-spade-and-building-better-gpu-kernels-with-hawkeye/": 1787645779583,
     "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/": 1788241969673
   },
   "seenGitHub": {
@@ -55,6 +60,10 @@
     "https://github.com/taoufik123-collab/claude-watch": 1788157601590,
     "https://github.com/jingyaogong/minimind": 1788241971075,
     "https://github.com/browser-use/video-use": 1788241971075,
-    "https://github.com/smicallef/spiderfoot": 1788241971075
+    "https://github.com/smicallef/spiderfoot": 1788241971075,
+    "https://github.com/Imbad0202/academic-research-skills": 1788326446449,
+    "https://github.com/3b1b/manim": 1788326446449,
+    "https://github.com/MakazhanAlpamys/Soup": 1788326446449,
+    "https://github.com/anthropics/claude-code": 1788326446449
   }
 }
