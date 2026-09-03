@@ -1,40 +1,64 @@
 {
-  "generatedAt": "2026-09-02T05:20:46.449Z",
+  "generatedAt": "2026-09-03T05:20:41.011Z",
   "repos": [
     {
-      "name": "Imbad0202/academic-research-skills",
-      "url": "https://github.com/Imbad0202/academic-research-skills",
-      "description": "Imbad0202 / academic-research-skills Academic Research Skills for Claude Code: research → write → review → revise → finalize",
+      "name": "google-research/timesfm",
+      "url": "https://github.com/google-research/timesfm",
+      "description": "google-research / timesfm TimesFM (Time Series Foundation Model) is a pretrained time-series foundation model developed by Google Research for time-series forecasting.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "193"
+      "todayStars": "343"
     },
     {
-      "name": "3b1b/manim",
-      "url": "https://github.com/3b1b/manim",
-      "description": "3b1b / manim Animation engine for explanatory math videos",
+      "name": "debpalash/VoiceStudio",
+      "url": "https://github.com/debpalash/VoiceStudio",
+      "description": "debpalash / VoiceStudio VoiceStudio is the open-source, fully-local ElevenLabs alternative — voice cloning, voice design, video dubbing, dictation, transcription &amp; audiobook creation in 646 languages.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "86"
+      "todayStars": "832"
     },
     {
-      "name": "MakazhanAlpamys/Soup",
-      "url": "https://github.com/MakazhanAlpamys/Soup",
-      "description": "MakazhanAlpamys / Soup Fine-tune LLMs from one YAML. Layer streaming trains an 8B model on a 4 GB laptop GPU.",
+      "name": "sngyai/Sequoia-X",
+      "url": "https://github.com/sngyai/Sequoia-X",
+      "description": "sngyai / Sequoia-X A股自动选股系统 — 多种技术形态自动扫描，收盘后自动运行并推送飞书",
       "language": "Python",
       "stars": "16",
-      "todayStars": "280"
+      "todayStars": "63"
     },
     {
-      "name": "anthropics/claude-code",
-      "url": "https://github.com/anthropics/claude-code",
-      "description": "anthropics / claude-code Claude Code is an agentic coding tool that lives in your terminal, understands your codebase, and helps you code faster by executing routine tasks, explaining complex code, and handling git workflows - all through natural language commands.",
+      "name": "superlinked/sie",
+      "url": "https://github.com/superlinked/sie",
+      "description": "superlinked / sie Open-source inference server and production cluster for all the models your agent needs.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "130"
+      "todayStars": "60"
+    },
+    {
+      "name": "blader/humanizer",
+      "url": "https://github.com/blader/humanizer",
+      "description": "blader / humanizer Agent skill that removes signs of AI-generated writing from text",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "374"
+    },
+    {
+      "name": "zubair-trabzada/geo-seo-claude",
+      "url": "https://github.com/zubair-trabzada/geo-seo-claude",
+      "description": "zubair-trabzada / geo-seo-claude GEO-first SEO skill for Claude Code. Comprehensive AI search optimization for any website — citability scoring, AI crawler analysis, brand authority, schema markup, platform-specific optimization, and PDF reports. If you want learn how to sell this to real businesses, check out the skool community",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "80"
+    },
+    {
+      "name": "github/spec-kit",
+      "url": "https://github.com/github/spec-kit",
+      "description": "github / spec-kit 💫 Toolkit to help you get started with Spec-Driven Development",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "224"
     }
   ],
   "stats": {
-    "trendingRepos": 4
+    "trendingRepos": 7
   }
 }

@@ -5,7 +5,8 @@
     "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840,
     "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510,
     "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca": 1788157595143,
-    "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a": 1788241962741
+    "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a": 1788241962741,
+    "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336
   },
   "seenArticles": {
     "https://claude.com/blog/claude-in-chrome-generally-available": 1787827515227,
@@ -64,6 +65,13 @@
     "https://github.com/Imbad0202/academic-research-skills": 1788326446449,
     "https://github.com/3b1b/manim": 1788326446449,
     "https://github.com/MakazhanAlpamys/Soup": 1788326446449,
-    "https://github.com/anthropics/claude-code": 1788326446449
+    "https://github.com/anthropics/claude-code": 1788326446449,
+    "https://github.com/google-research/timesfm": 1788412841011,
+    "https://github.com/debpalash/VoiceStudio": 1788412841011,
+    "https://github.com/sngyai/Sequoia-X": 1788412841011,
+    "https://github.com/superlinked/sie": 1788412841011,
+    "https://github.com/blader/humanizer": 1788412841011,
+    "https://github.com/zubair-trabzada/geo-seo-claude": 1788412841011,
+    "https://github.com/github/spec-kit": 1788412841011
   }
 }
