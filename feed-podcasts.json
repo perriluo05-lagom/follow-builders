@@ -1,22 +1,21 @@
 {
-  "generatedAt": "2026-09-03T05:20:34.336Z",
+  "generatedAt": "2026-09-04T05:24:22.185Z",
   "lookbackHours": 336,
-  "podcasts": [
-    {
-      "source": "podcast",
-      "name": "张小珺Jùn｜商业访谈录",
-      "title": "153. 和曾鸣聊产业史观：残酷的真相、会消亡的公司、优秀≠卓越、“OAI、Anth大概率不是原生时代大赢家”",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b",
-      "publishedAt": "2026-09-03T00:00:00.000Z",
-      "transcript": "今天的嘉宾是战略学家曾鸣教授。曾教授曾经是阿里巴巴集团总参谋长，也参与过两所商学院创建（长江商学院和湖畔），但他更令人熟悉的身份是：一名对企业战略有许多深度思考的研究者。不少创业者和企业家都受到过他的启发。\n作为观察过互联网完整周期的研究者，今天我们聊了聊他对AI新时代、新范式的完整思考，并和历史上关键转折时期做了对照——聊完让我有了更全局的视角。\n对AI的产业发展， 曾教授提出了许多非共识判断，甚至是一些“暴论”。\n这里我先摘录15条：\nAI产业化会有三个阶段：1）第一个阶段，技术逐渐被社会接受，成为社会基础设施；2）第二个阶段，基于基础设施产生海量新应用，进入百花齐放的时代；3）第三个阶段，当这些海量应用出现，大家发现需要一些更底层的方法运行新的世界，我把它叫作“原生应用阶段”。\n我只是研究商业世界的动力学规律，我能看到的理论框架告诉我：第一阶段的企业，很难活到第二阶段；第二阶段的企业，很难活到第三阶段。\n对比互联网时代，我们现在刚刚走到浏览器阶段，甚至比Yahoo还要早。\n模型公司怎么类比？它有点像另外一个已经消失了的公司——美国在线AOL，它是互联网基础接入服务商，让所有人都能够接到互联网上，这本身是个巨大的工程。今天，大模型则是让所有人都可以轻易接入智能的入口，它也是一个基础设施服务商。\n直白一点说，模型公司就是未来的AI云公司。\n公共基础设施的行业，只有一种商业模式是成立的，叫寡头垄断加政府强监管——我知道这个现实对很多现在创业的人很残酷。\nAnthropic、OpenAI，大概率不是原生应用阶段的大玩家、大赢家。\n因为经济学基本规律，只要有同质化的供给，你就不可能获取高额利润，你就是一家不怎么值钱的公司。\n下个阶段就是看谁是Netscape、谁是Yahoo，谁把Agent的标准建立起来，谁抢住Agent的用户入口。未来三年是有可能开始出现Agent入口的。\n新的平台大概率不诞生自旧的平台。因为旧平台做的是简单信息匹配，新平台要做的是能力跟需求的匹配，复杂度高了很多。\n作为工业化革命的产物，科层制管理的公司制度会衰亡——就是说，“公司”会消亡。这没有什么可以遗憾的呀，将来有更好玩的——你说多少人现在去公司上班是开心的？\n我从来觉得在巨浪面前没有人是安全的。谁觉得安全，谁就是最不安全的。\nCEO不能有老板心态。谁还认你啊？——现在说我都不陪老登玩了，我还陪你老板玩？\n张：这个时代的企业过渡到下一个时代的企业，还能做得非常好的，多不多？曾：不是多不多的问题，是有没有的问题。张：有没有？曾：基本没有。\n这一点都不让人绝望啊，人有生老病死，公司也有生老病死，没有比这更正常的了。这样，新公司才有机会，年轻人才有梦想，这多好的一件事情啊！\n好了，更多内容还是收看我们的播客吧:)\n接下来，就是我对曾教授的访谈。\nOUTLINE:\n00:03:08 来自商业规律的残酷真相\n00:39:53 新平台不来自旧平台\n01:06:15 “公司”要被淘汰\n01:31:10 优秀≠卓越\n01:38:17 战略生成系统\n02:02:48 没有巨头是安全的\n02:18:01 创造就是“无中生有”\nLINKS：\n我们的播客在 小宇宙 、 Apple Podcast 、Spotify等全音频平台播出；\n我们的视频播客在 小宇宙 、 Bilibili 、 小红书 、视频号、抖音等全视频平台播出；\n如果你想服用文字版，请搜索我们工作室的公众号：语言即世界language is world。\nDISCLAIMER: 本内容不作为投资建议。\nCONTACT: xiaojunzh"
-    }
-  ],
+  "podcasts": [],
   "stats": {
-    "podcastEpisodes": 1
+    "podcastEpisodes": 0
   },
   "errors": [
-    "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
-    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
+    "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
+    "Podcast: Error processing Web3 101: The operation was aborted due to timeout",
+    "Podcast: Error processing 硬地骇客: The operation was aborted due to timeout",
+    "Podcast: Error processing 难得正经｜商业版今夜不设防: The operation was aborted due to timeout",
+    "Podcast: Error processing 半拿铁 | 商业沉浮录: The operation was aborted due to timeout",
+    "Podcast: Error processing OnBoard!: The operation was aborted due to timeout",
+    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
+    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout",
+    "Podcast: Error processing 商业就是这样: The operation was aborted due to timeout",
+    "Podcast: Error processing 声东击西: The operation was aborted due to timeout",
+    "Podcast: Error processing 忽左忽右: The operation was aborted due to timeout"
   ]
 }

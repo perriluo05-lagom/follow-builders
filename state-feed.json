@@ -1,7 +1,6 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a8f0ba5ef65145dfcc5eef9": 1787827514667,
     "https://www.xiaoyuzhoufm.com/episode/6a914f40f03e74ee6b013d4a": 1787988909840,
     "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510,
     "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca": 1788157595143,
@@ -9,8 +8,6 @@
     "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336
   },
   "seenArticles": {
-    "https://claude.com/blog/claude-in-chrome-generally-available": 1787827515227,
-    "https://claude.com/blog/cowork-built-in-browser": 1787827515861,
     "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1788241967582,
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1788326431509,
     "https://www.anthropic.com/engineering/april-23-postmortem": 1788326432134,
@@ -72,6 +69,7 @@
     "https://github.com/superlinked/sie": 1788412841011,
     "https://github.com/blader/humanizer": 1788412841011,
     "https://github.com/zubair-trabzada/geo-seo-claude": 1788412841011,
-    "https://github.com/github/spec-kit": 1788412841011
+    "https://github.com/github/spec-kit": 1788412841011,
+    "https://github.com/anthropics/skills": 1788499466646
   }
 }
