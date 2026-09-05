@@ -5,7 +5,8 @@
     "https://www.xiaoyuzhoufm.com/episode/6a90fcda1352af56ff3d48fc": 1788070020510,
     "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca": 1788157595143,
     "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a": 1788241962741,
-    "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336
+    "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336,
+    "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c": 1788584640287
   },
   "seenArticles": {
     "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1788241967582,
@@ -18,7 +19,9 @@
     "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/": 1788326440608,
     "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/": 1788326441412,
     "https://blogs.nvidia.com/blog/leading-models-nvidia/": 1788326442016,
-    "https://blogs.nvidia.com/blog/isambard-ai/": 1788326442568
+    "https://blogs.nvidia.com/blog/isambard-ai/": 1788326442568,
+    "https://claude.com/blog/claude-in-chrome-generally-available": 1788584640643,
+    "https://claude.com/blog/cowork-built-in-browser": 1788584641196
   },
   "seenNews": {
     "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/": 1788241969673
@@ -70,6 +73,10 @@
     "https://github.com/blader/humanizer": 1788412841011,
     "https://github.com/zubair-trabzada/geo-seo-claude": 1788412841011,
     "https://github.com/github/spec-kit": 1788412841011,
-    "https://github.com/anthropics/skills": 1788499466646
+    "https://github.com/anthropics/skills": 1788499466646,
+    "https://github.com/bikini/exploitarium": 1788584648370,
+    "https://github.com/radixark/miles": 1788584648370,
+    "https://github.com/Sumanth077/Hands-On-AI-Engineering": 1788584648370,
+    "https://github.com/datawhalechina/hello-agents": 1788584648370
   }
 }

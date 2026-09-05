@@ -1,21 +1,23 @@
 {
-  "generatedAt": "2026-09-04T05:24:22.185Z",
+  "generatedAt": "2026-09-05T05:04:00.288Z",
   "lookbackHours": 336,
-  "podcasts": [],
+  "podcasts": [
+    {
+      "source": "podcast",
+      "name": "忽左忽右",
+      "title": "498 寻找赉安：为近代上海梧桐区创造风貌的法国建筑师",
+      "guid": "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c",
+      "url": "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c",
+      "publishedAt": "2026-09-04T09:36:07.000Z",
+      "transcript": "- 导语 -\n二十世纪初，来自法国的建筑师赉安选择在上海法租界扎根。二十五年间，他的赉安洋行设计了122栋建筑，留下了麦琪公寓、花园饭店等经典作品，最终却在1946年的上海神秘失踪。上海作家吴飞鹏长期致力于上海老房子的寻访，在一次偶然的契机接触到赉安的外孙后，他开启了在上海和巴黎寻找赉安的旅程。匈牙利籍建筑师邬达克的作品与赉安有何异同？柯布西耶与赉安在巴黎的交往如何影响了赉安的人生轨迹与建筑风格？二战之后，赉安又为何在1946年的上海神秘失踪？请听本期嘉宾吴飞鹏带来的精彩分享。\n- 本期话题成员 -\n程衍樑（微博@GrenadierGuard2）\n吴飞鹏，上海城市文化与近代建筑研究者，著有《寻找赉安》等。\n- 时间轴 -\n04:01 同时代却知名度迥异：赉安与邬达克在上海的平行人生\n10:23 柯布西耶的「集合住宅」理念：一栋楼容纳居住、商业与娱乐\n12:39 质量之别：赉安作品仅拆两栋，邬达克建筑消失约半数\n13:43 背靠法租界公董局，赉安洋行得以承接梧桐区大量地产设计业务\n16:22 盖斯康公寓、花园饭店与「赉安阳台」的标志性设计\n21:50 与赉安外孙相识并寻访赉安的缘起\n24:48 马克思后人与让·饶勒斯遇刺事件：赉安的巴黎成长印记\n31:08 上海为何会成为Art Deco装饰艺术派遗存丰富的城市？\n43:33 庄俊、奚福泉与吕彦直：二三十年代的海归中国建筑师们\n48:12 法国总领事官邸在上海的前世今生\n50:31 「海派西餐本质上是一种中国化的俄餐」\n55:17 赉安失踪之谜：1946年的出走与未解的遗书\n01:00:17 奚福泉建筑作品中的「包豪斯」精神\n- 支持我们的赞助商是对我们最好的支持 -\n忽左忽右旅行团又要出发了！这一次，我们将前往坦桑尼亚，在乞力马扎罗山脚下开启东非之旅，探访塔兰吉雷、恩戈罗恩戈罗和塞伦盖蒂，感受东非野生世界的壮阔。再前往桑给巴尔，在石头城与印度洋海岸放慢脚步。本次坦桑尼亚行动，程衍樑将与一位首次参加忽左忽右旅行团的神秘嘉宾共同带队。2026年9月30日至10月11日，如果您有兴趣参与本次坦桑尼亚行动，请关注「忽左忽右leftright」公众号，回复「坦桑尼亚」了解详情，也可以直接添加旅行团小助手微信 hzhyxzs2 咨询报名。\n《忽左忽右》的卖书业务上线了！这次不仅汇集了节目中深入讨论过的书籍，还有主播个人精选书籍，含少量签名版及稀有原版，完整的书目信息及购买方式，前往微信公众号「忽左忽右leftright」，回复「买书」 即可获取。书目将不定期更新，欢迎常来看看。\n- 制作团队 -\n声音设计 hotair\n节目统筹 禾放\n节目运营 小米粒\n节目制作 思钊 Yo\nlogo设计 杨文骥\n- 音乐 -\nDanse Macabre - Busy Strings - Kevin MacLeod\n- 本节目由JustPod出品 © 2026 上海斛律网络科技有限公司 -\n- 互动方式 -\n商务合作：ad@justpod.fm\n微博：@忽左忽右leftright @播客一下 @JustPod\n微信公众号：忽左忽右Leftright / JustPod / 播客一下\n小红书：JustPod气氛组 / 忽左忽右\nB站：忽左忽右leftright\n抖音：忽左忽右"
+    }
+  ],
   "stats": {
-    "podcastEpisodes": 0
+    "podcastEpisodes": 1
   },
   "errors": [
     "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
-    "Podcast: Error processing Web3 101: The operation was aborted due to timeout",
-    "Podcast: Error processing 硬地骇客: The operation was aborted due to timeout",
-    "Podcast: Error processing 难得正经｜商业版今夜不设防: The operation was aborted due to timeout",
-    "Podcast: Error processing 半拿铁 | 商业沉浮录: The operation was aborted due to timeout",
-    "Podcast: Error processing OnBoard!: The operation was aborted due to timeout",
-    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
-    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout",
-    "Podcast: Error processing 商业就是这样: The operation was aborted due to timeout",
-    "Podcast: Error processing 声东击西: The operation was aborted due to timeout",
-    "Podcast: Error processing 忽左忽右: The operation was aborted due to timeout"
+    "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
+    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
   ]
 }
