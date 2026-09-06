@@ -1,37 +1,37 @@
 {
-  "generatedAt": "2026-09-05T05:04:08.370Z",
+  "generatedAt": "2026-09-06T05:22:53.006Z",
   "repos": [
     {
-      "name": "bikini/exploitarium",
-      "url": "https://github.com/bikini/exploitarium",
-      "description": "bikini / exploitarium A single archive of public exploit PoCs and vulnerability research writeups. At the time I post these, none have been reported. Feel free to report them yourself and take credit for the CVE if handed out lulz. Please do not abuse these. I do this so to allure people into the field, and I've always found this is the most efficient way.",
+      "name": "sgl-project/sglang",
+      "url": "https://github.com/sgl-project/sglang",
+      "description": "sgl-project / sglang SGLang is a high-performance serving framework for large language models and multimodal models.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "74"
+      "todayStars": "708"
     },
     {
-      "name": "radixark/miles",
-      "url": "https://github.com/radixark/miles",
-      "description": "radixark / miles Miles is an enterprise-facing reinforcement learning framework for LLM and VLM post-training, forked from and co-evolving with slime.",
+      "name": "NVIDIA/SkillSpector",
+      "url": "https://github.com/NVIDIA/SkillSpector",
+      "description": "NVIDIA / SkillSpector Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and supply-chain risks in Claude Code, Codex, and MCP skills before you install them.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "64"
+      "todayStars": "166"
     },
     {
-      "name": "Sumanth077/Hands-On-AI-Engineering",
-      "url": "https://github.com/Sumanth077/Hands-On-AI-Engineering",
-      "description": "Sumanth077 / Hands-On-AI-Engineering A curated collection of practical AI projects implementing OCR systems, RAG, AI agents, and other AI use cases.",
+      "name": "k2-fsa/OmniVoice",
+      "url": "https://github.com/k2-fsa/OmniVoice",
+      "description": "k2-fsa / OmniVoice High-Quality Voice Cloning TTS for 600+ Languages",
       "language": "Python",
       "stars": "16",
-      "todayStars": "60"
+      "todayStars": "128"
     },
     {
-      "name": "datawhalechina/hello-agents",
-      "url": "https://github.com/datawhalechina/hello-agents",
-      "description": "datawhalechina / hello-agents 📚 《从零开始构建智能体》——从零开始的智能体原理与实践教程",
+      "name": "huggingface/datasets",
+      "url": "https://github.com/huggingface/datasets",
+      "description": "huggingface / datasets 🤗 The largest hub of ready-to-use datasets for AI models with fast, easy-to-use and efficient data manipulation tools",
       "language": "Python",
       "stars": "16",
-      "todayStars": "209"
+      "todayStars": "5"
     }
   ],
   "stats": {
