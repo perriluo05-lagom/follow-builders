@@ -1,40 +1,72 @@
 {
-  "generatedAt": "2026-09-06T05:22:53.006Z",
+  "generatedAt": "2026-09-07T05:27:08.696Z",
   "repos": [
     {
-      "name": "sgl-project/sglang",
-      "url": "https://github.com/sgl-project/sglang",
-      "description": "sgl-project / sglang SGLang is a high-performance serving framework for large language models and multimodal models.",
+      "name": "openai/skills",
+      "url": "https://github.com/openai/skills",
+      "description": "openai / skills Skills Catalog for Codex",
       "language": "Python",
       "stars": "16",
-      "todayStars": "708"
+      "todayStars": "46"
     },
     {
-      "name": "NVIDIA/SkillSpector",
-      "url": "https://github.com/NVIDIA/SkillSpector",
-      "description": "NVIDIA / SkillSpector Security scanner for AI agent skills. Detect vulnerabilities, malicious patterns, security risks, prompt injection, data exfiltration, and supply-chain risks in Claude Code, Codex, and MCP skills before you install them.",
+      "name": "The-Swarm-Corporation/AutoHedge",
+      "url": "https://github.com/The-Swarm-Corporation/AutoHedge",
+      "description": "The-Swarm-Corporation / AutoHedge Build your autonomous hedge fund in minutes. AutoHedge harnesses the power of swarm intelligence and AI agents to automate market analysis, risk management, and trade execution.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "166"
+      "todayStars": "142"
     },
     {
-      "name": "k2-fsa/OmniVoice",
-      "url": "https://github.com/k2-fsa/OmniVoice",
-      "description": "k2-fsa / OmniVoice High-Quality Voice Cloning TTS for 600+ Languages",
+      "name": "sooryathejas/METATRON",
+      "url": "https://github.com/sooryathejas/METATRON",
+      "description": "sooryathejas / METATRON AI-powered penetration testing assistant using local LLM on linux (Parrot OS)",
       "language": "Python",
       "stars": "16",
-      "todayStars": "128"
+      "todayStars": "68"
     },
     {
-      "name": "huggingface/datasets",
-      "url": "https://github.com/huggingface/datasets",
-      "description": "huggingface / datasets 🤗 The largest hub of ready-to-use datasets for AI models with fast, easy-to-use and efficient data manipulation tools",
+      "name": "ahujasid/blender-mcp",
+      "url": "https://github.com/ahujasid/blender-mcp",
+      "description": "ahujasid / blender-mcp Community plugin to control Blender 3D with any LLM of your choice",
       "language": "Python",
       "stars": "16",
-      "todayStars": "5"
+      "todayStars": "204"
+    },
+    {
+      "name": "maziyarpanahi/openmed",
+      "url": "https://github.com/maziyarpanahi/openmed",
+      "description": "maziyarpanahi / openmed Local-first healthcare AI: clinical NER &amp; HIPAA PII de-identification that runs 100% on-device. 2,200+ medical models, 21 languages, Apple MLX + Python, no cloud, no patient data leaving your network. Apache-2.0",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "13"
+    },
+    {
+      "name": "earthtojake/text-to-cad",
+      "url": "https://github.com/earthtojake/text-to-cad",
+      "description": "earthtojake / text-to-cad A library of agent skills for CAD, CAE and CAM",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "80"
+    },
+    {
+      "name": "home-assistant/core",
+      "url": "https://github.com/home-assistant/core",
+      "description": "home-assistant / core 🏡 Open source home automation that puts local control and privacy first.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "35"
+    },
+    {
+      "name": "Comfy-Org/ComfyUI",
+      "url": "https://github.com/Comfy-Org/ComfyUI",
+      "description": "Comfy-Org / ComfyUI The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.",
+      "language": "Python",
+      "stars": "16",
+      "todayStars": "139"
     }
   ],
   "stats": {
-    "trendingRepos": 4
+    "trendingRepos": 8
   }
 }
