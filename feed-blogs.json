@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-07T05:27:06.312Z",
+  "generatedAt": "2026-09-08T05:32:22.232Z",
   "lookbackHours": 72,
   "blogs": [],
   "stats": {
@@ -8,7 +8,7 @@
   "errors": [
     "Blog: Failed to fetch index for OpenAI Blog: HTTP 403",
     "Blog: Failed to fetch article https://huggingface.co/blog/blog/community: HTTP 404",
-    "Blog: Failed to fetch article https://huggingface.co/blog/blog/cavanloy/vlanext: HTTP 404",
-    "Blog: Failed to fetch article https://huggingface.co/blog/blog/KangLiao/puffin-world: HTTP 404"
+    "Blog: Failed to fetch article https://huggingface.co/blog/blog/KangLiao/puffin-world: HTTP 404",
+    "Blog: Failed to fetch article https://huggingface.co/blog/blog/Qdrant/fineweb-10b-release: HTTP 404"
   ]
 }

@@ -1,22 +1,21 @@
 {
-  "generatedAt": "2026-09-07T05:27:01.881Z",
+  "generatedAt": "2026-09-08T05:32:17.760Z",
   "lookbackHours": 336,
-  "podcasts": [
-    {
-      "source": "podcast",
-      "name": "难得正经｜商业版今夜不设防",
-      "title": "《文化战略》：如果你想做一个高端品牌或者上价值",
-      "guid": "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e",
-      "url": "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e",
-      "publishedAt": "2026-09-06T14:30:00.000Z",
-      "transcript": "🎙️主播 CK，独立咨询师，零售老司机，WX 可以搜 CK商业逻辑研究，有超多干货行业观察研究\n🎙️主播 Iris，独立咨询师，曾任宝洁品牌运营部总经理/CMO/创业， 个人播客 ，更多视频可以看小红书视频号\n提到消费品，是不是感觉卷不动了？想要做品牌提高溢价，似乎用户又不买账？如果你想做一个高端消费品牌，听这一期播客就对了。\n《文化战略》的好，在于内外兼修：不仅理论观点清晰，还提供一套可执行的方法论，这在营销经典著作中是非常少见的。如果你也在苦苦寻找品牌高端化的路径，建议结合我们这一期播客细细研读。\n🟢《文化战略》基础介绍\n00:00 美国营销学派 VS 欧洲营销学派\n03:13 文化战略：品牌=用户的嘴替\n🟢《文化战略》核心内容\n06:43 老登叙事：品牌机会藏在没被说出口的意识形态里\n09:33 神话符号：品牌第二个独特的logo\n12:24 文化元素：选择用户一秒记住的内容\n15:16 常见的四个问题\n23:38 品牌案例讨论：On昂跑、凯乐石、比音勒芬\n🟢《文化战略》落地步骤\n31:07 文化正统：找到要反对的东西\n31:41 意识形态：要有冲突&注意边界\n32:43 Iris实操babycare的案例分享\n36:53 : 素材选择：通俗易懂&产品的晕轮效应\n38:27 安踏地板克星的案例分享\n40:39 文化战术：跨越文化鸿沟\n44:14 案例补充：山下有松、内外、Timberland\n🟢补充说明\n48:48 适合产品：排除强实用性、社交可见性、中高端品牌\n50:23 适合品牌：一种以小博大的文化柔术，适合挑战者\n欢迎一键三连，加入交流群和更多小伙伴一起讨论商业与内容行业的新变化 👇\n大家如果觉得有帮助，欢迎一键三连，也欢迎加小助理入群iriswang042♥️"
-    }
-  ],
+  "podcasts": [],
   "stats": {
-    "podcastEpisodes": 1
+    "podcastEpisodes": 0
   },
   "errors": [
-    "Podcast: Failed to fetch RSS for OnBoard!: HTTP 503",
-    "Podcast: Failed to fetch RSS for 硅谷早知道: HTTP 503"
+    "Podcast: Error processing 三点下班: The operation was aborted due to timeout",
+    "Podcast: Error processing Web3 101: The operation was aborted due to timeout",
+    "Podcast: Error processing 硬地骇客: The operation was aborted due to timeout",
+    "Podcast: Error processing 难得正经｜商业版今夜不设防: The operation was aborted due to timeout",
+    "Podcast: Error processing 半拿铁 | 商业沉浮录: The operation was aborted due to timeout",
+    "Podcast: Error processing OnBoard!: The operation was aborted due to timeout",
+    "Podcast: Error processing 硅谷早知道: The operation was aborted due to timeout",
+    "Podcast: Error processing 张小珺Jùn｜商业访谈录: The operation was aborted due to timeout",
+    "Podcast: Error processing 商业就是这样: The operation was aborted due to timeout",
+    "Podcast: Error processing 声东击西: The operation was aborted due to timeout",
+    "Podcast: Error processing 忽左忽右: The operation was aborted due to timeout"
   ]
 }

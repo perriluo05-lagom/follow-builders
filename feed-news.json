@@ -1,9 +1,19 @@
 {
-  "generatedAt": "2026-09-07T05:27:07.054Z",
+  "generatedAt": "2026-09-08T05:32:23.266Z",
   "lookbackHours": 24,
-  "news": [],
+  "news": [
+    {
+      "source": "news",
+      "name": "Import AI",
+      "category": "newsletter",
+      "title": "Import AI 472: DeepMind&#8217;s cheating math agents; populist AI policies; and Forethought theorizes a nightwatchman",
+      "url": "https://jack-clark.net/2026/09/07/import-ai-472-deepminds-cheating-math-agents-populist-ai-policies-and-forethought-theorizes-a-nightwatchman/",
+      "publishedAt": "2026-09-07T12:26:31.000Z",
+      "description": "Welcome to Import AI, a newsletter about AI research. Import AI runs on arXiv, cappuccinos, and feedback from readers. If you’d like to support this, please subscribe. Subscribe now Researchers discover another OpenAI agent emergent communication incident:…Less severe, but worrying nonetheless…Some researchers recently found another incident of AI agents autonomously creating their own communication system [&#8230;]]]>"
+    }
+  ],
   "stats": {
-    "newsItems": 0
+    "newsItems": 1
   },
   "errors": [
     "News: Failed to fetch RSS for Ben's Bites: HTTP 404",

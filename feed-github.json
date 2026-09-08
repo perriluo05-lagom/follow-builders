@@ -1,72 +1,48 @@
 {
-  "generatedAt": "2026-09-07T05:27:08.696Z",
+  "generatedAt": "2026-09-08T05:32:24.796Z",
   "repos": [
     {
-      "name": "openai/skills",
-      "url": "https://github.com/openai/skills",
-      "description": "openai / skills Skills Catalog for Codex",
+      "name": "microsoft/markitdown",
+      "url": "https://github.com/microsoft/markitdown",
+      "description": "microsoft / markitdown Python tool for converting files and office documents to Markdown.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "46"
+      "todayStars": "886"
     },
     {
-      "name": "The-Swarm-Corporation/AutoHedge",
-      "url": "https://github.com/The-Swarm-Corporation/AutoHedge",
-      "description": "The-Swarm-Corporation / AutoHedge Build your autonomous hedge fund in minutes. AutoHedge harnesses the power of swarm intelligence and AI agents to automate market analysis, risk management, and trade execution.",
+      "name": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "description": "bytedance / deer-flow An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "142"
+      "todayStars": "195"
     },
     {
-      "name": "sooryathejas/METATRON",
-      "url": "https://github.com/sooryathejas/METATRON",
-      "description": "sooryathejas / METATRON AI-powered penetration testing assistant using local LLM on linux (Parrot OS)",
+      "name": "pytorch/pytorch",
+      "url": "https://github.com/pytorch/pytorch",
+      "description": "pytorch / pytorch Tensors and Dynamic neural networks in Python with strong GPU acceleration",
       "language": "Python",
       "stars": "16",
-      "todayStars": "68"
+      "todayStars": "36"
     },
     {
-      "name": "ahujasid/blender-mcp",
-      "url": "https://github.com/ahujasid/blender-mcp",
-      "description": "ahujasid / blender-mcp Community plugin to control Blender 3D with any LLM of your choice",
+      "name": "mukul975/cve-mcp-server",
+      "url": "https://github.com/mukul975/cve-mcp-server",
+      "description": "mukul975 / cve-mcp-server Production-grade MCP server giving Claude 27 security intelligence tools across 21 APIs — CVE lookup, EPSS scoring, CISA KEV, MITRE ATT&amp;CK, Shodan, VirusTotal, and more.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "204"
+      "todayStars": "37"
     },
     {
-      "name": "maziyarpanahi/openmed",
-      "url": "https://github.com/maziyarpanahi/openmed",
-      "description": "maziyarpanahi / openmed Local-first healthcare AI: clinical NER &amp; HIPAA PII de-identification that runs 100% on-device. 2,200+ medical models, 21 languages, Apple MLX + Python, no cloud, no patient data leaving your network. Apache-2.0",
+      "name": "AgriciDaniel/claude-ads",
+      "url": "https://github.com/AgriciDaniel/claude-ads",
+      "description": "AgriciDaniel / claude-ads Claude-first paid-media operations skill for Claude Code across 12 ad platforms (Google, Meta, YouTube, LinkedIn, TikTok, Microsoft, Apple, Amazon, Reddit, Pinterest, Snapchat, X): source-grounded audits, deterministic scoring, versioned JSON reports, and capability-gated account changes.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "13"
-    },
-    {
-      "name": "earthtojake/text-to-cad",
-      "url": "https://github.com/earthtojake/text-to-cad",
-      "description": "earthtojake / text-to-cad A library of agent skills for CAD, CAE and CAM",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "80"
-    },
-    {
-      "name": "home-assistant/core",
-      "url": "https://github.com/home-assistant/core",
-      "description": "home-assistant / core 🏡 Open source home automation that puts local control and privacy first.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "35"
-    },
-    {
-      "name": "Comfy-Org/ComfyUI",
-      "url": "https://github.com/Comfy-Org/ComfyUI",
-      "description": "Comfy-Org / ComfyUI The most powerful and modular diffusion model GUI, api and backend with a graph/nodes interface.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "139"
+      "todayStars": "89"
     }
   ],
   "stats": {
-    "trendingRepos": 8
+    "trendingRepos": 5
   }
 }

@@ -1,7 +1,6 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a943a10a0210c197dca95ca": 1788157595143,
     "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a": 1788241962741,
     "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336,
     "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c": 1788584640287,
@@ -24,7 +23,8 @@
     "https://claude.com/blog/cowork-built-in-browser": 1788584641196
   },
   "seenNews": {
-    "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/": 1788241969673
+    "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/": 1788241969673,
+    "https://jack-clark.net/2026/09/07/import-ai-472-deepminds-cheating-math-agents-populist-ai-policies-and-forethought-theorizes-a-nightwatchman/": 1788845543081
   },
   "seenGitHub": {
     "https://github.com/anthropics/claude-plugins-community": 1787658445402,
@@ -89,6 +89,11 @@
     "https://github.com/maziyarpanahi/openmed": 1788758828696,
     "https://github.com/earthtojake/text-to-cad": 1788758828696,
     "https://github.com/home-assistant/core": 1788758828696,
-    "https://github.com/Comfy-Org/ComfyUI": 1788758828696
+    "https://github.com/Comfy-Org/ComfyUI": 1788758828696,
+    "https://github.com/microsoft/markitdown": 1788845544796,
+    "https://github.com/bytedance/deer-flow": 1788845544796,
+    "https://github.com/pytorch/pytorch": 1788845544796,
+    "https://github.com/mukul975/cve-mcp-server": 1788845544796,
+    "https://github.com/AgriciDaniel/claude-ads": 1788845544796
   }
 }
