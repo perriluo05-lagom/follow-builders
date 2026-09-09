@@ -1,29 +1,17 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a93d51ff03e74ee6b02049a": 1788241962741,
     "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336,
     "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c": 1788584640287,
     "https://www.xiaoyuzhoufm.com/episode/6a99465cb8871049891a9127": 1788672167032,
-    "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e": 1788758821880
+    "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e": 1788758821880,
+    "https://www.xiaoyuzhoufm.com/episode/6a9fd33ba0210c197dcf773e": 1788932055134
   },
   "seenArticles": {
-    "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1788241967582,
-    "https://www.anthropic.com/engineering/how-we-contain-claude": 1788326431509,
-    "https://www.anthropic.com/engineering/april-23-postmortem": 1788326432134,
-    "https://www.anthropic.com/engineering/managed-agents": 1788326432810,
-    "https://claude.com/blog/artifacts-in-claude-code": 1788326433471,
-    "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/": 1788326437339,
-    "https://ai.meta.com/blog/assistive-robotics-university-of-pittsburgh-sam-dino/": 1788326438169,
-    "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/": 1788326440608,
-    "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/": 1788326441412,
-    "https://blogs.nvidia.com/blog/leading-models-nvidia/": 1788326442016,
-    "https://blogs.nvidia.com/blog/isambard-ai/": 1788326442568,
     "https://claude.com/blog/claude-in-chrome-generally-available": 1788584640643,
     "https://claude.com/blog/cowork-built-in-browser": 1788584641196
   },
   "seenNews": {
-    "https://jack-clark.net/2026/08/31/import-ai-471-why-hugging-face-worries-me-space-mining-five-eyes-on-ai/": 1788241969673,
     "https://jack-clark.net/2026/09/07/import-ai-472-deepminds-cheating-math-agents-populist-ai-policies-and-forethought-theorizes-a-nightwatchman/": 1788845543081
   },
   "seenGitHub": {
@@ -94,6 +82,11 @@
     "https://github.com/bytedance/deer-flow": 1788845544796,
     "https://github.com/pytorch/pytorch": 1788845544796,
     "https://github.com/mukul975/cve-mcp-server": 1788845544796,
-    "https://github.com/AgriciDaniel/claude-ads": 1788845544796
+    "https://github.com/AgriciDaniel/claude-ads": 1788845544796,
+    "https://github.com/ayghri/i-have-adhd": 1788932059954,
+    "https://github.com/Free-TV/IPTV": 1788932059954,
+    "https://github.com/0x4m4/hexstrike-ai": 1788932059954,
+    "https://github.com/HKUDS/Vibe-Trading": 1788932059954,
+    "https://github.com/PostHog/posthog": 1788932059954
   }
 }

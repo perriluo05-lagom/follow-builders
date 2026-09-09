@@ -1,45 +1,45 @@
 {
-  "generatedAt": "2026-09-08T05:32:24.796Z",
+  "generatedAt": "2026-09-09T05:34:19.954Z",
   "repos": [
     {
-      "name": "microsoft/markitdown",
-      "url": "https://github.com/microsoft/markitdown",
-      "description": "microsoft / markitdown Python tool for converting files and office documents to Markdown.",
+      "name": "ayghri/i-have-adhd",
+      "url": "https://github.com/ayghri/i-have-adhd",
+      "description": "ayghri / i-have-adhd A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "886"
+      "todayStars": "656"
     },
     {
-      "name": "bytedance/deer-flow",
-      "url": "https://github.com/bytedance/deer-flow",
-      "description": "bytedance / deer-flow An open-source long-horizon SuperAgent harness that researches, codes, and creates. With the help of sandboxes, memories, tools, skill, subagents and message gateway, it handles different levels of tasks that could take minutes to hours.",
+      "name": "Free-TV/IPTV",
+      "url": "https://github.com/Free-TV/IPTV",
+      "description": "Free-TV / IPTV M3U Playlist for free TV channels",
       "language": "Python",
       "stars": "16",
-      "todayStars": "195"
+      "todayStars": "44"
     },
     {
-      "name": "pytorch/pytorch",
-      "url": "https://github.com/pytorch/pytorch",
-      "description": "pytorch / pytorch Tensors and Dynamic neural networks in Python with strong GPU acceleration",
+      "name": "0x4m4/hexstrike-ai",
+      "url": "https://github.com/0x4m4/hexstrike-ai",
+      "description": "0x4m4 / hexstrike-ai HexStrike AI MCP Agents is an advanced MCP server that lets AI agents (Claude, GPT, Copilot, etc.) autonomously run 150+ cybersecurity tools for automated pentesting, vulnerability discovery, bug bounty automation, and security research. Seamlessly bridge LLMs with real-world offensive security capabilities.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "36"
+      "todayStars": "66"
     },
     {
-      "name": "mukul975/cve-mcp-server",
-      "url": "https://github.com/mukul975/cve-mcp-server",
-      "description": "mukul975 / cve-mcp-server Production-grade MCP server giving Claude 27 security intelligence tools across 21 APIs — CVE lookup, EPSS scoring, CISA KEV, MITRE ATT&amp;CK, Shodan, VirusTotal, and more.",
+      "name": "HKUDS/Vibe-Trading",
+      "url": "https://github.com/HKUDS/Vibe-Trading",
+      "description": "HKUDS / Vibe-Trading \"Vibe-Trading: Your Personal Trading Agent\"",
       "language": "Python",
       "stars": "16",
-      "todayStars": "37"
+      "todayStars": "116"
     },
     {
-      "name": "AgriciDaniel/claude-ads",
-      "url": "https://github.com/AgriciDaniel/claude-ads",
-      "description": "AgriciDaniel / claude-ads Claude-first paid-media operations skill for Claude Code across 12 ad platforms (Google, Meta, YouTube, LinkedIn, TikTok, Microsoft, Apple, Amazon, Reddit, Pinterest, Snapchat, X): source-grounded audits, deterministic scoring, versioned JSON reports, and capability-gated account changes.",
+      "name": "PostHog/posthog",
+      "url": "https://github.com/PostHog/posthog",
+      "description": "PostHog / posthog 🦔 PostHog is the leading platform for building self-driving products. Our developer tools – AI observability, analytics, session replay, flags, experiments, error tracking, logs, and more – capture all the context agents need to diagnose problems, uncover opportunities, and ship fixes. Steer it all from Slack, web, desktop, or the MCP.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "89"
+      "todayStars": "23"
     }
   ],
   "stats": {
