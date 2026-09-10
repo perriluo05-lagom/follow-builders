@@ -1,15 +1,27 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a97f287f03e74ee6b03ea5b": 1788412834336,
     "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c": 1788584640287,
     "https://www.xiaoyuzhoufm.com/episode/6a99465cb8871049891a9127": 1788672167032,
     "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e": 1788758821880,
-    "https://www.xiaoyuzhoufm.com/episode/6a9fd33ba0210c197dcf773e": 1788932055134
+    "https://www.xiaoyuzhoufm.com/episode/6a9fd33ba0210c197dcf773e": 1788932055134,
+    "https://www.xiaoyuzhoufm.com/episode/6aa158a7492687f6aad769cd": 1789018002453
   },
   "seenArticles": {
     "https://claude.com/blog/claude-in-chrome-generally-available": 1788584640643,
-    "https://claude.com/blog/cowork-built-in-browser": 1788584641196
+    "https://claude.com/blog/cowork-built-in-browser": 1788584641196,
+    "https://www.anthropic.com/engineering/how-we-contain-claude": 1789018002709,
+    "https://www.anthropic.com/engineering/april-23-postmortem": 1789018003291,
+    "https://www.anthropic.com/engineering/managed-agents": 1789018003902,
+    "https://claude.com/blog/artifacts-in-claude-code": 1789018004528,
+    "https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/": 1789018009680,
+    "https://ai.meta.com/blog/assistive-robotics-university-of-pittsburgh-sam-dino/": 1789018010982,
+    "https://www.microsoft.com/en-us/research/blog/gigapath-flash-and-gigatime-flash-toward-population-scale-discovery-with-efficient-pathology-foundation-models/": 1789018013184,
+    "https://www.microsoft.com/en-us/research/blog/broadening-access-to-skala-creates-a-faster-path-to-predictive-dft/": 1789018013998,
+    "https://blogs.nvidia.com/blog/nemotron-langchain-agents-open-stack/": 1789018014686,
+    "https://blogs.nvidia.com/blog/leading-models-nvidia/": 1789018015211,
+    "https://blogs.nvidia.com/blog/isambard-ai/": 1789018015753,
+    "https://magazine.sebastianraschka.com/p/gpt-6-astra-looped-transformers-and": 1789018016573
   },
   "seenNews": {
     "https://jack-clark.net/2026/09/07/import-ai-472-deepminds-cheating-math-agents-populist-ai-policies-and-forethought-theorizes-a-nightwatchman/": 1788845543081
@@ -87,6 +99,8 @@
     "https://github.com/Free-TV/IPTV": 1788932059954,
     "https://github.com/0x4m4/hexstrike-ai": 1788932059954,
     "https://github.com/HKUDS/Vibe-Trading": 1788932059954,
-    "https://github.com/PostHog/posthog": 1788932059954
+    "https://github.com/PostHog/posthog": 1788932059954,
+    "https://github.com/public-apis/public-apis": 1789018018761,
+    "https://github.com/experientiallabs/experiential": 1789018018761
   }
 }

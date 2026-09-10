@@ -1,48 +1,24 @@
 {
-  "generatedAt": "2026-09-09T05:34:19.954Z",
+  "generatedAt": "2026-09-10T05:26:58.761Z",
   "repos": [
     {
-      "name": "ayghri/i-have-adhd",
-      "url": "https://github.com/ayghri/i-have-adhd",
-      "description": "ayghri / i-have-adhd A skill to stop your coding agent from burying the answer. ADHD-friendly output.",
+      "name": "public-apis/public-apis",
+      "url": "https://github.com/public-apis/public-apis",
+      "description": "public-apis / public-apis A collective list of free APIs",
       "language": "Python",
       "stars": "16",
-      "todayStars": "656"
+      "todayStars": "580"
     },
     {
-      "name": "Free-TV/IPTV",
-      "url": "https://github.com/Free-TV/IPTV",
-      "description": "Free-TV / IPTV M3U Playlist for free TV channels",
+      "name": "experientiallabs/experiential",
+      "url": "https://github.com/experientiallabs/experiential",
+      "description": "experientiallabs / experiential Experiential is the open source, zero markup gateway for BYOK, self-hosted and 1000+ marketplace models. It learns from your traffic to cut costs, recommend better models, and train a specialized model you own.",
       "language": "Python",
       "stars": "16",
-      "todayStars": "44"
-    },
-    {
-      "name": "0x4m4/hexstrike-ai",
-      "url": "https://github.com/0x4m4/hexstrike-ai",
-      "description": "0x4m4 / hexstrike-ai HexStrike AI MCP Agents is an advanced MCP server that lets AI agents (Claude, GPT, Copilot, etc.) autonomously run 150+ cybersecurity tools for automated pentesting, vulnerability discovery, bug bounty automation, and security research. Seamlessly bridge LLMs with real-world offensive security capabilities.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "66"
-    },
-    {
-      "name": "HKUDS/Vibe-Trading",
-      "url": "https://github.com/HKUDS/Vibe-Trading",
-      "description": "HKUDS / Vibe-Trading \"Vibe-Trading: Your Personal Trading Agent\"",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "116"
-    },
-    {
-      "name": "PostHog/posthog",
-      "url": "https://github.com/PostHog/posthog",
-      "description": "PostHog / posthog 🦔 PostHog is the leading platform for building self-driving products. Our developer tools – AI observability, analytics, session replay, flags, experiments, error tracking, logs, and more – capture all the context agents need to diagnose problems, uncover opportunities, and ship fixes. Steer it all from Slack, web, desktop, or the MCP.",
-      "language": "Python",
-      "stars": "16",
-      "todayStars": "23"
+      "todayStars": "686"
     }
   ],
   "stats": {
-    "trendingRepos": 5
+    "trendingRepos": 2
   }
 }
