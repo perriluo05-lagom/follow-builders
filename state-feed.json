@@ -1,16 +1,14 @@
 {
   "seenTweets": {},
   "seenVideos": {
-    "https://www.xiaoyuzhoufm.com/episode/6a9a8beea0210c197dcd797c": 1788584640287,
     "https://www.xiaoyuzhoufm.com/episode/6a99465cb8871049891a9127": 1788672167032,
     "https://www.xiaoyuzhoufm.com/episode/6a9a36b7f03e74ee6b04dc1e": 1788758821880,
     "https://www.xiaoyuzhoufm.com/episode/6a9fd33ba0210c197dcf773e": 1788932055134,
     "https://www.xiaoyuzhoufm.com/episode/6aa158a7492687f6aad769cd": 1789018002453,
-    "https://www.xiaoyuzhoufm.com/episode/6aa279d4dae90a475bd1a3e3": 1789104436986
+    "https://www.xiaoyuzhoufm.com/episode/6aa279d4dae90a475bd1a3e3": 1789104436986,
+    "https://www.xiaoyuzhoufm.com/episode/6aa0ed3b30dee5c2474b9301": 1789190347359
   },
   "seenArticles": {
-    "https://claude.com/blog/claude-in-chrome-generally-available": 1788584640643,
-    "https://claude.com/blog/cowork-built-in-browser": 1788584641196,
     "https://www.anthropic.com/engineering/how-we-contain-claude": 1789018002709,
     "https://www.anthropic.com/engineering/april-23-postmortem": 1789018003291,
     "https://www.anthropic.com/engineering/managed-agents": 1789018003902,
@@ -108,6 +106,12 @@
     "https://github.com/gpustack/gpustack": 1789104442831,
     "https://github.com/huggingface/speech-to-speech": 1789104442831,
     "https://github.com/ultralytics/ultralytics": 1789104442831,
-    "https://github.com/google-deepmind/alphagenome": 1789104442831
+    "https://github.com/google-deepmind/alphagenome": 1789104442831,
+    "https://github.com/jihe520/MathModelAgent": 1789190352867,
+    "https://github.com/jordan-gibbs/hyperresearch": 1789190352867,
+    "https://github.com/D4Vinci/Scrapling": 1789190352867,
+    "https://github.com/bojieli/ai-agent-book": 1789190352867,
+    "https://github.com/SimplifyJobs/Summer2027-Internships": 1789190352867,
+    "https://github.com/bobeff/open-source-games": 1789190352867
   }
 }
